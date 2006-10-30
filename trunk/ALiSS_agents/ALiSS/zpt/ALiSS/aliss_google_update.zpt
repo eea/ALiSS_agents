@@ -1,0 +1,232 @@
+<span tal:replace="structure here/manage_page_header"/>
+<span tal:replace="structure here/manage_tabs"/>
+
+	<link rel="stylesheet" type="text/css" href="/manage_page_style.css" />
+	<link rel="stylesheet" type="text/css" href="manage_options_style"/>
+
+<p class="form-help">
+	Google update management.
+</p>
+<tal:block define=" ids python:request.get('ids', []);
+					utils modules/Products.ALiSS.utils">
+
+	<!-- Set forms messages -->
+	<tal:block define=" done python:request.get('done', '')">
+		<div class="system-msg" tal:condition="python:done=='ok'">
+			Update complete. (<span tal:replace="here/ZopeTime" />) <br />
+			Errors: 0
+		</div>
+		<div class="system-msg" tal:condition="python:done=='cleanup'">
+			Cleanup complete. (<span tal:replace="here/ZopeTime" />) <br />
+		</div>
+		<div class="system-msg" tal:condition="python:done=='err'">
+			<tal:block define="err_count python:request.get('err_count', '')">
+			Update complete. (<span tal:replace="here/ZopeTime" />) <br />
+			<strong>Errors: <span tal:replace="err_count" /></strong> (some elements were not indexed)
+			</tal:block>
+		</div>
+		<div class="system-msg" tal:condition="python:done=='license'">
+			<strong>Error</strong>, unable to make the Update. Please define at least one Google license key.<br />
+		</div>
+		<div class="system-msg" tal:condition="python:done=='select'">
+			<strong>Error</strong>, unable to perform the operation. Please select at least one <strong>server</strong> and one <strong>content group</strong>.<br />
+		</div>
+	</tal:block>
+
+
+	<!-- 'Select ALiSS Center' form -->
+	<fieldset tal:condition="python:not len(ids)"><legend class="standard_legend">Select the ALiSS Centers to be updated</legend>
+		<tal:block condition="python:len(here.getAllCenters())">
+			<form method="get" name="frmCenterSelect" action="manage_google_update_html" style="padding:10px 3px 3px 3px;margin:0;">
+				<table cellspacing="0" cellpadding="2" border="0" width="100%">
+					<tr class="list-header">
+						<td width="1%"></td>
+						<th width="60%">Title</th>
+						<th width="20%">Center UID</th>
+						<th width="19%">Has content</th>
+					</tr>
+					<tr tal:repeat="center here/getAllCenters"
+						tal:attributes="class python:test(path('repeat/center/odd'), 'row-hilite', 'row-normal')">
+						<td><input type="checkbox" name="ids:list" tal:attributes="id python:path('center/center_uid')+'_box';value center/center_uid" /></td>
+						<td><label tal:attributes="for python:path('center/center_uid')+'_box'"><span tal:replace="center/title" /></label></td>
+						<td><span tal:replace="center/center_uid" /></td>
+						<td tal:define="elements python:center.getElementsList()">
+							<span tal:condition="python:elements" class="green" tal:content="string:has content"/>
+							<span tal:condition="python:not elements" class="red" tal:content="string:no content"/>
+						</td>
+					</tr>
+				</table>
+				<input type="submit" value="select" style="margin:5px 0px 0px 3px; padding:0em 0.4em;" />
+			</form>
+		</tal:block>
+		<tal:block condition="python:not len(here.getAllCenters())">
+			<br />
+			<span style="margin-left: 2em;">There are no ALiSS Centers to select.</span>
+			<br /><br />
+		</tal:block>
+	</fieldset>
+
+
+	<!--'Do Google update' form -->
+	<fieldset tal:condition="python:len(ids)"><legend class="standard_legend">Do Google Update</legend>
+	<form name="frmGoogleUpdate" method="post" action="" style="padding:10px 3px 3px 3px;margin:0;">
+		<!-- Google server list -->
+		<div class="update_title">Google servers</div><br />
+		<table align="center" width="90%" border="0">
+			<tal:block condition="here/gbox">
+			<tr>
+				<td width="20%">
+					<small>server list</small>
+					<select name="servers:list" multiple="multiple" size="2">
+						<option value="main_srv" selected>Main Google server</option>
+						<option value="box_srv">Google Box server</option>
+					</select>
+				</td>
+				<td width="30%" align="center" style="padding-top: 1em;" class="group_actions">
+					<span>Select which server to use (or both)</span>
+				</td>
+				<td valign="top" class="group_info">
+					<ul>
+						<li><strong>Main Google server</strong> info</li>
+						<li><strong>Google Box</strong> info</li>
+					</ul>
+				</td>
+			</tr>
+			</tal:block>
+
+			<tal:block condition="python:not here.gbox">
+			<tr>
+				<td width="20%">
+					<small>server list</small>
+					<select name="servers:list" multiple="multiple" size="1">
+						<option value="main_srv" selected>Main Google server</option>
+					</select>
+				</td>
+				<td width="30%" align="center" style="padding-top: 1em;" class="group_actions">
+					<span>The main Google server will be used. No Google Box server is defined.</span>
+				</td>
+				<td valign="top" class="group_info">
+					<ul>
+						<li><strong>Main Google server</strong> info</li>
+						<li><strong>Google Box</strong> info</li>
+					</ul>
+				</td>
+			</tr>
+			</tal:block>
+		</table><br />
+
+		<!-- Actions list -->
+		<input type="hidden" name="centers_list" tal:attributes="value python:utils.joinToList(ids)" />
+		<div class="update_title">Google actions</div><br />
+		<table align="center" width="90%" border="0">
+			<tr>
+				<td width="20%">
+					<tal:block define="groups_list python:here.content_group_manager.get_groups_list()" condition="python:len(groups_list)>0">
+						<small>content group list</small>
+						<select name="groups:list" multiple="multiple" size="8">
+									<tal:block repeat="group groups_list">
+									<option tal:attributes="value group/id;"
+											tal:content="python:test(group.name, group.name, '*** No title ***')"/>
+									</tal:block>
+						</select>
+					</tal:block>
+					<div class="red" tal:condition="python:len(here.content_group_manager.get_groups_list())==0" tal:content="string:groups list is empty!" />
+				</td>
+				<td width="30%" align="right" style="padding-top: 1em;" class="group_actions">
+					<div>
+						<input type="submit" value="Do Google update" onclick="document.frmGoogleUpdate.action='googleUpdate';">
+					</div><br />
+					<div>
+						<input type="submit" value="Resume Google update" onclick="document.frmGoogleUpdate.action='googleResume';">
+					</div><br />
+					<div>
+						<input type="submit" value="Cleanup content" onclick="document.frmGoogleUpdate.action='googleCleanup';">
+					</div><br />
+				</td>
+				<td valign="top" class="group_info">
+					<ul>
+						<li><strong>Do Google update</strong> gets TopPages for all elements querying Google</li>
+						<li><strong>Resume Google update</strong> gets TopPages for all elements with errors querying Google</li>
+						<li><strong>Cleanup content</strong> will erase all indexing on selected content groups</li>
+					</ul>
+				</td>
+			</tr>
+		</table>
+
+		<br/>
+
+		<!-- Centers info -->
+		<div class="update_title">Selected centers info</div><br />
+		<tal:block repeat="center_id ids">
+		<tal:block tal:define="center python:here.getCenterByUID(center_id)">
+		<div class="list_and_info">	
+			<div class="clearall"></div>
+
+			<div width="20%" class="content_groups_list">
+				<div>Content groups info</div>
+
+				<!-- Main server info -->
+				<tal:block	define="groups_list python:here.content_group_manager.get_groups_list()"
+							condition="python:len(groups_list)>0">
+					<fieldset><legend>main server</legend>
+					<ul>
+						<tal:block repeat="group groups_list">
+						<li tal:define="has_err python:center.testGroupErrors(group.id, 'main_srv');
+										has_content python:center.testGroupContent(group.id, 'main_srv')"
+							tal:attributes="style python:test(has_content, 'font-weight: bold;; color: green;;', 'color: red;;')"
+							tal:content="python:test(group.name, test(has_err, group.name+' ..[err]', test(has_content, group.name+' ..[ok]', group.name)), '*** No title ***')" />
+						</tal:block>
+					</ul>
+					</fieldset>
+				</tal:block>
+
+				<!-- Box server info -->
+				<tal:block	define="groups_list python:here.content_group_manager.get_groups_list()"
+							condition="python:len(groups_list)>0 and here.gbox">
+					<fieldset><legend>box server</legend>
+					<ul>
+						<tal:block repeat="group groups_list">
+						<li tal:define="has_err python:center.testGroupErrors(group.id, 'box_srv');
+										has_content python:center.testGroupContent(group.id, 'box_srv')"
+							tal:attributes="style python:test(has_content, 'font-weight: bold;; color: green;;', 'color: red;;')"
+							tal:content="python:test(group.name, test(has_err, group.name+' ..[err]', test(has_content, group.name+' ..[ok]', group.name)), '*** No title ***')" />
+						</tal:block>
+					</ul>
+					</fieldset>
+				</tal:block>
+
+				<br />
+			</div>
+
+			<div class="update_info_block">
+				<table cellspacing="1" cellpadding="0" border="0" class="update_info">
+					<tr>
+						<th>Title</th>
+						<td><span tal:replace="center/title" /></td>
+					</tr>
+					<tr>
+						<th>Description</th>
+						<td><span tal:replace="center/description" /></td>
+					</tr>
+					<tr>
+						<th>UID</th>
+						<td><span tal:replace="center/center_uid" /></td>
+					</tr>
+					<tr>
+						<th>Has content</th>
+						<td tal:define="elements python:center.getElementsList()">
+							<span tal:condition="python:elements" class="green" tal:content="string:has content"/>
+							<span tal:condition="python:not elements" class="red" tal:content="string:no content"/>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="clearall"></div>
+		</div><br />
+		</tal:block>
+		</tal:block>
+	</form>
+	</fieldset>
+
+</tal:block>
+<span tal:replace="structure here/manage_page_footer"/>

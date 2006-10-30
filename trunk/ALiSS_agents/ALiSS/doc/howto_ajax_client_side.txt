@@ -1,0 +1,64 @@
+HOW TO USE THE AJAX ALiSS CLIENT
+--------------------------------
+Antonio De Marinis (EEA)
+antonio.de.marinis at eea.eu.int
+--------------------------------
+
+This document describes how to use the ALiSS service via the Ajax (Javascript) client.
+
+First you need to insert the following lines in the html HEAD tag. These are the javascript/Ajax client files. 
+The CSS aliss_overrides.css is optional and meant only for you to overwrite and customise the default CSS.
+
+	<!-- AJAX stuff -->
+	<script type="text/javascript" src="/webservices/aliss/prototype_js"></script>
+	<script type="text/javascript" src="/webservices/aliss/rico_js"></script>
+	
+	<!--Aliss imports-->
+	<link rel="stylesheet" type="text/css" href="/webservices/aliss/aliss_css">
+	<link rel="stylesheet" type="text/css" href="/aliss_overrides.css">
+	<script type="text/javascript" src="/webservices/aliss/aliss_js"></script>
+
+
+Then you need to register each aliss call in the html and specify the div elements.
+ 
+There are different calls you can do via ALiSS ajax client.
+
+	1) registerAlissKeywordsRelated(AgentID,divID,term);
+	
+	2) registerAlissKeywordsSuggestions(AgentID,divID,term,enableConceptURL);
+	
+	3) registerAlissPageRelated(AgentID,divID,pageURL);
+	
+	4) registerAlissTextRelated(AgentID,divID,text);
+
+For example, you want to have a box which display related links to the term 'ozone layer'.
+In this case we use the call ajax call 1).
+
+Register the call:
+
+	<script type="text/javascript">
+	        registerAlissKeywordsRelated('testAgent','AlissKeywordsRelated','ozone layer');
+	</script>
+
+Put this div where you want the box to appear:
+
+	<div class="LSResult AlissLeftContainer">
+			  <div class="LSShadow" id="AlissKeywordsRelated"></div>
+	</div>
+
+The other calls are constructed the same way. 
+Be aware to not use the same ID for different div elements, all the IDs have to be unique of course.
+
+The call 2) registerAlissKeywordsSuggestions has an optional param "enableConceptURL". 
+If enableConceptURL is set to 'True' then the returned suggestions terms will link 
+ to the central Aliss central concept page. Default is 'False', which will
+make the links go to the original terminology source url. It depends if the aliss central
+concept server service is open to public or not. 
+
+The "AgentID" is provided to you, by the ALiSS administrator.
+
+Moreover, the system administrator will need to enter a specific rewrite rule to the apache configuration file.
+This rule will allow the client to trust the ALiSS server. 
+Please contact your ALiSS administrator to get the configuration details.
+
+--End--

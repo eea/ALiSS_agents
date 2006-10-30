@@ -1,0 +1,40 @@
+<dtml-comment>This dtml-method is called by the Aliss ajax client.
+REQUEST parameters 
+'agent': the agent id.
+'terms': the terms labes to search on. Multiple terms can be separeted by ','.
+</dtml-comment>
+<dtml-call "REQUEST.RESPONSE.setHeader('Content-type','text/xml; charset=UTF-8')">
+<ajax-response> 
+    <response type="element" id="<dtml-var element missing="AlissKeywordsRelated">"> 
+    <fieldset class="AlissRelatedContainer">
+      <legend id="relatedPagesLegend"><img src="http://glossary.eea.eu.int/misc_/EEAGlossary/search_ico.gif" align="absmiddle" /> Related pages (BETA)</legend>
+      <dtml-let theagent="_[REQUEST['agent']]">
+        <dtml-in "theagent.getTopPagesForTerms(REQUEST['terms'])">
+            <dtml-let kuku_group=sequence-item kuku_pages="kuku_group['Pages']">
+                <dtml-if kuku_pages>
+                       <ul class="AlissTable">
+                            <li class="AlissRow"><h5><dtml-var "kuku_group['GroupName']"></h5><br />
+                            </li>
+                            <dtml-in kuku_pages size=3>
+                                <dtml-let kuku_page=sequence-item>
+                                <li class="AlissRow">
+                                    <span class="discreet" style="margin-left: 2pt;"><a href="<dtml-var "kuku_page['url']">" title="<dtml-var "kuku_page['title'].encode('utf-8').replace('<b>','').replace('</b>','')">">
+                                        <dtml-if "_.string.find(kuku_page['url'],'http://reports.eea.eu.int/')==0">
+                                            <img class="preview" src="<dtml-var "kuku_page['url']">/aliss_preview.jpg" />
+                                        <dtml-elif "_.string.find(kuku_page['url'],'/indicators/')>1">
+                                            <img class="preview" src="<dtml-var "kuku_page['url']">/aliss_preview.gif" />
+                                        </dtml-if>
+                                         <dtml-if "_.string.find(kuku_page['url'],'.pdf')>0"><img src="http://template.eea.eu.int/images/pdf_small.jpg" alt="PDF" border="0" /></dtml-if> <dtml-var "kuku_page['title'].encode('utf-8')"></a>
+                                    </span><br clear="all" />
+                                </li>
+                               </dtml-let>
+                           </dtml-in>
+                        </ul>
+                </dtml-if>
+           </dtml-let>
+        </dtml-in>
+        </dtml-let>
+        <span class="AlissFooter">Powered by ALiSS (BETA)</span>
+        </fieldset>
+    </response> 
+</ajax-response> 

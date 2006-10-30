@@ -1,0 +1,44 @@
+<style type="text/css">
+.sgc_add{
+	border: 1px solid #cccccc;
+	width: 90%;
+}
+
+.sgc_add h3{
+	background: #f0f0f0;
+	margin: 0px;
+	padding: 0px;
+}
+
+.sgc_add th{
+	text-align: left;
+}
+</style>
+
+<div class="sgc_add">
+
+	<h3>Add ALiSS Server Agent</h3>
+	<br />
+
+	<form name="frmAdd" method="post" action="manage_addAlissAgent">
+	<table border="0" cellspacing="2" cellpadding="2" width="100%">
+		<tr>
+			<th width="20%">Id</th>
+			<td width="80%"><input type="text" name="id" size="30" value="" /></td>
+		</tr>
+		<tr>
+			<th>Title</th>
+			<td><input type="text" name="title" size="50"></td>
+		</tr>
+		<tr>
+			<th valign="top">Description</th>
+			<td><textarea name="description" rows="5" cols="50"></textarea></td>
+		</tr>
+		<tr>
+			<th>&nbsp;</th>
+			<td><input type="submit" value="Add" /></td>
+		</tr>
+	</table>
+	</form>
+
+</div>
