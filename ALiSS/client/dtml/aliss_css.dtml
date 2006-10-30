@@ -1,0 +1,99 @@
+<dtml-call "RESPONSE.setHeader('content-type', 'text/css')">
+/* Aliss clients styles */
+
+.AlissRow {
+    border: 1px solid White;
+    white-space: normal;
+    padding:0; 
+    margin: 2px 0px 0px 10px ! important;
+    list-style: none;
+}
+
+.AlissRowSugg {
+    list-style: square inside;
+}
+
+
+* html .AlissRow {
+    margin: 3px 0 0 -30px ! important;
+}
+
+.AlissRow a {
+    text-decoration: none ! important;
+    white-space: normal;
+    font-size:smaller;
+}
+
+.AlissRow a:hover {
+    text-decoration: underline ! important;
+}
+
+
+
+.AlissResult {
+    display: block;
+    text-align:left;
+    padding-top: 5px;
+    margin: 0;
+}
+
+.AlissShadow {
+    text-align:left;
+    margin: 0 ! important;
+    padding: 0 ! important;
+}
+
+.AlissShadow fieldset {
+   width: auto;
+}
+
+.AlissRelatedContainer {
+    background-color: white;
+    margin-top: 0;
+    padding: 0 !important;
+    white-space: normal;
+    font-family:  "Lucida Grande", Verdana, Lucida, Helvetica, Arial, sans-serif;
+    text-align:left;
+    color: #436976;
+    border: 1px solid #8cacbb;
+    text-transform: none;
+}
+
+
+.AlissFooter {
+    text-decoration: none;
+    font-weight:bold;
+    font-size:x-small;
+    float:right;
+}
+
+.AlissRow img.preview {
+float: left; 
+width: 56px ! important; 
+margin: 0 5px 0 0;
+border: 1px solid grey;
+}
+
+.visual-clear {
+  clear: both;
+  height: 0px;
+}
+
+.AlissPreviewDescription{
+font-size:smaller;
+}
+
+.AlissLeftContainer {
+   float: left;
+   width: 270px;
+   margin-right: 10px;
+}
+
+.AlissRightContainer {
+  width: 250px;
+  overflow: hidden;
+}
+
+.AlissTable {
+  padding: 0 5px 10px 0;
+}

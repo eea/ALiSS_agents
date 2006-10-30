@@ -1,0 +1,9 @@
+<tal:block tal:replace="structure here/standard_html_header" />
+<div><a tal:attributes="href python:here.getAlissRoot().absolute_url()">Go to previous page</a></div>
+<span tal:replace="python:request.RESPONSE.setHeader('content-type', 'text/html;charset=UTF-8')" />
+
+<!-- Flash search -->
+<tal:block tal:replace="structure here/flash_search" />
+
+<br clear="all" />
+<tal:block tal:replace="structure here/standard_html_footer" />

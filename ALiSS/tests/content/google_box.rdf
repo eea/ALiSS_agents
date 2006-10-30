@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+	<GSP VER="3.2">
+	<TM>0.035925</TM>
+	<Q>test</Q>
+	<PARAM name="access" value="p" original_value="p"/>
+	<PARAM name="output" value="xml_no_dtd" original_value="xml_no_dtd"/>
+	<PARAM name="sort" value="date:D:L:d1" original_value="date%3AD%3AL%3Ad1"/>
+	<PARAM name="site" value="default_collection" original_value="default_collection"/>
+	<PARAM name="ie" value="UTF-8" original_value="UTF-8"/>
+	<PARAM name="btnG" value="Search" original_value="Search"/>
+	<PARAM name="client" value="default_frontend" original_value="default_frontend"/>
+	<PARAM name="oe" value="UTF-8" original_value="UTF-8"/>
+	<PARAM name="q" value="test" original_value="test"/>
+	<PARAM name="ip" value="193.193.193.193" original_value="193.193.193.193"/>
+	<RES SN="1" EN="10">
+		<M>3020</M>
+		<FI/>
+		<NB>
+			<NU>/search?q=test&amp;site=default_collection&amp;hl=en&amp;lr=&amp;ie=UTF-8&amp;output=xml_no_dtd&amp;client=default_frontend&amp;access=p&amp;sort=date:D:L:d1&amp;start=10&amp;sa=N</NU>
+		</NB>
+
+		<R N="1">
+			<U>aaa.com/0</U>
+			<UE>aaa.com/0</UE>
+			<T>Title 1</T>
+			<RK>10</RK>
+			<CRAWLDATE> 4 Oct 2005</CRAWLDATE>
+			<FS NAME="date" VALUE=""/>
+			<S>Snnipet 1</S>
+			<LANG>en</LANG>
+			<HAS>
+				<L/>
+				<C SZ="30k" CID="oEDhhbx2fiMJ" ENC="ISO-8859-1"/>
+			</HAS>
+		</R>
+
+		<R N="2" L="2">
+			<U>aaa.com/3</U>
+			<UE>aaa.com/3</UE>
+			<T>Tile 2</T>
+			<RK>5</RK>
+			<FS NAME="date" VALUE=""/>
+			<S>Snnipet 2</S>
+			<LANG>it</LANG>
+			<HAS>
+				<L/>
+				<C SZ="31k" CID="iojMzf0vk3YJ" ENC="ISO-8859-1"/>
+			</HAS>
+			<HN U="aaa.com/3/documents/newsreleases">aaa.com/3/documents/newsreleases</HN>
+		</R>
+
+	</RES>
+</GSP>
