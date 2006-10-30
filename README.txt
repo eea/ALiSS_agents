@@ -1,0 +1,1 @@
+Please see 'doc' folder for more info about "ALiSS: Adaptive Link Suggestion Service".

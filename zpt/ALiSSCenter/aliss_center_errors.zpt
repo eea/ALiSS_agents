@@ -1,0 +1,326 @@
+<span tal:replace="structure here/manage_page_header"/>
+<span tal:replace="structure here/manage_tabs"/>
+<span tal:replace="python:request.RESPONSE.setHeader('content-type', 'text/html;charset=UTF-8')"/>
+
+<link rel="stylesheet" type="text/css" href="manage_options_style"/>
+
+<tal:block define="list_type python:request.get('page', '')">
+
+<tal:block condition="python:list_type==''">
+	<p>Elemets with update errors or witch had been disabled</p>
+	<div align="left">
+		<ul>
+			<li><a href="manage_errors_html?page=disabled" title="Elemenys disabled">Elements disabled</a></li>
+			<li><a href="manage_errors_html?page=errors" title="Elements with update errors">Elements with update errors</a></li>
+		</ul>
+	</div>
+</tal:block>
+
+<!-- Elements with errors -->
+<tal:block condition="python:list_type=='errors'" define="utils modules/Products.ALiSS.utils">
+
+	<p>Element with update errors</p>
+	<tal:block repeat="elem here/getAllElementsWithErrors">
+	<a tal:attributes="name elem/id" />
+	<fieldset>
+		<legend>&nbsp;<a tal:attributes="href elem/url" tal:content="elem/name" />&nbsp;</legend>
+
+		
+		<table cellspacing="1" cellpadding="2" border="0" width="100%" class="update_info" style="margin:10px 3px 3px 3px;">
+			<tr>
+				<th>ID</th>
+				<td valign="top" tal:content="elem/id" />
+			</tr>
+			<tr>
+				<th valign="top">Name</th>
+				<td valign="top" tal:content="elem/name" />
+			</tr>
+			<tr>
+				<th valign="top">Definition</th>
+				<td valign="top" tal:content="elem/getDefinition" />
+			</tr>
+			<tr>
+				<th valign="top">Google content</th>
+				<td valign="top" class="content_lists">
+					<!-- Google info -->
+					<tal:block define="statistics python:elem.getCollectionStatistics()">
+						<div class="content_buttons">
+						<form action="manage_element_list" name="manage_element_list" method="post">
+							<input type="hidden" name="elem_id" tal:attributes="value elem/id" />
+							<input type="hidden" name="page_id" value="errors" />
+							<input type="submit" name='enable_all' value="enable all" />
+							<input type="submit" name='disable_all' value="disable all" />
+							<span><strong>*Note: </strong>enable/disable all content groups for this term</span>
+						</form>
+						</div>
+
+						<!-- Messages for element actions -->
+						<tal:block tal:define=" elem_id python:request.get('elem_id', '');
+												action_msg python:request.get('done', '')">
+							<div class="system-msg" tal:condition="python:elem_id == elem.id">
+								<tal:block replace="structure python:test(action_msg=='enable all', 'All content groups were <strong>enabled</strong>.', '')" />
+								<tal:block replace="structure python:test(action_msg=='disable all', 'All content groups were <strong>disabled</strong>.', '')" />
+								<tal:block replace="structure python:test(action_msg=='enabled', 'The content group was <strong>enabled</strong>.', '')" />
+								<tal:block replace="structure python:test(action_msg=='disabled', 'The content group was <strong>disabled</strong>.', '')" />
+								<tal:block replace="structure python:test(action_msg=='ok', '<strong>Update</strong> complete.', '')" />
+								<tal:block replace="structure python:test(action_msg=='license', '<strong>Error</strong>, unable to make the Update. Please define at least one Google license key.', '')" />
+								<tal:block replace="structure python:test(action_msg=='select', '<strong>Error</strong>, unable to make the Update. Please select at least one <strong>server</strong>.', '')" />
+								<tal:block replace="structure python:test(action_msg=='err', '<strong>Error</strong> making update.', '')" />
+								(<span tal:replace="here/ZopeTime"/>)<br>
+							</div>
+						</tal:block>
+
+						<tal:block condition="python:len(statistics)>0" repeat="group_id statistics">
+							<form action="manage_element_list" name="manage_element_list" method="post">
+							<input type="hidden" name="elem_id" tal:attributes="value elem/id" />
+							<input type="hidden" name="page_id" value="errors" />
+							<table class="me_google_container" width="100%" border="0">
+								<tr>
+									<td valign="top" width="20%" class="google_info"
+										tal:define="group_obj python:here.content_group_manager.get_group_item(group_id);
+													google_obj  python:elem.get_google_collection_item(group_id)">
+										<input type="hidden" name="content_id" tal:attributes="value group_obj/id" />
+
+										<!-- Content group info -->
+										<div tal:content="python:test(group_obj.name, group_obj.name, '*** No title ***')" />
+										<small>status: </small><span   tal:content="python:test(google_obj.google_enable, 'enabled', 'disabled')"
+																		tal:attributes="style python:test(google_obj.google_enable, 'color:green', 'color:red')"/><br />
+										<small>date: </small><span tal:content="python:utils.utShowDateTime(group_obj.last_updated)" /><br />
+										<small>updated: </small><span   tal:content="python:test(not google_obj.google_error, 'successfuly', 'with errors')"
+																		tal:attributes="style python:test(not google_obj.google_error, 'color:green', 'color:red')"/><br />
+										<small>match: </small><span tal:content="google_obj/match_level" /><br />
+										<small>filter: </small><span tal:content="group_obj/filter" /><br />
+										<small>pattern: </small><span tal:content="group_obj/pattern" /><br />
+										<div id="google_update" style="text-align:left;">
+
+											<div tal:condition="here/gbox" style="border-bottom: 0px solid black; padding: 0; margin: 0;"><br />
+												<small>server list</small><br />
+												<select name="servers:list" multiple="multiple" size="2">
+													<option value="main_srv" selected>Main Google</option>
+													<option value="box_srv">Google Box</option>
+												</select>
+											</div>
+
+											<div tal:condition="python:not here.gbox"><br />
+												<small>server list</small><br />
+												<select name="servers:list" multiple="multiple" size="1">
+													<option value="main_srv" selected>Main Google</option>
+												</select>
+											</div>
+											<br />
+
+											<input type="submit" name="content_update" value="update" tal:attributes="disabled python:test(google_obj.google_enable, '', 'disabled')"/>&nbsp;
+											<input type="submit" name="content_disable" tal:attributes="value python:test(google_obj.google_enable, 'disabled', 'enabled')" />
+
+										</div>
+
+									</td>
+									<td valign="top" tal:define="	main_pages python:elem.get_google_collection_item(group_id).get_page_collection_by_srv('main_srv');
+																	box_pages python:elem.get_google_collection_item(group_id).get_page_collection_by_srv('box_srv');
+																	last_updated python:utils.utShowDateTime(elem.get_google_collection_item(group_id).last_updated)">
+										<!-- Google content -->
+										<tal:block condition="python:len(main_pages)">
+										<div><small style="float:right;">[last updated: <tal:block content="last_updated" />]</small>Main server</div>
+										<ol>
+											<li tal:repeat="page main_pages">
+												<a	tal:content="structure python:test(len(page.page_title)!=0, page.page_title, '<ALiSS>EMPTY<ALiSS>')"
+													tal:attributes="href python:page.page_url"
+													style="text-decoration: underline;"/>
+												<div><small tal:content="structure python:page.page_snippet" /></div>
+												<div><small style="color: green;" tal:content="page/page_url" /></div>
+											</li>
+										</ol>
+										</tal:block>
+
+										<tal:block condition="python:len(box_pages)">
+										<div><small style="float:right;">[last updated: <tal:block content="last_updated" />]</small>Box server</div>
+										<ol>
+											<li tal:repeat="page box_pages">
+												<a	tal:content="structure python:test(len(page.page_title)!=0, page.page_title, '<ALiSS>EMPTY<ALiSS>')"
+													tal:attributes="href python:page.page_url"
+													style="text-decoration: underline;"/>
+												<div><small tal:content="structure python:page.page_snippet" /></div>
+												<div><small style="color: green;" tal:content="page/page_url" /></div>
+											</li>
+										</ol>
+										</tal:block>
+									</td>
+								</tr>
+							</table>
+							</form>
+						</tal:block>
+						<div class="content_buttons">
+						<form action="manage_element_list" name="manage_element_list" method="post">
+							<input type="hidden" name="elem_id" tal:attributes="value elem/id" />
+							<input type="hidden" name="page_id" value="errors" />
+							<input type="submit" name='enable_all' value="enable all" />
+							<input type="submit" name='disable_all' value="disable all" />
+							<span><strong>*Note: </strong>enable/disable all content groups for this term</span>
+						</form>
+						</div>
+					</tal:block>
+				</td>
+			</tr>
+		</table>
+
+	</fieldset>
+	<br />
+	</tal:block>
+
+</tal:block>
+
+<!-- Elements disabled -->
+<tal:block condition="python:list_type=='disabled'" define="utils modules/Products.ALiSS.utils">
+
+	<p>Elements witch had been disabled</p>
+	<tal:block	repeat="elem here/getAllElementsDisabled">
+	<a tal:attributes="name elem/id" />
+	<fieldset>
+		<legend>&nbsp;<a tal:attributes="href elem/url" tal:content="elem/name" />&nbsp;</legend>
+
+
+		<table cellspacing="1" cellpadding="2" border="0" width="100%"  class="update_info" style="margin:10px 3px 3px 3px;">
+			<tr>
+				<th valign="top" width="15%">ID</th>
+				<td valign="top" tal:content="elem/id" />
+			</tr>
+			<tr>
+				<th valign="top">Name</th>
+				<td valign="top" tal:content="elem/name" />
+			</tr>
+			<tr>
+				<th valign="top">Definition</th>
+				<td valign="top" tal:content="elem/definition" />
+			</tr>
+			<tr>
+				<th valign="top">Google content</th>
+				<td valign="top" class="content_lists">
+					<!-- Google info -->
+					<tal:block define="statistics python:elem.getCollectionStatistics()">
+						<div class="content_buttons">
+						<form action="manage_element_list" name="manage_element_list" method="post">
+							<input type="hidden" name="elem_id" tal:attributes="value elem/id" />
+							<input type="hidden" name="page_id" value="disabled" />
+							<input type="submit" name='enable_all' value="enable all" />
+							<input type="submit" name='disable_all' value="disable all" />
+							<span><strong>*Note: </strong>enable/disable all content groups for this term</span>
+						</form>
+						</div>
+
+						<!-- Messages for element actions -->
+						<tal:block tal:define=" elem_id python:request.get('elem_id', '');
+												action_msg python:request.get('done', '')">
+							<div class="system-msg" tal:condition="python:elem_id == elem.id">
+								<tal:block replace="structure python:test(action_msg=='enable all', 'All content groups were <strong>enabled</strong>.', '')" />
+								<tal:block replace="structure python:test(action_msg=='disable all', 'All content groups were <strong>disabled</strong>.', '')" />
+								<tal:block replace="structure python:test(action_msg=='enabled', 'The content group was <strong>enabled</strong>.', '')" />
+								<tal:block replace="structure python:test(action_msg=='disabled', 'The content group was <strong>disabled</strong>.', '')" />
+								<tal:block replace="structure python:test(action_msg=='ok', '<strong>Update</strong> complete.', '')" />
+								<tal:block replace="structure python:test(action_msg=='license', '<strong>Error</strong>, unable to make the Update. Please define at least one Google license key.', '')" />
+								<tal:block replace="structure python:test(action_msg=='select', '<strong>Error</strong>, unable to make the Update. Please select at least one <strong>server</strong>.', '')" />
+								<tal:block replace="structure python:test(action_msg=='err', '<strong>Error</strong> making update.', '')" />
+								(<span tal:replace="here/ZopeTime"/>)<br>
+							</div>
+						</tal:block>
+
+						<tal:block condition="python:len(statistics)>0" repeat="group_id statistics">
+							<form action="manage_element_list" name="manage_element_list" method="post">
+							<input type="hidden" name="elem_id" tal:attributes="value elem/id" />
+							<input type="hidden" name="page_id" value="disabled" />
+							<table class="me_google_container" width="100%" border="0">
+								<tr>
+									<td valign="top" width="20%" class="google_info"
+										tal:define="group_obj python:here.content_group_manager.get_group_item(group_id);
+													google_obj  python:elem.get_google_collection_item(group_id)">
+										<input type="hidden" name="content_id" tal:attributes="value group_obj/id" />
+
+										<!-- Content group info -->
+										<div tal:content="python:test(group_obj.name, group_obj.name, '*** No title ***')" />
+										<small>status: </small><span   tal:content="python:test(google_obj.google_enable, 'enabled', 'disabled')"
+																		tal:attributes="style python:test(google_obj.google_enable, 'color:green', 'color:red')"/><br />
+										<small>date: </small><span tal:content="python:utils.utShowDateTime(group_obj.last_updated)" /><br />
+										<small>updated: </small><span   tal:content="python:test(not google_obj.google_error, 'successfuly', 'with errors')"
+																		tal:attributes="style python:test(not google_obj.google_error, 'color:green', 'color:red')"/><br />
+										<small>match: </small><span tal:content="google_obj/match_level" /><br />
+										<small>filter: </small><span tal:content="group_obj/filter" /><br />
+										<small>pattern: </small><span tal:content="group_obj/pattern" /><br />
+										<div id="google_update" style="text-align:left;">
+
+											<div tal:condition="here/gbox" style="border-bottom: 0px solid black; padding: 0; margin: 0;"><br />
+												<small>server list</small><br />
+												<select name="servers:list" multiple="multiple" size="2">
+													<option value="main_srv" selected>Main Google</option>
+													<option value="box_srv">Google Box</option>
+												</select>
+											</div>
+
+											<div tal:condition="python:not here.gbox"><br />
+												<small>server list</small><br />
+												<select name="servers:list" multiple="multiple" size="1">
+													<option value="main_srv" selected>Main Google</option>
+												</select>
+											</div>
+											<br />
+
+											<input type="submit" name="content_update" value="update" tal:attributes="disabled python:test(google_obj.google_enable, '', 'disabled')"/>&nbsp;
+											<input type="submit" name="content_disable" tal:attributes="value python:test(google_obj.google_enable, 'disabled', 'enabled')" />
+
+										</div>
+
+									</td>
+									<td valign="top" tal:define="	main_pages python:elem.get_google_collection_item(group_id).get_page_collection_by_srv('main_srv');
+																	box_pages python:elem.get_google_collection_item(group_id).get_page_collection_by_srv('box_srv');
+																	last_updated python:utils.utShowDateTime(elem.get_google_collection_item(group_id).last_updated)">
+										<!-- Google content -->
+										<tal:block condition="python:len(main_pages)">
+										<div><small style="float:right;">[last updated: <tal:block content="last_updated" />]</small>Main server</div>
+										<ol>
+											<li tal:repeat="page main_pages">
+												<a	tal:content="structure python:test(len(page.page_title)!=0, page.page_title, '<ALiSS>EMPTY<ALiSS>')"
+													tal:attributes="href page/page_url"
+													style="text-decoration: underline;"/>
+												<div><small tal:content="structure page/page_snippet" /></div>
+												<div><small style="color: green;" tal:content="page/page_url" /></div>
+											</li>
+										</ol>
+										</tal:block>
+
+										<tal:block condition="python:len(box_pages)">
+										<div><small style="float:right;">[last updated: <tal:block content="last_updated" />]</small>Box server</div>
+										<ol>
+											<li tal:repeat="page box_pages">
+												<a	tal:content="structure python:test(len(page.page_title)!=0, page.page_title, '<ALiSS>EMPTY<ALiSS>')"
+													tal:attributes="href page/page_url"
+													style="text-decoration: underline;"/>
+												<div><small tal:content="structure page/page_snippet" /></div>
+												<div><small style="color: green;" tal:content="page/page_url" /></div>
+											</li>
+										</ol>
+										</tal:block>
+									</td>
+								</tr>
+							</table>
+							</form>
+						</tal:block>
+						<div class="content_buttons">
+						<form action="manage_element_list" name="manage_element_list" method="post">
+							<input type="hidden" name="elem_id" tal:attributes="value elem/id" />
+							<input type="hidden" name="page_id" value="disabled" />
+							<input type="submit" name='enable_all' value="enable all" />
+							<input type="submit" name='disable_all' value="disable all" />
+							<span><strong>*Note: </strong>enable/disable all content groups for this term</span>
+						</form>
+						</div>
+					</tal:block>
+				</td>
+			</tr>
+		</table>
+
+	</fieldset>
+	<br />
+	</tal:block>
+
+</tal:block>
+
+</tal:block>
+<span tal:replace="structure here/manage_page_footer"/>

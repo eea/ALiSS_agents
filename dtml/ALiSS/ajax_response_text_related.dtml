@@ -1,0 +1,8 @@
+<dtml-call "REQUEST.RESPONSE.setHeader('Content-type','text/xml; charset=UTF-8')">
+<ajax-response> 
+   <response type="element" id="<dtml-var element missing="AlissTextRelated">"> 
+<dtml-let theagent="_[REQUEST['agent']]" kuku_group="theagent.getTermsInText(REQUEST['text'])" kuku_text="kuku_group['marked_text']">
+   <dtml-var kuku_text>
+</dtml-let>
+   </response> 
+</ajax-response> 
