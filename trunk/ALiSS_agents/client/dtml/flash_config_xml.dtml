@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dtml-call "REQUEST.RESPONSE.setHeader('Content-type','text/xml; charset=UTF-8')">
+<flashconfig>
+<item paramid="service_url"><dtml-var absolute_url>/</item>
+<item paramid="search_prefix_url">http://google.eea.eu.int/search?q=</item>
+<item paramid="search_suffix_url">&amp;client=default_frontend&amp;site=default_collection&amp;ie=UTF-8&amp;oe=UTF-8&amp;output=xml_no_dtd&amp;proxystylesheet=default_frontend</item>
+<item paramid="result_pages_size">10</item>
+<item paramid="search_fail_button_txt">Search on all EEA websites</item>
+<item paramid="no_suggestions_txt">Suggestions not available for this term. Try the search below.</item>
+<item paramid="on_search_txt">Smart searching ...</item>
+<item paramid="see_more_def_txt">See more ...</item>
+<item paramid="see_more_res_txt">All results ...</item>
+<item paramid="on_search_txt">Smart searching ...</item>
+<item paramid="enable_suggest_icons">false</item>
+<item paramid="enable_preview_images">true</item>
+<item paramid="enable_related_results">true</item>
+<item paramid="definition_max_length">200</item>
+<item paramid="preview_show_delay">500</item>
+<item paramid="preview_click_to_visit_txt">Click to visit page</item>
+<item paramid="css_path">/css/alissflash.css</item>
+<dtml-in "getContentGroupsObjs()">
+<item paramid="group">
+<id><dtml-var "_['sequence-item'].id"></id>
+<name><dtml-var "_['sequence-item'].name"></name>
+<standardicon>/misc_/ALiSS/standardicon.gif</standardicon>
+</item>
+</dtml-in>
+</flashconfig>

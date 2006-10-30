@@ -1,0 +1,136 @@
+<span tal:replace="structure here/manage_page_header"/>
+<span tal:replace="structure here/manage_tabs"/>
+<link rel="stylesheet" type="text/css" href="manage_options_style"/>
+
+<p>Change the properties in the form below and click <strong>Save changes</strong>.</p>
+
+<div class="system-msg" tal:condition="python:request.has_key('save')">
+	Saved changes. (<span tal:replace="here/ZopeTime"/>)<br>
+</div>
+
+<fieldset><legend class="standard_legend"><strong>ALiSS Agent Settings</strong></legend>
+	<p>Select from the list below the desired type of view for the concepts list.</p>
+	<form name="frmEdit" method="post" action="manageDisplayType" enctype="multipart/form-data">
+		<table border="0" cellspacing="0" cellpadding="2" width="100%">
+			<tr class="list-header">
+				<td width="1%"></td>
+				<th colspan="2">Display type</th>
+			</tr>
+			<tr class="row-normal">
+				<td><input	type="radio" name="display_type:int" value="0"
+							tal:attributes="checked python:here.display_type==0" /></td>
+				<td colspan="2">plain list</td>
+			</tr>
+			<tr class="row-hilite">
+				<td>
+					<input	type="radio" name="display_type:int" value="1"
+							tal:attributes="checked python:here.display_type==1" />
+				</td>
+				<td>A - Z</td>
+				<td>
+					<label for="res_per_page">num. of results per page:&nbsp;</label>
+					<input	type="text" name="res_per_page:int" size="2"
+							tal:attributes="value here/res_per_page" />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3"><input type="submit" name="delete" value="Save changes" style="margin-top:3px;" /></td>
+			</tr>
+		</table>
+	</form>
+
+	<p>Select from the list below the associated <strong>Content groups</strong>. This Agent will expose data only from the selected Content groups.</p>
+	<form name="frmEdit" method="post" action="manageContentGroups" enctype="multipart/form-data">
+		<table border="0" cellspacing="0" cellpadding="2" width="100%">
+			<tr class="list-header">
+				<td width="1%"></td>
+				<th>Content group title</th>
+				<th>Site URL filter</th>
+				<th>URL Pattern</th>
+				<th>ID</th>
+			</tr>
+			<tr tal:repeat="content_group here/getGroupsList"
+				tal:attributes="class python:test(path('repeat/content_group/odd'), 'row-hilite', 'row-normal');
+								style python:test(content_group.id in here.getContentGroups(), 'font-weight: bold', '')">
+				<td>
+					<input  type="checkbox" name="ids:list" 
+							tal:attributes="value content_group/id;
+											checked python:test(content_group.id in here.getContentGroups(), 'checked', '')" />
+				</td>
+				<td tal:content="content_group/name" />
+				<td tal:content="content_group/filter" />
+				<td tal:content="content_group/pattern" />
+				<td tal:content="content_group/id" />
+			</tr>
+			<tr>
+				<td colspan="3"><input type="submit" name="delete" value="Save changes" style="margin-top:3px;" /></td>
+			</tr>
+		</table>
+	</form>
+
+	<p>Select from the list below the associated <strong>ALiSS Centers</strong>. This Agent will expose data only from the selected ALiSS Centers.</p>
+	<form name="frmEdit" method="post" action="manageAlissCenters" enctype="multipart/form-data">
+		<table border="0" cellspacing="0" cellpadding="2" width="100%">
+			<tr class="list-header">
+				<td width="1%"></td>
+				<th>ALiSS center</th>
+				<th>SKOS URL</th>
+				<th>UID</th>
+			</tr>
+			<tr tal:repeat="aliss_center here/getAllCenters"
+				tal:attributes="class python:test(path('repeat/aliss_center/odd'), 'row-hilite', 'row-normal');
+								style python:test(aliss_center.center_uid in here.getAlissCentersIds(), 'font-weight: bold', '')">
+				<td>
+					<input  type="checkbox" name="ids:list" 
+							tal:attributes="value aliss_center/center_uid;
+											checked python:test(aliss_center.center_uid in here.getAlissCentersIds(), 'checked', '')" />
+				</td>
+				<td tal:content="aliss_center/title_or_id" />
+				<td tal:content="aliss_center/gloss_skos" />
+				<td tal:content="aliss_center/center_uid" />
+			</tr>
+			<tr>
+				<td colspan="3"><input type="submit" name="delete" value="Save changes" style="margin-top:3px;" /></td>
+			</tr>
+		</table>
+	</form>
+
+	<p>Select from the list below the associated <strong>Google Servers</strong>. This Agent will expose data only from the selected Google servers.</p>
+	<form name="frmEdit" method="post" action="manageGoogleServers" enctype="multipart/form-data">
+		<table border="0" cellspacing="0" cellpadding="2" width="100%">
+			<tr class="list-header">
+				<td width="1%"></td>
+				<th>Google server</th>
+				<th>URL</th>
+				<th>Description</th>
+			</tr>
+
+			<tr	class="row-hilite"
+				tal:attributes="style python:test('main_srv' in here.getGoogleServers(), 'font-weight: bold', '')">
+				<td>
+					<input	type="checkbox" name="ids:list" value="main_srv"
+							tal:attributes="checked python:test('main_srv' in here.getGoogleServers(), 'checked', '')" />
+				</td>
+				<td>Main Google server</td>
+				<td>http://www.google.com</td>
+				<td>some description</td>
+			</tr>
+			<tr	class="row-normal"
+				tal:attributes="style python:test('box_srv' in here.getGoogleServers(), 'font-weight: bold', '')">
+				<td>
+					<input	type="checkbox" name="ids:list" value="box_srv"
+							tal:attributes="checked python:test('box_srv' in here.getGoogleServers(), 'checked', '')" />
+				</td>
+				<td>Box Google server</td>
+				<td><span tal:content="python:test(here.gbox, here.gbox, 'no google box defined')" /></td>
+				<td>some description</td>
+			</tr>
+
+			<tr>
+				<td colspan="3"><input type="submit" name="delete" value="Save changes" style="margin-top:3px;" /></td>
+			</tr>
+		</table>
+	</form>
+</fieldset>
+
+<span tal:replace="structure here/manage_page_footer"/>

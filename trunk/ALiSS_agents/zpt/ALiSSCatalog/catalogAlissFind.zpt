@@ -1,0 +1,40 @@
+<span tal:replace="structure here/manage_page_header"/>
+<span tal:replace="structure here/manage_tabs"/>
+<link rel="stylesheet" type="text/css" href="/manage_page_style.css" />
+<link rel="stylesheet" type="text/css" href="manage_options_style"/>
+
+<P class="form-help">
+Use this form to locate <strong>ALiSS specific</strong> objects to be cataloged.  Those objects which
+are found will be automatically added to the catalog.
+</p>
+
+<form action="manage_catalogFoundAlissItems" method="GET">
+<table>
+	<tr>
+		<td align="left" valign="top">
+			<div class="form-label">Find objects of type:</div>
+		</td>
+		<td align="left" valign="top">
+			<div class="form-element">
+				<select name="obj_metatypes:list" size="5" multiple>
+					<option value="all" selected> All types
+					<option tal:repeat="meta here/getCatalogedMetas"
+							tal:content="meta"
+							tal:attributes="value meta" />
+				</select>
+			</div>
+		</td>
+	</tr>
+
+	<tr>
+		<td align="left" valign="top"></td>
+		<td align="left" valign="top">
+			<div class="form-element">
+				<input class="form-element" type="submit" name="btn_submit" value="Find and Catalog">
+			</div>
+		</td>
+	</tr>
+</table>
+</form>
+
+<span tal:replace="structure here/manage_page_footer"/>

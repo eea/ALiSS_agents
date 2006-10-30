@@ -1,0 +1,166 @@
+With Aliss you can create a webservice for usage on your different websites
+to provide additional information about current page or related terms. 
+
+To call the API via XML-RPC we initiate a connection to our agent:
+
+	>>> import xmlrpclib
+	>>> from Products.PythonScripts.standard import url_quote
+	>>> agentUrl = self.agent.absolute_url()
+	>>> aliss = xmlrpclib.Server( agentUrl, allow_none=True)
+
+
+
+	getTopPagesForTerms(term_names, results_number)
+	----------------------------------------------------------------
+	Returns top pages for requested term_names where 
+	term_names is a list of term names. 
+	This method can be used to create indexes.
+
+			>>> result = aliss.getTopPagesForTerms('term label1')
+
+	The result is a dictionary with format 
+		{'MatchType': google match type, default = exact, 
+		 'GroupID': which content group,
+		 'ElementID': term id,
+		 'Pages' : a list of pages with following structure
+				 {'url' : url of page,
+				  'snippet' : google snippet for page,
+				  'preview_img' : an optional preview image url is returned otherwise empty string,
+				  'title' : title of the page }
+		}
+
+	NOTE: The title and snippet returned from google contains HTML code <b>term</b> around the term.
+	NOTE: The word "Element" is the same as "Term". So ElementID means actually TermID.
+
+	Most of the times you will only access result['Pages'] but 
+	sometimes when you allow aliss to ...  to other matchtypes
+	you may want to verify the matchtype 
+
+			>>> firstTerm = result[0]
+			>>> firstTerm['MatchType'] == 'exact'
+			True
+			>>> pages = firstTerm['Pages']
+			>>> for page in pages:
+			...     print 'PAGE'
+			...     for key, val in page.items():
+			...         print '%s: %s' % (key,val)
+			PAGE
+			url: aaa.com/9
+			snippet: snippet showing query context (HTML) 9 with terms
+			preview_img:
+			title: title (HTML)9
+			PAGE
+			url: aaa.com/0
+			snippet: snippet showing query context (HTML) 0 with terms
+			preview_img:
+			title: title (HTML)0
+
+	We could also generate some HTML if we want:
+		>>> HTMLstr = '<a href="http://%s/" title="%s">%s</a>'
+		>>> for page in pages:
+		...     print HTMLstr % (page['url'], page['snippet'], page['title'])
+			<a href="http://aaa.com/9/" title="snippet showing query context (HTML) 9 with terms">title (HTML)9</a>
+		<a href="http://aaa.com/0/" title="snippet showing query context (HTML) 0 with terms">title (HTML)0</a>
+
+
+	getTermsForPage(pageURL, results_number, filteroutTerms)
+	----------------------------------------------------------------
+	This method returns the terms for the pageURL, and you can use it to get 
+	terms for current page. Every returned term has following structure:
+		{'ElementId':         internal id for term,
+		 'ElementName':       label/name for term, 
+		 'ElementDefinition': definition of term, 
+		 'ElementURL':        url where the definition is, usually your 
+		                      glossary}
+
+
+			>>> terms = aliss.getTermsForPage('aaa.com/0' ) 
+			>>> for term in terms:
+			...    print term['ElementName']
+			...    print term['ElementDefinition']
+			...    print '---'
+			term label4
+			The purpose of Directive 2002/96/EC on waste electrical and electronic equipment (WEEE) is, as a first priority, the prevention of waste electrical and electronic equipment (WEEE), and in addition, the reuse, recycling and other forms of recovery of such wastes so as to reduce the disposal of waste. It also seeks to improve the environmental performance of all operators involved in the life cycle of electrical and electronic equipment, e.g. producers, distributors and consumers and in particular those operators directly involved in the treatment of waste electrical and electronic equipment.
+			---
+			term AA label2
+			EEA press room
+			---
+			term label1
+			Climate change refers to any change in climate over time, whether due to natural variability or as a result of human activity. This usage differs from that in the United Nations Framework Convention on Climate Change (UNFCCC), which defines 'climate change' as: 'a change of climate which is attributed directly or indirectly to human activity that alters the composition of the global atmosphere and which is in addition to natural climate variability observed over comparable time periods.'
+			---
+
+	We se that our page 'aaa.com/0' is associated with 3 terms. 
+
+
+	getRelatedPagesForPage(pageURL, relation_types='all')
+	----------------------------------------------------------------
+	Get related pages for pageURL. 
+	NOTE: relations are not fully implemented yet and therefore relation_types has no effect.
+	At the moment only one relation_type is implemented "SimilarPage" and returned all the time. 
+	The result is a list of structs like:
+		{'RelationType': 'SimilarPage' (It's the same all the time),
+		 'RelationLabel': name of term,
+		 'RelationDescription': term definition,
+		 'MatchType': google search type,
+		 'Pages': see above}
+	
+		>>> result = aliss.getRelatedPagesForPage('aaa.com/0' ) 
+		>>> for term in result:
+		...    print 'Relation term: %s' % term['RelationLabel']
+		...    for page in term['Pages']:
+		...        print 'RELATED PAGE: %s' % page['url']
+		Relation term: term label4
+		RELATED PAGE: aaa.com/3
+		Relation term: term AA label2
+		RELATED PAGE: aaa.com/6
+		Relation term: term label1
+		RELATED PAGE: aaa.com/9
+
+
+
+	getTermSuggestions(query)
+	----------------------------------------------------------------
+	Returns suggestions for term names based on query.
+	
+		>>> result = aliss.getTermSuggestions('term AA*')
+		>>> for term in result:
+		...    print term
+		term AA label2
+		
+		>>> result = aliss.getTermSuggestions('term*')
+		>>> for term in result:
+		...    print term
+		term label1
+		term label3
+		term label4
+		term AA label2
+
+	To retrieve more information about the suggested terms you can pass 
+	extended=True.	
+		>>> result = aliss.getTermSuggestions('term AA*', True)
+		>>> for term in result:
+		...    print term['label']
+		term AA label2
+		>>> for term in result:
+		...    print term['url']
+		http://whitefish:8080/GlossaryTest/B/term2
+
+	We can also use the concept_url which is the centralised page about 
+	this term/concept. It contains all definitions from all aliss centers, 
+	external images and top results for each content group.
+		>>> for term in result:
+		...    term['concept_url'].endswith('concept_html?term=%s' % url_quote(term['label']))
+		True
+
+	There is another property which can be of interest "preview_img". 
+	It is a full url to the image previewing the term/concept suggested. 
+	For example if the concept represent an instance of a report, then the
+	preview img could be the report cover or just an icon. If the concept is
+	a name of a person we can use a person icon or a real image of the person 
+	etc... Some concepts are very abstract then we use the standard 
+	image of a term/concept as preview. What image it is returned is decided
+	on the aliss server side.
+
+		>>> for term in result:
+		...    term['preview_img'].endswith('.gif') or term['preview_img'].endswith('.jpg') or term['preview_img'].endswith('.png')
+		True
