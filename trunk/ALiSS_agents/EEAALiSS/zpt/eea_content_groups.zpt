@@ -1,0 +1,247 @@
+<span tal:replace="structure here/manage_page_header"/>
+<span tal:replace="structure here/manage_tabs"/>
+	<link rel="stylesheet" type="text/css" href="/manage_page_style.css" />
+	<link rel="stylesheet" type="text/css" href="manage_options_style"/>
+
+<p class="form-help">
+	Content groups management.
+</p>
+
+<!-- Set messages -->
+<tal:block  define="save python:request.get('save', '');
+					object_path python:here.absolute_url(0)"
+			condition="python:not request.get('id', 0)">
+	<div class="system-msg" tal:condition="python:save=='ok'">
+		Saved changes. (<span tal:replace="here/ZopeTime" />) <br />
+	</div>
+	<div class="system-msg" tal:condition="python:save=='err'">
+		Some of the content groups selected are in use. First cleanup the content from <a tal:attributes="href string:${object_path}/manage_google_update_html">Google update</a> tab. (<span tal:replace="here/ZopeTime" />) <br />
+	</div>
+</tal:block>
+
+<tal:block tal:define=" record_data here/getGroupItemData;
+						record_id python:record_data[1];
+						menu_index python:request.get('menu_index', '0');
+						show_add_form python:test(record_data[0]=='add', 1, 0);
+						show_basic_props python:(not show_add_form) and (menu_index=='0');
+						show_google_props python:(not show_add_form) and (menu_index=='1');
+						show_type_form python:(not show_add_form) and (menu_index=='2')">
+
+	<!-- Content group settings -->
+	<fieldset><legend class="standard_legend"><strong tal:replace="python:test(show_add_form, 'Add content group', 'Update content group')" /></legend>
+
+		<!-- Add content group form -->
+		<form tal:condition="show_add_form" method="post" action="manage_add_group_item" style="padding:12px 3px 3px 3px;margin:0">
+		<table border="0" cellspacing="2" cellpadding="2">
+			<tr>
+				<th class="form-label">Content group title</th>
+				<td><input type="text" name="name" style="width:380px" tal:attributes="value python:record_data[2]" /></td>
+			</tr>
+			<tr>
+				<th class="form-label">Site URL filter</th>
+				<td>
+					<input type="text" name="filter" style="width:380px" tal:attributes="value python:record_data[3]" />&nbsp;
+					<small>(site:)</small>
+				</td>
+			</tr>
+			<tr>
+				<th class="form-label">URL pattern</th>
+				<td>
+					<input type="text" name="pattern" style="width:380px" tal:attributes="value python:record_data[4]" />&nbsp;
+					<small>(allinurl:)</small>
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td><input type="submit" value="Add" /></td>
+			</tr>
+		</table>
+		<input type="hidden" name="id" tal:attributes="value python:record_data[1]" />
+		</form>
+
+		<!-- Set properties forms -->
+		<table cellspacing="0" cellpadding="5px" border="0" width="100%" tal:condition="python:not show_add_form" style="padding:12px 3px 3px 3px;margin:0;margin-bottom:5px;">
+			<tr valign="top">
+				<td width="30%">
+					<!-- Update content group properties menu -->
+					<ul class="menu">
+						<li><div>Basic properties</div></li>
+						<li><a tal:attributes="href string:eea_content_groups_html?id=${record_id}&menu_index=0">Set Basic Properties</a></li>
+						<li><div>Google properties</div></li>
+						<li><a tal:attributes="href string:eea_content_groups_html?id=${record_id}&menu_index=1">Set Google Update Properties</a></li>
+						<li><a tal:attributes="href string:eea_content_groups_html?id=${record_id}&menu_index=2">Set Google Type of Search</a></li>
+					</ul>
+				</td>
+				<td width="*">
+					<!-- 'Set Basic Content Group Props' form -->
+					<fieldset tal:condition="show_basic_props"><legend class="standard_legend"><strong>Update content group basic properties</strong></legend>
+					<tal:block define=" save python:request.get('save', '')">
+						<div class="system-msg" tal:condition="python:save=='ok'">
+							Saved changes. (<span tal:replace="here/ZopeTime" />) <br />
+						</div>
+					</tal:block>
+					<form method="post" action="manage_update_group_item" style="padding:12px 3px 3px 3px;margin:0;">
+					<table border="0" cellspacing="2" cellpadding="2" width="100%">
+						<tr>
+							<th class="form-label">Content group title</th>
+							<td><input type="text" name="name" size="50" tal:attributes="value python:record_data[2]" /></td>
+						</tr>
+						<tr>
+							<th class="form-label">Site URL filter</th>
+							<td>
+								<input type="text" name="filter" size="50" tal:attributes="value python:record_data[3]" />&nbsp;
+								<small>(site:)</small>
+							</td>
+						</tr>
+						<tr>
+							<th class="form-label">URL pattern</th>
+							<td>
+								<input type="text" name="pattern" size="50" tal:attributes="value python:record_data[4]" />&nbsp;
+								<small>(allinurl:)</small>
+							</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+							<td><input type="submit" value="Save changes" /></td>
+						</tr>
+					</table>
+					<input type="hidden" name="id" tal:attributes="value python:record_data[1]" />
+					</form>
+					</fieldset>
+
+					<!-- 'Set Google Update Properties' form -->
+					<fieldset tal:condition="python:show_google_props"><legend class="standard_legend"><strong>Set Google Update Properties</strong></legend>
+					<tal:block define="save python:request.get('save', '')">
+					<div class="system-msg" tal:condition="python:save == 'ok'">
+						Saved changes. (<span tal:replace="here/ZopeTime"/>)<br>
+					</div>
+					<div class="system-msg" tal:condition="python:save == 'err'">
+						Error, one of the integer fields contained a wrong value. (<span tal:replace="here/ZopeTime"/>)<br>
+					</div>
+					</tal:block>
+					<form name="frmEditGoogle" method="post" action="" style="padding:12px 3px 3px 3px;margin:0;">
+					<table border="0" cellspacing="2" cellpadding="2" width="100%">
+						<caption class="standard_caption">The following filters will be used on the Google queries</caption>
+						<tr>
+							<th>Start</th>
+							<td><input type="text" name="start" size="50" tal:attributes="value python:record_data[5]" /><small>* integer</small></td>
+						</tr>
+						<tr>
+							<th>Number of results</th>
+							<td><input type="text" name="maxResults" size="50" tal:attributes="value python:record_data[6]" /><small>* integer</small></td>
+						</tr>
+						<tr>
+							<th>Filter</th>
+							<td><input type="text" name="filter" size="50" tal:attributes="value python:record_data[7]" /><small>* integer</small></td>
+						</tr>
+						<tr>
+							<th>Restrict</th>
+							<td><input type="text" name="restrict" size="50" tal:attributes="value python:record_data[8]" /></td>
+						</tr>
+						<tr>
+							<th>Safe search</th>
+							<td><input type="text" name="safeSearch" size="50" tal:attributes="value python:record_data[9]" /><small>* integer</small></td>
+						</tr>
+						<tr>
+							<th>Language</th>
+							<td><input type="text" name="language" size="50" tal:attributes="value python:record_data[10]" /></td>
+						</tr>
+						<tr>
+							<th>Input encoding</th>
+							<td><input type="text" name="inputencoding" size="50" tal:attributes="value python:record_data[11]" /></td>
+						</tr>
+						<tr>
+							<th>Output encoding</th>
+							<td><input type="text" name="outputencoding" size="50" tal:attributes="value python:record_data[12]" /></td>
+						</tr>
+						<tr>
+							<th>HTTP proxy</th>
+							<td><input type="text" name="http_proxy" size="50" tal:attributes="value python:record_data[13]" /></td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+							<td>
+								<input type="submit" value="Save changes" onclick="document.frmEditGoogle.action='manageGoogleSearchProperties';">
+								<input type="submit" value="Load default" onclick="document.frmEditGoogle.action='loadGoogleDefault';">
+							</td>
+						</tr>
+					</table>
+					<input type="hidden" name="id" tal:attributes="value python:record_data[1]" />
+					</form>
+				</fieldset>
+
+				<!-- 'Set Google Type of Search' form -->
+				<fieldset tal:condition="show_type_form"><legend class="standard_legend"><strong>Set Type of Search</strong></legend>
+				<tal:block define="save python:request.get('save', '')">
+				<div class="system-msg" tal:condition="python:save == 'ok'">
+					Saved changes. (<span tal:replace="here/ZopeTime"/>)<br>
+				</div>
+				</tal:block>
+				<form name="frmSearchType" method="post" action="manageSearchType" style="padding:12px 3px 3px 3px;margin:0;">
+				<table border="0" cellspacing="2" cellpadding="2" width="100%">
+					<caption class="standard_caption">The following type will be use for searching Google</caption>
+					<tr>
+						<th valign="top" width="10%">Set type</th>
+						<td width="10%">
+							<select name="search_type" size="8">
+								<option value="exact" tal:attributes="selected python:record_data[14]=='exact'">exact</option>
+								<option value="medium" tal:attributes="selected python:record_data[14]=='medium'">medium</option>
+								<option value="weak" tal:attributes="selected python:record_data[14]=='weak'">weak</option>
+								<option value="all" tal:attributes="selected python:record_data[14]=='all'">all</option>
+							</select>
+						</td>
+						<td>
+							<ul>
+								<li><strong>exact</strong> - example of  search: <small><em>"word1 word2"</em></small></li>
+								<li><strong>medium</strong> - example of  search: <small><em>word1 word2</em></small></li>
+								<li><strong>weak</strong> - example of  search: <small><em>word1 OR word2</em></small></li>
+								<li><strong>all</strong> - search will try each type of search (starting with 'exact') till results are found</li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="3" align="left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="Save changes"></td>
+					</tr>
+				</table>
+				<input type="hidden" name="id" tal:attributes="value python:record_data[1]" />
+				</form>
+				</fieldset>
+				</td>
+			</tr>
+		</table>
+
+	</fieldset>
+</tal:block>
+<br />
+
+<!-- Content groups list -->
+<fieldset><legend class="standard_legend"><strong>Content groups list</strong></legend>
+	<form method="post" action="manage_delete_groups" style="padding:10px 3px 3px 3px;margin:0;">
+	<table border="0" cellspacing="0" cellpadding="4" width="100%" tal:define="items here/getGroupsList">
+		<tr><td colspan="6" align="left" style="padding-bottom:7px;"><strong tal:content="python:len(items)" /> items found.</td></tr>
+		<tr class="list-header">
+			<td width="1%"></td>
+			<th width="25%">Content group title</th>
+			<th width="30%">Site URL filter</th>
+			<th width="25%">URL Pattern</th>
+			<th width="10%">ID</th>
+		</tr>
+		<tr tal:repeat="item items"
+			tal:attributes="class python:test(path('repeat/item/odd'), 'row-hilite', 'row-normal')">
+			<td><input type="checkbox" name="ids" tal:attributes="value item/id" /></td>
+			<td>
+				<a  tal:attributes="href string:eea_content_groups_html?id=${item/id}"
+					tal:content="python:test(item.name, item.name, '*** NO TITLE ***')" />
+			</td>
+			<td><span tal:replace="item/filter" /></td>
+			<td><span tal:replace="item/pattern" /></td>
+			<td><span tal:replace="item/id" /></td>
+		</tr>
+		<tr>
+			<td colspan="6"><input type="submit" name="delete" value="Delete" /></td>
+		</tr>
+	</table>
+	</form>
+</fieldset>
+
+<span tal:replace="structure here/manage_page_footer" />

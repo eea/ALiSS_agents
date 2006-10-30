@@ -1,0 +1,59 @@
+<span tal:replace="structure here/manage_page_header"/>
+<span tal:replace="structure here/manage_tabs"/>
+
+<link rel="stylesheet" type="text/css" href="manage_options_style"/>
+
+<p>Customise your ALiSS instance and click <strong>Create</strong>.</p>
+
+<div class="system-msg" tal:condition="python:request.has_key('save')"
+						tal:define = "msg python:request.get('save', '')">
+	<span tal:condition="python:msg=='ok'">ALiSS instance successfully created. (<span tal:replace="here/ZopeTime"/>)</span>
+	<span tal:condition="python:msg=='err'"><strong>Error</strong> creating ALiSS instance. (<span tal:replace="here/ZopeTime"/>)</span>
+	<br>
+</div>
+
+<fieldset><legend class="standard_legend"><strong>ALiSS management</strong></legend>
+	<p>Change the properties in the form below and click <strong>Create</strong> to create an ALiSS instance.</p>
+	<form name="frmEdit" method="post" action="manageAliss">
+		<table border="0" cellspacing="0" cellpadding="2">
+			<tr>
+				<th colspan="2" style="border-top: 1px solid #cccccc; background-color: #f0f0f0;">
+					<small>Basic properties</small>
+				</th>
+			</tr>
+			<tr>
+				<th style="padding-top: 5px;">ID</th>
+				<td style="padding-top: 5px;">
+					<input type="text" name="id" style="width:380px" value="" />
+				</td>
+			</tr>
+			<tr>
+				<th>Title</th>
+				<td><input type="text" name="title" style="width:380px" value="" /></td>
+			</tr>
+			<tr>
+				<th valign="top" style="padding-bottom: 5px;">Description</th>
+				<td style="padding-bottom: 5px;">
+					<textarea name="description" rows="6" style="width:380px"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<th colspan="2" style="border-top: 1px solid #cccccc; background-color: #f0f0f0;">
+					<small>If you want to use a Google Box server please specify its URL below</small>
+				</th>
+			</tr>
+			<tr>
+				<th style="border-bottom: 1px solid #cccccc; padding-bottom: 5px; padding-top: 5px;">Google Box URL</th>
+				<td style="border-bottom: 1px solid #cccccc; padding-bottom: 5px; padding-top: 5px;">
+					<input type="text" name="gbox" style="width:380px" tal:attributes="value here/getGBoxDefault" />
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td><input type="submit" value="Create" /></td>
+			</tr>
+		</table>
+	</form>
+</fieldset>
+
+<span tal:replace="structure here/manage_page_footer"/>
