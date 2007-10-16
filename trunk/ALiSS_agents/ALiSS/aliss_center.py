@@ -168,6 +168,7 @@ class ALiSSCenter(Folder,
                     element_manager.add_element_item( skos_elements_list[elem].id,
                                                       skos_elements_list[elem].name,
                                                       skos_elements_list[elem].definition,
+                                                      skos_elements_list[elem].translations,
                                                       skos_elements_list[elem].url,
                                                       self.center_uid)
 
@@ -186,6 +187,7 @@ class ALiSSCenter(Folder,
                         element_manager.add_element_item( skos_elements_list[data].id,
                                                           skos_elements_list[data].name,
                                                           skos_elements_list[data].definition,
+                                                          skos_elements_list[data].translations,
                                                           skos_elements_list[data].url,
                                                           self.center_uid)
 

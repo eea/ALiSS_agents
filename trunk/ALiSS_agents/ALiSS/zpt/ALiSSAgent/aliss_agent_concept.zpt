@@ -51,6 +51,7 @@
 		<tal:block	define="concept_name		python:aliss_concept['term_name'];
 							concept_url			python:aliss_concept['term_url'];
 							concept_definitions	python:aliss_concept['definitions'];
+							translations		python:aliss_concept['translations'];
 							terms_list			python:aliss_concept['terms_list']">
 			<h1 tal:content="concept_name" />
 			<script type="text/javascript" tal:content="python:'registerAlissKeywordsSuggestions(\''+here.id+'\',\'AlissSuggest\',\''+concept_name+'\',\'True\');'"></script>
@@ -66,6 +67,14 @@
 				</dd>
 			</dl>
 			<p><a tal:attributes="href string:http://www.google.com/search?q=define%3A${concept_url}&amp;start=0&amp;start=0&amp;ie=utf-8&amp;oe=utf-8">More definitions (Google) ...</a></p>
+
+			<dl tal:condition="python:len(translations.keys())>0">
+				<dt>Translation(s):</dt>
+				<dd tal:repeat="langcode python:translations.keys()">
+					<span tal:content="langcode" />: <span tal:content="python:translations[langcode]" />
+				</dd>
+			</dl>
+
 			<tal:block	define="statistics python:here.getContentGroups()">
 				<tal:block	condition="python:len(statistics)>0"
 							repeat="group_id statistics">

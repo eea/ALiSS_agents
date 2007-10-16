@@ -1,6 +1,6 @@
 ﻿import flash.external.*;
 
-class com.eea.utilities.logging.Logger 
+class com.EEA.utilities.logging.Logger 
 extends Object{
 	
 	static var ENABLED:Boolean=true;

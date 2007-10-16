@@ -58,6 +58,7 @@ class ElementManager:
             >>> eManag.add_element_item(id=             'elemID',
             ...                        name=            'elemName',
             ...                        definition=      'elemDef',
+            ...                        translations=    'elemTrans',
             ...                        url=             'elemURL',
             ...                        center_parent=   'cParent')
 
@@ -97,8 +98,8 @@ class ElementManager:
     #################
     #   BASIC API   #
     #################
-    def add_element_item(self, id, name, definition, url, center_parent):
-        item = ElementItem(id, name, definition, center_parent, url)
+    def add_element_item(self, id, name, definition, translations, url, center_parent):
+        item = ElementItem(id, name, definition, translations, center_parent, url)
         self.__elements_collection[id] = item
         self.catalog.CatalogObject(item)
 
@@ -107,7 +108,8 @@ class ElementManager:
             item = self.__elements_collection[id]
             item.name =         name
             item.definition =   definition
-            item.url =          url        
+            item.url =          url
+            self.__elements_collection[id] = item
             self.catalog.RecatalogObject(self.get_element_item(id))
 
     def delete_element_item(self, ids):

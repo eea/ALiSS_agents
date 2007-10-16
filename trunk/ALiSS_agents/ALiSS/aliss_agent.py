@@ -19,6 +19,8 @@
 
 #Python imports
 from types import StringType
+import re
+import string
 
 #Zope imports
 from Globals                                    import InitializeClass
@@ -302,6 +304,7 @@ class ALiSSAgent(Folder,
         decrease the search_depth."""
         words = self.filterStopWords(text)
         tmptext = text.lower()
+        suggestionterms = {}
         resterms = []
         labels = []
         foundterms = []
@@ -311,31 +314,42 @@ class ALiSSAgent(Folder,
         for w in words:
             #skip ParseError when common words are passed.
             try:
-                resterms.extend(self.getTermSuggestions(w, True, search_depth))
+                for suggestionTerm in self.getTermSuggestions(w, True, search_depth):
+                    suggestionterms[suggestionTerm['label']] = suggestionTerm
             except:
                 pass
-        for resterm in resterms:
-            tmptext = text.lower()
-            #find term in remainin stripped text
-            idx0 = tmptext.find(resterm['label'].lower())
-            idx1 = idx0 + len(resterm['label'])
-            #if suggested term label in text and not already linked
-            if idx0 > -1 and not resterm['label'] in labels:
-                    #check if label not already inside an anchor tag or in concept_url
-                    tmp_idx0 = tmptext.rfind('?term=', 0, idx0)
-                    tmplabel = 'DummyLabelToCheckWith'
-                    if tmp_idx0 > -1:
-                        tmp_idx1 = tmptext.find('">', idx1)
-                        tmplabel = text[tmp_idx0+6:tmp_idx1]
-                    foundterms.append([idx0, idx1, resterm])
-                    if tmplabel not in labels: 
-                        text = text[:idx0] + '<a href=\"' + resterm['concept_url'] + '\">' + text[idx0:idx1] + '</a>' + text[idx1:]
-                        labels.append(resterm['label'])
-                        linkedterms.append([idx0, idx1, resterm])
 
+        #sort the words list based on their length because the compound words had to be replaced first
+        resterms.extend(utils.utSortListByLen(suggestionterms.keys()))
+
+        for resterm in resterms:
+            findTerm = utils.utToUTF8(suggestionterms[resterm]['label'])
+            findTerm = findTerm.translate(string.maketrans('*.,()[]{}|?#<>=!\\', '                 '))
+            p = re.compile('\\b' + findTerm + '\\b', re.UNICODE | re.IGNORECASE)
+            pos = 0
+            while 1:
+                m = p.search(text[pos:])
+                if m:
+                    wStart = pos + m.start()
+                    wEnd = pos + m.end()
+                    foundterms.append([wStart,wEnd,findTerm])
+
+                    a_start = text[wEnd:].find('<a')
+                    a_end = text[wEnd:].find('/a>')
+
+                    if (a_start > a_end) and (a_end > -1):
+                        wReplace = findTerm
+                    elif (a_start == -1) and (a_end > -1):
+                        wReplace = findTerm
+                    else:
+                        wReplace = '<a href=\"' + suggestionterms[resterm]['concept_url'] + '\">' + findTerm + '</a>'
+                        text = text[:wStart] + wReplace + text[wEnd:]
+                        linkedterms.append([wStart,wEnd,findTerm])
+                    pos = wStart + len(wReplace)
+                else:
+                    break
         return {'foundterms':foundterms, 'linkedterms':linkedterms, 'marked_text':text.strip()}
-        
-        
+
     security.declarePublic('getConceptInfo')
     def getConceptInfo(self, term_name, returnobj='return objects'):
         """This is the xml-rpc call for getConceptDetails. it doesn not return the list of objects.
@@ -352,10 +366,12 @@ class ALiSSAgent(Folder,
         When calling this method via xml-rpc you need to set this argument to False. """
         terms_list = []
         definitions = {}
+        translations = {}
         term_name=term_name.strip()
         results={'term_name':'',
                  'term_url':'',
                  'definitions':definitions,
+                 'translations':translations,
                  'terms_list':terms_list}
 
         #search all terms associated with this ALiSS Agent
@@ -381,9 +397,17 @@ class ALiSSAgent(Folder,
                 #set definitions and sources(URLs)
                 definitions[aliss_term.url] = aliss_term.getDefinition()
 
+            #set translations
+            #TODO: return multiple translations for a langcode
+            #TODO: return language name based on language code on concept_html
+            if aliss_term.hasTranslations():
+                for langcode in aliss_term.getTranslations().keys():
+                    translations[langcode] = aliss_term.getTranslation(langcode)
+
             l_terms_list.append(aliss_term)
 
         results['definitions'] = definitions
+        results['translations'] = translations
         if return_objects:
             results['terms_list'] = l_terms_list
         else:

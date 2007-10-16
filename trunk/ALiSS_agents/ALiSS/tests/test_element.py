@@ -19,19 +19,22 @@ class ElementItemTest(unittest.TestCase):
         self.ELEMENT = { 'id' : 'elementId',
                          'name' : 'element name',
                          'definition' : 'element definition',
+                         'translations' : {'en':'element translation'},
                          'url' : 'element url',
                          'center_parent' : 'center_parent' }
                          
     def test_initElementItem(self):
         EL = self.ELEMENT
         element = ElementItem( EL['id'],
-                               EL['name'], 
+                               EL['name'],
                                EL['definition'],
-                               EL['center_parent'], 
+                               EL['translations'],
+                               EL['center_parent'],
                                EL['url'] )
         self.assertEquals(element.id, EL['id'])
         self.assertEquals(element.name, EL['name'])
         self.assertEquals(element.definition, EL['definition'])
+        self.assertEquals(element.translations, EL['translations'])
         self.assertEquals(element.center_parent, EL['center_parent'])
         self.assertEquals(element.url, EL['url'])
         self.assertEquals(type(element.google_collection), type(OOBTree()))
