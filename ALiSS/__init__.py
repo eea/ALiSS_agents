@@ -74,7 +74,8 @@ misc_ = {
     'aliss.css':            ImageFile('css/aliss.css', globals()),
     #flash client
     'flashclient.swf':          ImageFile('client/flash/distribution/flashclient.swf', globals()),
-    'flashobject.js':           ImageFile('client/flash/distribution/js/flashobject.js', globals()),
+    #TODO: check why this file is missing
+    'swfobject.js':           ImageFile('client/flash/distribution/js/swfobject.js', globals()),
     'BrowserLayoutManager.js':  ImageFile('client/flash/distribution/js/BrowserLayoutManager.js', globals()),
     'flash_client.css':         ImageFile('client/flash/distribution/css/flash_client.css', globals()),
     'standardicon.gif':         ImageFile('images/ALiSSCenter.gif', globals()),

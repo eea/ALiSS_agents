@@ -39,17 +39,20 @@ class ElementItem:
             >>> eItem = ElementItem( id=            'eItem',
             ...                      name=          'eName',
             ...                      definition=    'eDefinition',
+            ...                      translations=  {'en':'eEN'},
             ...                      center_parent= 'cParent',
             ...                      url=           'eURL')
 
         Let's check if our initiation of ElementItem worked.
-            
+
             >>> eItem.id
             'eItem'
             >>> eItem.name
             'eName'
             >>> eItem.definition
             'eDefinition'
+            >>> eItem.translations
+            {'en':'eEN'}
             >>> eItem.center_parent
             'cParent'
             >>> eItem.url
@@ -86,7 +89,7 @@ class ElementItem:
     security = ClassSecurityInfo()
 
     meta_type = METATYPE_ALISSELEMENT
-    def __init__(self, id, name, definition, center_parent, url):
+    def __init__(self, id, name, definition, translations, center_parent, url):
         #identifiers
         self.id =                   id
         self.center_parent =        center_parent
@@ -95,6 +98,7 @@ class ElementItem:
         self.url =                  url
         self.name =                 name
         self.definition =           definition
+        self.translations =         translations
 
         #google data
         self.google_collection =    OOBTree()
@@ -175,6 +179,18 @@ class ElementItem:
         Use this method when you want to display valid excaped URL in <a>-tag. """
         return utUrlEncode(self.url)
 
+    def hasTranslations(self):
+        """ test if the element contains any translation """
+        return len(self.translations.keys())
+
+    def getTranslations(self):
+        """ return all translations """
+        return self.translations
+
+    def getTranslation(self, langcode):
+        """ return a translation for a given language code """
+        try:    return self.translations[langcode]
+        except: return ''
 
     ####################################
     #   GOOGLE ENABLE/DISABLE RELATED  #

@@ -13,7 +13,7 @@ REQUEST parameters
             <dtml-let kuku_group=sequence-item kuku_pages="kuku_group['Pages']">
                 <dtml-if kuku_pages>
                        <ul class="AlissTable">
-                            <li class="AlissRow"><h5><dtml-var "kuku_group['GroupName']"></h5><br />
+                            <li class="AlissRow"><h5><dtml-var "kuku_group['GroupName']"></h5>
                             </li>
                             <dtml-in kuku_pages size=3>
                                 <dtml-let kuku_page=sequence-item>

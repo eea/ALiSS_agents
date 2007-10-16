@@ -24,7 +24,7 @@ from types      import UnicodeType, StringType
 from xml.sax    import make_parser, handler, InputSource, ContentHandler
 
 #Product imports
-from Products.ALiSS.utils           import utRead, utGenerateSKOSId
+from Products.ALiSS.utils           import utRead, utGenerateSKOSId, isEmptyString
 from Products.ALiSS.content_filter  import safeUnicode
 from Products.ALiSS.constants       import *
 
@@ -55,6 +55,7 @@ class SkosStruct:
         self.url = url
         self.name = ''
         self.definition = ''
+        self.translations = {}
 
 
 class SkosHandler(ContentHandler):
@@ -91,9 +92,12 @@ class SkosHandler(ContentHandler):
     def endElement(self, name):
         """ """
         if name == 'skos:prefLabel':
+            content = ''.join(self.__data).strip()
             if self.__current_language == 'en':
-                content = ''.join(self.__data).strip()
                 self.__current_elem.name = content
+            else:
+                #set translations if language != EN
+                if not isEmptyString(content): self.__current_elem.translations[self.__current_language] = content
             self.__data = []
 
         if name == 'skos:definition':

@@ -78,6 +78,14 @@ def utSortObjsListByAttr(p_list, p_attr, p_desc=1):
         l_temp.reverse()
     return map(operator.getitem, l_temp, (-1,)*l_len)
 
+def utSortListByLen(p_list, p_desc=1):
+    """ sort a list of strings based on strings length """
+    l_len = len(p_list)
+    l_temp = map(None, map(len, p_list), p_list)
+    if p_desc:
+        l_temp.reverse()
+    return map(operator.getitem, l_temp, (-1,)*l_len)
+
 def utIsListType(p_list):
     """ test if is a list """
     return type(p_list) == type([])
