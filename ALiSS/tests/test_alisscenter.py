@@ -81,24 +81,24 @@ class ALiSSCenterTest(aliss_test_case.ALiSSTestCase):
         #print "number of concepts for gemet: %s" % len(elements)
         self.assertEquals( len(elements), 5208)
 
-    def test_largeContentUpdateFromWWW(self):
-        center = self.center
-        # Change center to large skos gemet
-        """center.gloss_skos = 'http://www.eionet.eu.int/gemet/gemet-definitions.rdf?langcode=en'
-        center.manageBasicUpdate()
-
-        elements = center.getAllElements()
-        #print "number of concepts for gemet: %s" % len(elements)
-        self.assertEquals( len(elements), 5208)
-        center.manageCleanUp()
-        """
-         # Change center to large skos Glossary
-        center.gloss_skos = 'http://glossary.eea.eu.int/EEAGlossary/skos.rdf?fromidx=0&toidx=2000'
-        center.manageBasicUpdate()
-
-        elements = center.getAllElements()
-        #print "number of concepts for glossary: %s" % len(elements)
-        self.assertEquals( len(elements), 1386)
+#    def test_largeContentUpdateFromWWW(self):
+#        center = self.center
+#        # Change center to large skos gemet
+#        """center.gloss_skos = 'http://www.eionet.eu.int/gemet/gemet-definitions.rdf?langcode=en'
+#        center.manageBasicUpdate()
+#
+#        elements = center.getAllElements()
+#        #print "number of concepts for gemet: %s" % len(elements)
+#        self.assertEquals( len(elements), 5208)
+#        center.manageCleanUp()
+#        """
+#         # Change center to large skos Glossary
+#        center.gloss_skos = 'http://glossary.eea.eu.int/EEAGlossary/skos.rdf?fromidx=0&toidx=2000'
+#        center.manageBasicUpdate()
+#
+#        elements = center.getAllElements()
+#        #print "number of concepts for glossary: %s" % len(elements)
+#        self.assertEquals( len(elements), 1386)
 
     def test_getTermsForPage(self):
         center = self.center
@@ -212,6 +212,12 @@ class ALiSSCenterTest(aliss_test_case.ALiSSTestCase):
         gotElemNames = [ elem.name for elem in gotElems ]
         self.assertEquals(gotElemNames, term_names )
 
+    def test_getElementTranslations(self):
+        center = self.center
+        center.manageBasicUpdate()
+        term_id = TERMSID_BY_NAME['term label1']
+        elem = center.element_manager.get_element_item(term_id)
+        self.assertEquals(elem.hasTranslations(), True)
 
 def test_suite():
     import unittest

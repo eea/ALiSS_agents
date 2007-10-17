@@ -51,8 +51,8 @@ PREFIX_ALISSAGENT  = 'alisSAg'
 #Catalog related
 ALISS_CATALOG_ID    = 'ALiSS_catalog'
 ALISS_CATALOG_TITLE = 'ALiSS catalog'
-ALISS_LEXICON_REMOVE_SW =               'ALiSS: Remove listed stop words only'
-ALISS_LEXICON_REMOVE_SW_AND_SINGLE =    'ALiSS: Remove listed and single char words'
+ALISS_LEXICON_REMOVE_SW =            'ALiSS: Remove listed stop words only'
+ALISS_LEXICON_REMOVE_SW_AND_SINGLE = 'ALiSS: Remove listed and single char words'
 
 #Stopword related
 ALISS_STOPWORDS_PATH =      join(CLIENT_HOME, ALISS_PRODUCT_NAME)

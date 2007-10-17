@@ -46,9 +46,7 @@ class ElementManagerTest(unittest.TestCase):
     
     def setUp(self):
         self.element_manager = element_manager.ElementManager()
-    
-   
-        
+
 def test_suite():
     import unittest
     from Testing import ZopeTestCase

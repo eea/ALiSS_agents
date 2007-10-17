@@ -52,7 +52,7 @@ class ElementItem:
             >>> eItem.definition
             'eDefinition'
             >>> eItem.translations
-            {'en':'eEN'}
+            {'en': 'eEN'}
             >>> eItem.center_parent
             'cParent'
             >>> eItem.url

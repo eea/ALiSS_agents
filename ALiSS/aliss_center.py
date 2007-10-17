@@ -181,6 +181,7 @@ class ALiSSCenter(Folder,
                         element_manager.update_element_basic( skos_elements_list[data].id,
                                                               skos_elements_list[data].name,
                                                               skos_elements_list[data].definition,
+                                                              skos_elements_list[data].translations,
                                                               skos_elements_list[data].url)
                     #elements are added if doesnt exist
                     else:

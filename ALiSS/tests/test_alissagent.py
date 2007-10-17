@@ -291,8 +291,8 @@ class ALiSSAgentTest(aliss_test_case.ALiSSTestCase):
         #test with other relation types
         gotPages=agent.getRelatedPagesForPage(pageURL,'BroaderPage')
         for pagegroup in gotPages:
-            self.failUnless(pagegroup['RelationLabel'] not in  broader_terms)
-                   
+            self.failUnless(pagegroup['RelationLabel'] not in broader_terms)
+
     def test_getTermSuggestions(self):
         agent = self.agent
         
@@ -317,9 +317,8 @@ class ALiSSAgentTest(aliss_test_case.ALiSSTestCase):
         # test extended
         search = '%s*' % term_names[0][:3]
         terms = agent.getTermSuggestions(search,True)
-        self.failUnless('concept_url' not in terms[1].keys())
-        print terms
-        
+        self.failUnless('concept_url' in terms[1].keys())
+
 def test_suite():
     import unittest
 
