@@ -399,7 +399,6 @@ class ALiSSAgent(Folder,
 
             #set translations
             #TODO: return multiple translations for a langcode
-            #TODO: return language name based on language code on concept_html
             if aliss_term.hasTranslations():
                 for langcode in aliss_term.getTranslations().keys():
                     translations[langcode] = aliss_term.getTranslation(langcode)

@@ -71,15 +71,18 @@ class ElementManager:
 
         Lets modify the existing element.
 
-            >>> eManag.update_element_basic(id=         'elemID',
-            ...                             name=       'elemName2',
-            ...                             definition= 'elemDef2',
-            ...                             url=        'elemURL2',)
+            >>> eManag.update_element_basic(id=           'elemID',
+            ...                             name=         'elemName2',
+            ...                             definition=   'elemDef2',
+            ...                             translations= {'en':'eEN'},
+            ...                             url=          'elemURL2',)
             >>> ourElem = eManag.get_element_item('elemID')
             >>> ourElem.name
             'elemName2'
             >>> ourElem.definition
             'elemDef2'
+            >>> ourElem.translations
+            {'en': 'eEN'}
             >>> ourElem.url
             'elemURL2'
 
@@ -103,11 +106,12 @@ class ElementManager:
         self.__elements_collection[id] = item
         self.catalog.CatalogObject(item)
 
-    def update_element_basic(self, id, name, definition, url):
+    def update_element_basic(self, id, name, definition, translations, url):
         if self.__elements_collection.has_key(id):
             item = self.__elements_collection[id]
             item.name =         name
             item.definition =   definition
+            item.translations = translations
             item.url =          url
             self.__elements_collection[id] = item
             self.catalog.RecatalogObject(self.get_element_item(id))

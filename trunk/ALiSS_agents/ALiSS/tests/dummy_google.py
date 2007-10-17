@@ -19,7 +19,7 @@ def doGoogleSearch( q, start = 0, maxResults = 10, filter = 1,
         filter = q[idx+5:]
         q = q[:idx].strip()
 
-    dummyGroup={'id':'dummyfilter', 'name':'dummy',      'filter': filter, 'pattern':''}
+    dummyGroup={'id':'dummyfilter', 'name':'dummy', 'filter': filter, 'pattern':''}
     #TODO: check how q is to decide exact, medium or weak result
     #check if exact query
 

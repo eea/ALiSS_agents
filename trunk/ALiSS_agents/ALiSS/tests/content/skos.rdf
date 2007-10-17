@@ -12,7 +12,7 @@
 <skos:prefLabel xml:lang="ca"></skos:prefLabel>
 <skos:prefLabel xml:lang="hr"></skos:prefLabel>
 <skos:prefLabel xml:lang="cs"></skos:prefLabel>
-<skos:prefLabel xml:lang="da"></skos:prefLabel>
+<skos:prefLabel xml:lang="da">term label1 in danish</skos:prefLabel>
 <skos:prefLabel xml:lang="nl"></skos:prefLabel>
 <skos:prefLabel xml:lang="en">term label1</skos:prefLabel>
 <skos:prefLabel xml:lang="et"></skos:prefLabel>
