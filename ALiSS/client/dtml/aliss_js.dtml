@@ -43,10 +43,11 @@ function registerAjaxInfo() {
    ajaxEngine.registerRequest( 'getTextRelated', '/webservices/aliss/ajax_response_text_related' );
 }
 
-
+registerAjaxInfo();
+/**
 if (window.addEventListener) window.addEventListener("load", registerAjaxInfo,false);
 else if (window.attachEvent) window.attachEvent("onload", registerAjaxInfo);
-
+**/
 
 // Array of aliss html element ids
 var KeywordsRelatedArray = new Array();
