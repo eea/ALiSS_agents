@@ -95,7 +95,7 @@ class ALiSS(Folder):
         local_meta_types = [{'name': METATYPE_ALISSCENTER, 'action': 'manage_addAlissCenter_html', 'product': ALISS_PRODUCT_NAME},
                             {'name': METATYPE_ALISSAGENT,  'action': 'manage_addAlissAgent_html',  'product': ALISS_PRODUCT_NAME},]
         local_meta_types.extend(agents)
-        f = lambda x: x['name'] in ('Script (Python)', 'Image', 'Page Template', 'RAM Cache Manager')
+        f = lambda x: x['name'] in ('Script (Python)', 'Image', 'Page Template', 'RAM Cache Manager', 'Site Error Log')
         for x in filter(f, Products.meta_types):
             local_meta_types.append(x)
         return local_meta_types

@@ -21,6 +21,7 @@
 import string
 import google
 from SOAP import faultType
+import sys
 
 #Zope imports
 
@@ -109,8 +110,10 @@ class GoogleManager:
                                            outputencoding,
                                            http_proxy)
         except Timeout, error:
+            self.error_log.raising(sys.exc_info())
             return ({}, [], 'err')
         except:
+            self.error_log.raising(sys.exc_info())
             return ({}, [], 'err')
 
     def _doGoogleSearch(self, query, start = 0, maxResults = 10, filter = 1, restrict = '', safeSearch = 0, language = '', inputencoding = 'UTF-8', outputencoding = 'UTF-8', http_proxy=None, license_key=''):
@@ -158,10 +161,13 @@ class GoogleManager:
 #                                           http_proxy)
 #            else:
 #                return ({}, [], 'err')
+            self.error_log.raising(sys.exc_info())
             return ({}, [], 'err')
         except Timeout, error:
+            self.error_log.raising(sys.exc_info())
             return ({}, [], 'err')
         except:
+            self.error_log.raising(sys.exc_info())
             return ({}, [], 'err')
 
     def doSpellingSuggestion(self, phrase, http_proxy = None):
