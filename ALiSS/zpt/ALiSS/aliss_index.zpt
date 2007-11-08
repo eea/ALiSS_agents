@@ -1,8 +1,8 @@
 <tal:block tal:replace="structure here/standard_html_header"/>
 <span tal:replace="python:request.RESPONSE.setHeader('content-type', 'text/html;charset=UTF-8')"/>
-	<h1>ALiSS agents list</h1>
+	<h1>Environmental terminologies and glossaries service</h1>
 
-	<p>The below list contain the associated ALiSS agents with their description.</p>
+	<p>The below list shows the available environmental terminologies services on this website.</p>
 	<ul>
 		<li tal:repeat="agent here/getAllAgents">
 			<a	tal:attributes="href agent/absolute_url;
