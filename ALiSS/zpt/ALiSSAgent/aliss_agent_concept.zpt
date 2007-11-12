@@ -71,7 +71,7 @@
 			<dl tal:condition="python:len(translations.keys())>0">
 				<dt>Translation(s):</dt>
 				<dd tal:repeat="langcode python:translations.keys()">
-					<span tal:content="langcode" />: <span tal:content="python:translations[langcode]" />
+					<span tal:content="langcode" />: <span tal:content="python:'; '.join(translations[langcode])" />
 				</dd>
 			</dl>
 
