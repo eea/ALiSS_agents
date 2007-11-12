@@ -398,10 +398,18 @@ class ALiSSAgent(Folder,
                 definitions[aliss_term.url] = aliss_term.getDefinition()
 
             #set translations
-            #TODO: return multiple translations for a langcode
             if aliss_term.hasTranslations():
                 for langcode in aliss_term.getTranslations().keys():
-                    translations[langcode] = aliss_term.getTranslation(langcode)
+                    term_trans = aliss_term.getTranslation(langcode)
+                    if len(term_trans.strip()) > 0:
+                        if translations.has_key(langcode):
+                            if term_trans not in translations[langcode]:
+                                trans_count = len(translations[langcode])
+                                if trans_count == 1:
+                                    translations[langcode][0] = '1) %s' % translations[langcode][0]
+                                translations[langcode].append('%s) %s' % (trans_count+1, term_trans))
+                        else:
+                            translations[langcode] = [term_trans]
 
             l_terms_list.append(aliss_term)
 
