@@ -1,10 +1,7 @@
 <tal:block tal:replace="structure here/standard_html_header"/>
 <span tal:replace="python:request.RESPONSE.setHeader('content-type', 'text/html;charset=UTF-8')"/>
-
-<div><a tal:attributes="href string:${here/absolute_url}/list_html">Go to previous page</a></div>
 <tal:block	define="term_name		python:request.get('term', ' ');
 					aliss_concept	python:here.getConceptDetails(term_name)">
-
 	<!-- Alphabet listing and navigation -->
 	<tal:block define="dtype here/getDisplayType">
 		<ul class="alphabet_list">
@@ -36,15 +33,24 @@
 	</tal:block>
 
 	<!-- Case of NO CONCEPT found -->
-	<tal:block condition="not:aliss_concept">
+	<div tal:condition="not:aliss_concept">
 		<h1 tal:content="term_name" />
 		<p>No concept found matching exactly the name <strong><span tal:replace="term_name" /></strong>.</p>
 		<script type="text/javascript" tal:content="python:'registerAlissKeywordsSuggestions(\''+here.id+'\',\'AlissSuggest\',\''+term_name+'\',\'True\');'"></script>
 		<div class="AlissResult">
 				<div class="AlissShadow" id="AlissSuggest"></div>
 		</div>
-		<br clear="all"/>
-	</tal:block>
+	</div>
+
+<div id="google-custom-search-area">
+<span tal:replace="structure here/google_cs_ajax_js" />
+        <h1>EEA website search</h1>
+        <div id="GCSSearchForm">Loading...</div>
+        <div id="rightSearchControl" class="search-control">Loading...</div>
+<p><a href="http://code.google.com/apis/ajaxsearch/index.html"><span class="tagline">powered by The Google AJAX Search
+API</span></a>
+and <a href="http://www.google.com/coop/cse"><span class="tagline">Google Custom Search Engines</span></a></p>
+</div>
 
 	<!-- Case of CONCEPT found -->
 	<tal:block	condition="aliss_concept">
@@ -55,30 +61,43 @@
 							terms_list			python:aliss_concept['terms_list']">
 			<h1 tal:content="concept_name" />
 			<script type="text/javascript" tal:content="python:'registerAlissKeywordsSuggestions(\''+here.id+'\',\'AlissSuggest\',\''+concept_name+'\',\'True\');'"></script>
-			<div class="AlissResult AlissLeftContainer">
+			<div id="definitions-area">
+                        <h2>Definitions</h2>
 			<p tal:condition="not:concept_definitions">Definition not available.</p>
 			<dl class="definitions_list" tal:condition="concept_definitions">
-				<dt tal:content="concept_name" />
-				<dd tal:repeat="source_url python:concept_definitions.keys()">
-					<tal:block	define="terms_indef python:here.getTermsInText(concept_definitions[source_url],100)">
+                              <dt tal:content="concept_name" />
+                              <tal:block repeat="source_url python:concept_definitions.keys()">
+				<dd  tal:condition="python:concept_definitions[source_url]!='Definition not available.'">
+					<tal:block	condition="python:concept_definitions[source_url]!='Definition not available.'" 
+define="terms_indef python:here.getTermsInText(concept_definitions[source_url],100)">
 					<div  tal:content="structure terms_indef/marked_text" />
 					<div class="definition_source"><p><strong>Terminology source:</strong> <a tal:define="url_idx python:source_url.find('/',8)" tal:attributes="href string:terminology_sources_html;title source_url;" title="terminology tool source" tal:content="python:source_url[:int(url_idx)]" /></p></div>
 					</tal:block>
 				</dd>
+                             </tal:block>
 			</dl>
-			<p><a tal:attributes="href string:http://www.google.com/search?q=define%3A${concept_url}&amp;start=0&amp;start=0&amp;ie=utf-8&amp;oe=utf-8">More definitions (Google) ...</a></p>
+			<p class="more_definitions"><a class="moreLink" tal:attributes="href 
+string:http://www.google.com/search?q=define%3A${concept_url}&amp;start=0&amp;start=0&amp;ie=utf-8&amp;oe=utf-8">Find more 
+definitions (via Google)</a></p>
+                        </div>
 
-			<dl tal:condition="python:len(translations.keys())>0">
-				<dt>Translation(s):</dt>
-				<dd tal:repeat="langcode python:translations.keys()">
-					<span tal:content="langcode" />: <span tal:content="python:'; '.join(translations[langcode])" />
-				</dd>
-			</dl>
+                       <div id="translations-area">
+                        <h2>Translations</h2>
+                        <ul tal:condition="python:len(translations.keys())>0" tal:define="trans 
+python:translations.keys();transcodes  
+python:trans.sort()">
+                                <li tal:repeat="langcode trans">
+                                  <span class="langcode" tal:content="langcode" /> <span tal:content="python:translations[langcode]" />
+                                </li>
+                        </ul>
+                        <p tal:condition="python:len(translations.keys())<1">No translations are available for this concept.</p>
+                        </div>
 
-			<tal:block	define="statistics python:here.getContentGroups()">
-				<tal:block	condition="python:len(statistics)>0"
+
+
+	<tal:block	define="statistics python:here.getContentGroups()">
+			<tal:block	condition="python:len(statistics)>0"
 							repeat="group_id statistics">
-
 					<tal:block	define="google_list		python:here.mergeTopResults(group_id, terms_list, 10);
 										cg_name			python:google_list[group_id]['cg_name'];
 										cg_updated		python:google_list[group_id]['cg_updated'];
@@ -102,9 +121,7 @@
 					</tal:block>
 				</tal:block>
 			</tal:block>
-			</div>
 		</tal:block>
 	</tal:block>
-
 </tal:block>
 <tal:block tal:replace="structure here/standard_html_footer"/>
