@@ -1,6 +1,8 @@
-/* Aliss main style for public browsable views (A-Z index)*/
+/* Aliss main style for public browsable views */
 ul.alphabet_list li {
 	display:inline;
+        background-color: #e9efcd;
+        font-size:1.4em;
 }
 
 ul.subalphabet_list li {
@@ -9,26 +11,59 @@ ul.subalphabet_list li {
 	padding: 0px 1px;
 }
 
+.langcode {
+background:#95B229 none repeat scroll 0%;
+border:1px solid #95B229;
+color:white;
+line-height:2em;
+padding:0.2em;
+}
+
+.more_definitions {
+ float:right;
+}
+
+#definitions-area {
+ float:left;
+ width:47%;
+}
+
+#google-custom-search-area {
+ float:right;
+ width:47%;
+}
+
+#translations-area {
+clear: left;
+}
+
 .definitions_list dt {
 	display:none;
 }
 
 .definitions_list dd {
-	margin: 0;
-	padding: 0;
-	margin-bottom:1em;
+       background:#ECF3D0 url(http://www.eea.europa.eu/open_quote.gif) no-repeat scroll 0.5em 0.75em;
+       color:#000000;
+       margin:1em auto;
+       padding:1.5em 1em 1em 3em;
+       width:70%;
 }
 
 .definition_source {
-	font-size: 75%;
+    background:transparent none repeat scroll 0%;
+    font-size:x-small;
+    font-style:normal;
+    font-weight:normal;
+    padding:0em 1em 0em 0em;
+    text-align:right;
 }
 
 .menu_link {
+color:white;
 }
 
 .menu_selected {
 	font-weight: bold;
-
 }
 
 .menu_empty {

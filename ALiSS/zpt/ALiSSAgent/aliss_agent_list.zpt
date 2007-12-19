@@ -6,7 +6,6 @@
 
 	<!-- Page header -->
 	<h2>A-Z Index of concepts</h2>
-	<div><a tal:attributes="href here/absolute_url">Go to previous page</a></div>
 
 	<!-- Alphabet listing -->
 	<ul class="alphabet_list" tal:condition="dtype">
@@ -60,6 +59,27 @@
 						paging_current_page python:list_paging[5];
 						paging_records_page python:list_paging[6];
 						paging_pages python:list_paging[7];">
+<div class="listingBar">
+                <span class="previous" tal:condition="python:paging_prev!=-1">&nbsp;&nbsp;
+                <a      tal:define="url python:here.absolute_url; start_batch python:(paging_current_page-1)*paging_records_page"
+                        tal:attributes="href string:${url}/list_html?start=${start_batch}&${page_search_querystring}">&lt;&lt; Previous</a></span>
+                <span  class="next" tal:condition="python:paging_next!=-1">&nbsp;&nbsp;
+                                <a      tal:define="url here/absolute_url; start_batch python:(paging_current_page+1)*paging_records_page"
+                                        tal:attributes="href string:${url}/list_html?start=${start_batch}&${page_search_querystring}">Next &gt;&gt;</a>
+                 </span>
+                 <tal:block   tal:repeat="page paging_pages">
+                                <tal:block tal:condition="python:paging_current_page==page"> 
+                                  [<span  class="paging-link-off"
+                                        tal:content="python:page+1" />]
+                                </tal:block>
+                                <a      tal:condition="python:paging_current_page!=page"
+                                        tal:define="url here/absolute_url; start_batch python:paging_records_page*page"
+                                        tal:attributes="href string:${url}/list_html?start=${start_batch}&${page_search_querystring}"
+                                        tal:content="python:page+1" />
+                 </tal:block>
+</div>
+ <p>Results <strong tal:content="paging_start"/>&nbsp;-&nbsp;<strong tal:content="paging_upper"/>&nbsp;of&nbsp;<strong
+tal:content="paging_total"/> concepts starting with <em tal:content="python:test(here.isNumeric(letter), '0-9', letter)"></em>.</p>
 
 	<ul class="concept_list">
 		<tal:block condition="results" repeat="term results">
@@ -83,25 +103,25 @@
 		<li tal:condition="not:results">No elements were found for the selected letter.</li>
 	</ul>
 
-	<p class="batch_container">
-		Results <strong tal:content="paging_start"/>&nbsp;-&nbsp;<strong tal:content="paging_upper"/>&nbsp;of&nbsp;<strong tal:content="paging_total"/><br />
-		Page <span tal:condition="python:paging_prev!=-1">&nbsp;&nbsp;
-		<a	tal:define="url python:here.absolute_url; start_batch python:(paging_current_page-1)*paging_records_page"
-			tal:attributes="href string:${url}/list_html?start=${start_batch}&${page_search_querystring}">&lt;&lt; Previous</a></span>
-			<span	tal:repeat="page paging_pages">
-				<a	class="paging-link-off"
-					tal:condition="python:paging_current_page==page"
-					tal:content="python:page+1" />
-				<a	tal:condition="python:paging_current_page!=page"
-					tal:define="url here/absolute_url; start_batch python:paging_records_page*page"
-					tal:attributes="href string:${url}/list_html?start=${start_batch}&${page_search_querystring}"
-					tal:content="python:page+1" />
-			</span>
-			<span	tal:condition="python:paging_next!=-1">&nbsp;&nbsp;
-				<a	tal:define="url here/absolute_url; start_batch python:(paging_current_page+1)*paging_records_page"
-					tal:attributes="href string:${url}/list_html?start=${start_batch}&${page_search_querystring}">Next &gt;&gt;</a>
-			</span>
-	</p>
+<div class="listingBar">
+                <span class="previous" tal:condition="python:paging_prev!=-1">&nbsp;&nbsp;
+                <a      tal:define="url python:here.absolute_url; start_batch python:(paging_current_page-1)*paging_records_page"
+                        tal:attributes="href string:${url}/list_html?start=${start_batch}&${page_search_querystring}">&lt;&lt; Previous</a></span>
+                <span  class="next" tal:condition="python:paging_next!=-1">&nbsp;&nbsp;
+                                <a      tal:define="url here/absolute_url; start_batch python:(paging_current_page+1)*paging_records_page"
+                                        tal:attributes="href string:${url}/list_html?start=${start_batch}&${page_search_querystring}">Next &gt;&gt;</a>
+                 </span>
+                 <tal:block   tal:repeat="page paging_pages">
+                                <tal:block tal:condition="python:paging_current_page==page">
+                                  [<span  class="paging-link-off"
+                                        tal:content="python:page+1" />]
+                                </tal:block>
+                                <a      tal:condition="python:paging_current_page!=page"
+                                        tal:define="url here/absolute_url; start_batch python:paging_records_page*page"
+                                        tal:attributes="href string:${url}/list_html?start=${start_batch}&${page_search_querystring}"
+                                        tal:content="python:page+1" />
+                 </tal:block>
+</div>
 
 	</tal:block>
 

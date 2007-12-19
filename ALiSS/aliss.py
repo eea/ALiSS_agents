@@ -156,6 +156,18 @@ class ALiSS(Folder):
         #return the default google values
         return ALISS_DEFAULT_GOOGLE[name]
 
+    def getElementsByNames(self, names, suggest=False):
+        """ search term across all centers in this aliss instance. return all cataloged elements with names=names available or if suggest=True 
+suggest which terms matches the names"""
+        names = utils.utToUnicode(names)
+        query =  {'meta_type':     {'query':METATYPE_ALISSELEMENT, 'operator':'and '},}
+        if suggest:
+            query['name_suggest'] = names
+        else:
+            query['name'] = {'query':names, 'operator':'and '}
+        cat_res = self.catalog(query)
+        return cat_res
+
     def testGroupsIfUsed(self, group_id):
         #test if a content group is used
         for center in self.getAllCenters():
@@ -487,6 +499,13 @@ class ALiSS(Folder):
     #####################
     security.declarePublic('index_html')
     index_html =    PageTemplateFile('zpt/ALiSS/aliss_index', globals())
+
+    security.declarePublic('results')
+    results =    PageTemplateFile('zpt/ALiSS/aliss_results', globals())
+
+    #google ajax search
+    security.declarePublic('google_cs_ajax_js')
+    google_cs_ajax_js = DTMLFile('dtml/ALiSS/google_cs_ajax_js', globals())
 
     #aliss ajax clients files
     security.declarePublic('aliss_css')
