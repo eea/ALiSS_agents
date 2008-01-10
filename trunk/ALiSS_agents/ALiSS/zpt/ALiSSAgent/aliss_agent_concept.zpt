@@ -87,7 +87,7 @@ definitions (via Google)</a></p>
 python:translations.keys();transcodes  
 python:trans.sort()">
                                 <li tal:repeat="langcode trans">
-                                  <span class="langcode" tal:content="langcode" /> <span tal:content="python:translations[langcode]" />
+                                  <span class="langcode" tal:content="langcode" /> <span tal:content="python:'; '.join(translations[langcode])" />
                                 </li>
                         </ul>
                         <p tal:condition="python:len(translations.keys())<1">No translations are available for this concept.</p>

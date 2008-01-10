@@ -1,0 +1,14 @@
+<tal:block tal:replace="structure here/standard_html_header"/>
+<span tal:replace="python:request.RESPONSE.setHeader('content-type', 'text/html;charset=UTF-8')"/>
+<p class="documentDescription"><dtml-var description></p>
+<h2>Term search results for <em tal:content="request/term_name" /></h2>
+<tal:block	define="terms_list python:here.getElementsByNames(request['term_name'],True)">
+	<ul class="concept_list">
+		<tal:block condition="terms_list" repeat="term terms_list">
+                   <li><a href="" tal:attributes="href python:'terminology/concept_html?term='+term.name;title term/name; name 
+term/name" tal:content="term/name"></a></li>     
+                </tal:block>
+        </ul>
+</tal:block>
+
+<tal:block tal:replace="structure here/standard_html_footer"/>
