@@ -375,7 +375,7 @@ class ALiSSCenter(Folder,
         if len(letter) in [1, 2]:
             query = {'meta_type':     {'query':METATYPE_ALISSELEMENT, 'operator':'and '},
                      'center_parent': {'query':self.center_uid, 'operator':'and '},
-                     'name_suggest':  {'query':'%s*' % letter}}
+                     'id_suggest':  {'query':'%s*' % letter}}
         elif letter == 'num':
             digit_query = ''
             length = len(utils.getDigits())
@@ -390,7 +390,7 @@ class ALiSSCenter(Folder,
 
             query = {'meta_type':     {'query':METATYPE_ALISSELEMENT, 'operator':'and '},
                      'center_parent': {'query':self.center_uid, 'operator':'and '},
-                     'name_suggest':  {'query':digit_query}}
+                     'id_suggest':  {'query':digit_query}}
         elif letter == 'all':
             query = {'meta_type':     {'query':METATYPE_ALISSELEMENT, 'operator':'and '},
                      'center_parent': {'query':self.center_uid}}
