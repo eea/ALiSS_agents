@@ -89,8 +89,8 @@ class AlissCatalog(ZCatalog):
         ZCatalog.__init__(self, id, title)
         self.__generateDefaultIndexes()
 
-    def __addLexicon(self):
-        #It adds a default lexicon with 'Lexicon' id.
+    def __addLexicons(self):
+        #Adds the default lexicons
         elements = []
         wordSplitter = MyData()
         wordSplitter.group = 'Word Splitter'
@@ -112,11 +112,33 @@ class AlissCatalog(ZCatalog):
 
         manage_addLexicon(self, id, title, elements)
 
+        elements = []
+        wordSplitter = MyData()
+        wordSplitter.group = 'Word Splitter'
+        wordSplitter.name = 'HTML aware splitter'
+
+        caseNormalizer = MyData()
+        caseNormalizer.group = 'Case Normalizer'
+        caseNormalizer.name = 'Case Normalizer'
+
+        stopWords = MyData()
+        stopWords.group = 'Stop Words'
+        stopWords.name = " Don't remove stop words"
+
+        elements.append(wordSplitter)
+        elements.append(caseNormalizer)
+        elements.append(stopWords)
+        id = 'LexiconID'
+        title = 'Default Lexicon for IDs'
+
+        manage_addLexicon(self, id, title, elements)
+
+
     def __generateDefaultIndexes(self):
         available_indexes = self.indexes()
         available_metadata = self.schema()
 
-        self.__addLexicon()
+        self.__addLexicons()
 
         for index in self.getDefaultIndexes():
             if not (index in available_indexes):
