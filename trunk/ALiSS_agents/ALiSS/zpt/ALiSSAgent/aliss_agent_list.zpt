@@ -79,6 +79,11 @@
 
 	<!-- Concepts listing -->
 	<h2 tal:content="python:test(here.isNumeric(currentLetter), '0-9', currentLetter)" />
+	<div class="note">
+		<p>Here you see the list of terms found in <strong tal:content="python:test(here.isNumeric(currentLetter), '0-9', 
+currentLetter)">A</strong>-folder.<br/>
+		Click on the term to see the details like definition, translations etc..</p>
+	</div>
 	<tal:block	define="terms_list python:here.getTerms(currentLetter, dtype, p_start);
 						results python:terms_list[1];
 						page_search_querystring string:letter=${currentLetter};
