@@ -477,8 +477,8 @@ class ALiSSAgent(Folder,
 
         res = False
         if letter == 'num':
-            if word[0] in utils.getDigits(): res = True
-            else:                            res = False
+            if word[0] in self.getDigits(): res = True
+            else:                           res = False
         elif letter in self.getDigits():
             res = utils.compareLetter(word[0], letter)
         else:
@@ -581,5 +581,31 @@ class ALiSSAgent(Folder,
                     return True
             return False
         return True
+
+    #####################
+    #   OPTIMISATIONS   #
+    #####################
+    #TODO: cleanup unused code and move the logic where it belongs
+    def generateMenu(self):
+        """ """
+        menuData = {}
+        conceptsNumber = 0
+        for aliss_center in self.getAlissCenters():
+            query = {'meta_type':     {'query':METATYPE_ALISSELEMENT, 'operator':'and '},
+                     'center_parent': {'query':aliss_center.center_uid}}
+            for term in utils.utElimintateDuplicates(self.catalog(query), 'name'):
+                if len(term.name)>0:
+                    conceptsNumber += 1
+                    first_letter = str(term.name[0].upper())
+                    if not menuData.has_key(first_letter): menuData[first_letter] = 1
+                    else: menuData[first_letter] += 1
+        return (conceptsNumber, menuData)
+
+    def hasDigits(self, data):
+        """ """
+        digits = self.getDigits()
+        for key in data.keys():
+            if key in digits: return True
+        return false
 
 InitializeClass(ALiSSAgent)

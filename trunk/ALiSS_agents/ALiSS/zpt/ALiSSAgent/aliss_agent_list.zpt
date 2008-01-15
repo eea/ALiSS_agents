@@ -1,14 +1,46 @@
 <tal:block tal:replace="structure here/standard_html_header"/>
 <span tal:replace="python:request.RESPONSE.setHeader('content-type', 'text/html;charset=UTF-8')" />
-<tal:block define="	letter python:request.get('letter', 'A');
+<tal:block define="	currentLetter python:request.get('letter', 'A');
 					dtype here/getDisplayType;
-					p_start python:request.get('start', 0);">
+					p_start python:request.get('start', 0);
+					data here/generateMenu;
+					totalConcepts python:data[0];
+					menuData python:data[1]">
 
 	<!-- Page header -->
 	<h2>A-Z Index of concepts</h2>
 
 	<!-- Alphabet listing -->
 	<ul class="alphabet_list" tal:condition="dtype">
+
+		<li	tal:condition="dtype"
+			tal:define="has_content python:here.hasDigits(menuData);
+						param_letter python:test(dtype, 'num', '1');
+						selected_letter python:here.isNumeric(currentLetter)">
+			<tal:block condition="has_content">
+				<a	tal:condition="not:selected_letter" title="0-9" class="menu_link"
+					tal:attributes="href string:${here/absolute_url}/list_html?letter=${param_letter}">0-9</a>
+				<span class="menu_selected" tal:condition="selected_letter">0-9</span>
+			</tal:block>
+			<span class="menu_empty" tal:condition="not:has_content">0-9</span>
+		</li>
+
+		<li tal:repeat="letter here/getLettersUpper" tal:condition="dtype">
+			<tal:menu define="has_content python:menuData.has_key(letter);
+							  selected_letter python:here.compareLetter(letter, currentLetter)">
+				<tal:block condition="has_content">
+					<a	tal:condition="not:selected_letter" class="menu_link"
+						tal:define="conceptsNumber python:menuData[letter]"
+						tal:attributes="href string:${here/absolute_url}/list_html?letter=${letter};
+										title string:${conceptsNumber} concepts"
+						tal:content="letter" />
+					<span tal:condition="selected_letter" tal:content="letter" class="menu_selected" />
+				</tal:block>
+				<span class="menu_empty" tal:condition="not:has_content" tal:content="letter" />
+			</tal:menu>
+		</li>
+
+		<!-- #TODO: Old implementation (to be removed)
 		<li	tal:define="has_content python:test(here.isNumeric(letter), here.hasContent(letter, dtype), 0);
 						selected_letter python:here.isNumeric(letter)">
 			<tal:block condition="has_content">
@@ -42,13 +74,14 @@
 					tal:content="alph_letter" />
 		</li>
 		</tal:block>
+		-->
 	</ul>
 
 	<!-- Concepts listing -->
-	<h2 tal:content="python:test(here.isNumeric(letter), '0-9', letter)" />
-	<tal:block	define="terms_list python:here.getTerms(letter, dtype, p_start);
+	<h2 tal:content="python:test(here.isNumeric(currentLetter), '0-9', currentLetter)" />
+	<tal:block	define="terms_list python:here.getTerms(currentLetter, dtype, p_start);
 						results python:terms_list[1];
-						page_search_querystring string:letter=${letter};
+						page_search_querystring string:letter=${currentLetter};
 
 						list_paging python:terms_list[0];
 						paging_start python:list_paging[0]+1;
@@ -79,7 +112,7 @@
                  </tal:block>
 </div>
  <p>Results <strong tal:content="paging_start"/>&nbsp;-&nbsp;<strong tal:content="paging_upper"/>&nbsp;of&nbsp;<strong
-tal:content="paging_total"/> concepts starting with <em tal:content="python:test(here.isNumeric(letter), '0-9', letter)"></em>.</p>
+tal:content="paging_total"/> concepts starting with <em tal:content="python:test(here.isNumeric(currentLetter), '0-9', currentLetter)"></em>.</p>
 
 	<ul class="concept_list">
 		<tal:block condition="results" repeat="term results">
