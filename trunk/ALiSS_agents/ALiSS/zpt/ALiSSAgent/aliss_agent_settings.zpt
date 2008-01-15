@@ -9,7 +9,7 @@
 </div>
 
 <fieldset><legend class="standard_legend"><strong>ALiSS Agent Settings</strong></legend>
-	<p>Select from the list below the desired type of view for the concepts list.</p>
+	<p>Select from the list below the desired type of view for the terms list.</p>
 	<form name="frmEdit" method="post" action="manageDisplayType" enctype="multipart/form-data">
 		<table border="0" cellspacing="0" cellpadding="2" width="100%">
 			<tr class="list-header">
