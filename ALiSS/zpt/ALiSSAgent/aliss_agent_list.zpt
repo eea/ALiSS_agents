@@ -8,7 +8,7 @@
 					menuData python:data[1]">
 
 	<!-- Page header -->
-	<h2>A-Z Index of concepts</h2>
+	<h2>A-Z Index of terms</h2>
 
 	<!-- Alphabet listing -->
 	<ul class="alphabet_list" tal:condition="dtype">
@@ -77,7 +77,7 @@
 		-->
 	</ul>
 
-	<!-- Concepts listing -->
+	<!-- Terms listing -->
 	<h2 tal:content="python:test(here.isNumeric(currentLetter), '0-9', currentLetter)" />
 	<div class="note">
 		<p>Here you see the list of terms found in <strong tal:content="python:test(here.isNumeric(currentLetter), '0-9', 
@@ -117,7 +117,7 @@ currentLetter)">A</strong>-folder.<br/>
                  </tal:block>
 </div>
  <p>Results <strong tal:content="paging_start"/>&nbsp;-&nbsp;<strong tal:content="paging_upper"/>&nbsp;of&nbsp;<strong
-tal:content="paging_total"/> concepts starting with <em tal:content="python:test(here.isNumeric(currentLetter), '0-9', currentLetter)"></em>.</p>
+tal:content="paging_total"/> terms starting with <em tal:content="python:test(here.isNumeric(currentLetter), '0-9', currentLetter)"></em>.</p>
 
 	<ul class="concept_list">
 		<tal:block condition="results" repeat="term results">

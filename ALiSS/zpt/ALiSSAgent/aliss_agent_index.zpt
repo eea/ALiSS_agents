@@ -2,7 +2,7 @@
 <span tal:replace="python:request.RESPONSE.setHeader('content-type', 'text/html;charset=UTF-8')" />
 
 <!-- Page header -->
-<h2>A-Z Index of concepts</h2>
+<h2>A-Z Index of terms</h2>
 
 <!-- Alphabet listing -->
 <tal:block define="dtype here/getDisplayType;
@@ -47,7 +47,7 @@
 					<a	class="menu_link"
 						tal:define="conceptsNumber python:menuData[letter]"
 						tal:attributes="href string:${here/absolute_url}/list_html?letter=${letter};
-										title string:${conceptsNumber} concepts"
+										title string:${conceptsNumber} terms"
 						tal:content="letter" />
 				</tal:block>
 				<span	tal:condition="not:has_content"
@@ -56,12 +56,12 @@
 		</li>
 
 		<li tal:condition="not:dtype">
-			<a	tal:attributes="href string:${here/absolute_url}/list_html?letter=all" title="Concept list">
-			View concepts list</a>
+			<a	tal:attributes="href string:${here/absolute_url}/list_html?letter=all" title="Terms list">
+			View terms list</a>
 		</li>
 	</ul>
 
-	<div style="margin-left: 4em" tal:content="string:A number of ${totalConcepts} concepts are available." tal:condition="dtype" />
+	<div style="margin-left: 4em" tal:content="string:A number of ${totalConcepts} terms are available." tal:condition="dtype" />
 </tal:block>
 <br clear="all" />
 

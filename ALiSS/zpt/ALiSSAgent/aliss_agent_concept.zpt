@@ -49,7 +49,7 @@
 						<a	class="menu_link"
 							tal:define="conceptsNumber python:menuData[letter]"
 							tal:attributes="href string:${here/absolute_url}/list_html?letter=${letter};
-											title string:${conceptsNumber} concepts"
+											title string:${conceptsNumber} terms"
 							tal:content="letter" />
 					</tal:block>
 					<span	tal:condition="not:has_content"
@@ -58,17 +58,17 @@
 			</li>
 
 			<li tal:condition="not:dtype">
-				<a	tal:attributes="href string:${here/absolute_url}/list_html?letter=all" title="Concept list">
-				View concepts list</a>
+				<a	tal:attributes="href string:${here/absolute_url}/list_html?letter=all" title="Terms list">
+				View terms list</a>
 			</li>
 
 		</ul>
 	</tal:block>
 
-	<!-- Case of NO CONCEPT found -->
+	<!-- Case of NO TERM found -->
 	<div tal:condition="not:aliss_concept">
 		<h1 tal:content="term_name" />
-		<p>No concept found matching exactly the name <strong><span tal:replace="term_name" /></strong>.</p>
+		<p>No term found matching exactly the name <strong><span tal:replace="term_name" /></strong>.</p>
 		<script type="text/javascript" tal:content="python:'registerAlissKeywordsSuggestions(\''+here.id+'\',\'AlissSuggest\',\''+term_name+'\',\'True\');'"></script>
 		<div class="AlissResult">
 				<div class="AlissShadow" id="AlissSuggest"></div>
@@ -85,7 +85,7 @@ API</span></a>
 and <a href="http://www.google.com/coop/cse"><span class="tagline">Google Custom Search Engines</span></a></p>
 </div>
 
-	<!-- Case of CONCEPT found -->
+	<!-- Case of TERM found -->
 	<tal:block	condition="aliss_concept">
 		<tal:block	define="concept_name		python:aliss_concept['term_name'];
 							concept_url			python:aliss_concept['term_url'];
@@ -123,7 +123,7 @@ python:trans.sort()">
                                   <span class="langcode" tal:content="langcode" /> <span tal:content="python:'; '.join(translations[langcode])" />
                                 </li>
                         </ul>
-                        <p tal:condition="python:len(translations.keys())<1">No translations are available for this concept.</p>
+                        <p tal:condition="python:len(translations.keys())<1">No translations are available for this term.</p>
                         </div>
 
 
