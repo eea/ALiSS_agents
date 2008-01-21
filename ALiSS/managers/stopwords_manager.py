@@ -127,7 +127,7 @@ class StopWordManager:
 
     def get_stopwords_list(self):
         #get a list with all items
-        return utils.utSortObjsListByAttr(self.__stopwords_collection.values(), 'stopword', 0)
+        return utils.utSortObjsListByAttr(self.__stopwords_collection.values(), 'stopword')
 
     def get_stopword_item(self, id):
         #get an item

@@ -143,7 +143,7 @@ class GoogleItem:
 
     def get_page_collection_objs(self):
         #get the objects list
-        return utSortObjsListByAttr(self.page_collection.values(), 'page_rank', 0)
+        return utSortObjsListByAttr(self.page_collection.values(), 'page_rank')
 
     def get_page_collection_by_srv(self, srv):
         #return pages belonging to a server type
