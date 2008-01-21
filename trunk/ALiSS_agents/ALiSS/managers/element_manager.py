@@ -151,7 +151,7 @@ class ElementManager:
 
     def get_elements_list(self):
         #get a list with all items
-        return utils.utSortObjsListByAttr(self.__elements_collection.values(), 'name', 0)
+        return utils.utSortObjsListByAttr(self.__elements_collection.values(), 'name')
 
     def get_element_item(self, id):
         #get an item

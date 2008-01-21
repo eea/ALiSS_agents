@@ -69,14 +69,42 @@ def utElimintateDuplicates(p_objects, p_attr='id'):
         dict[getattr(l_object, p_attr)] = l_object
     return dict.values()
 
-def utSortObjsListByAttr(p_list, p_attr, p_desc=1):
+def utInsensitiveSort(inlist, minisort=True):
+    """ Case Insensitive Sort """
+    #returns (unicode, number_index, brain)
+    sortlist = []
+    newlist = []
+    sortdict = {}
+    for entry in inlist:
+        try:
+            lentry = entry[0].lower()
+        except AttributeError:
+            sortlist.append((lentry, entry[1], entry[2]))
+        else:
+            try:
+                sortdict[lentry].append(entry)
+            except KeyError:
+                sortdict[lentry] = [entry]
+                sortlist.append((lentry, entry[1], entry[2]))
+
+    sortlist.sort()
+    for entry in sortlist:
+        try:
+            thislist = sortdict[entry[0]]
+            if minisort: thislist.sort()
+            newlist = newlist + thislist
+        except KeyError:
+            newlist.append(entry)
+    return newlist
+
+def utSortObjsListByAttr(p_list, p_attr, p_desc=0):
     """ sort a list of objects by an attribute values """
+    res = []
     l_len = len(p_list)
     l_temp = map(None, map(getattr, p_list, (p_attr,)*l_len), xrange(l_len), p_list)
-    l_temp.sort()
-    if p_desc:
-        l_temp.reverse()
-    return map(operator.getitem, l_temp, (-1,)*l_len)
+    res.extend(utInsensitiveSort(l_temp))
+    #if p_desc: res.reverse() #not used
+    return map(operator.getitem, res, (-1,)*l_len)
 
 def utSortListByLen(p_list, p_desc=1):
     """ sort a list of strings based on strings length """

@@ -264,7 +264,7 @@ class ALiSSAgent(Folder,
         # if after stopwords removal the query is empty then return empty results
         if utils.isEmptyString(query):
             return []
-        
+
         if extended:
             for aliss_center in self.getAlissCenters():
                 terms = []
@@ -286,6 +286,33 @@ class ALiSSAgent(Folder,
                 results.extend(terms)
 
         return results[:size]
+
+    def getTermSuggestionsBrains(self, query, extended=False,size=100):
+        """ Returns term suggetions (max by default size=100 terms) in all centers and returns a list of unique terms. """
+        results = []
+
+        # filter out stop words and normalize
+        words=self.filterStopWords(query)
+        query=" ".join(words)
+        # if after stopwords removal the query is empty then return empty results
+        if utils.isEmptyString(query):
+            return []
+
+        if extended:
+            for aliss_center in self.getAlissCenters():
+                terms = []
+                for elem in aliss_center.getElementsByNames(query, True):
+                    if elem.name not in terms:
+                        terms.append(elem.name)
+                        results.append(elem)
+        else:
+            #TODO: to return brains
+            for aliss_center in self.getAlissCenters():
+                terms = [ elem.name for elem in aliss_center.getElementsByNames(query, True) 
+                             if elem.name not in results ]
+                results.extend(terms)
+
+        return utils.utSortObjsListByAttr(results[:size], 'name')
 
     security.declarePublic('getTermsInText')
     def getTermsInText(self,text,search_depth=10):
@@ -519,7 +546,7 @@ class ALiSSAgent(Folder,
         except: p_start = 0
 
         #get data
-        results.extend(utils.utSortObjsListByAttr(self.get_terms(letter, dtype), 'name', 0))
+        results.extend(utils.utSortObjsListByAttr(self.get_terms(letter, dtype), 'name'))
 
         #batch related
         batch_obj = batch_utils(self.getResPerPage(), len(results), p_start)

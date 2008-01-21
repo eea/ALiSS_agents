@@ -124,11 +124,11 @@ class GoogleLicenseManager:
 
     def get_licenses_list(self):
         #get a list with all items
-        return utils.utSortObjsListByAttr(self.__licenses_collection.values(), 'license', 0)
+        return utils.utSortObjsListByAttr(self.__licenses_collection.values(), 'license')
 
     def get_licenses_lists(self):
         #return the list with all items splited in two lists
-        l = utils.utSortObjsListByAttr(self.__licenses_collection.values(), 'license', 0)
+        l = utils.utSortObjsListByAttr(self.__licenses_collection.values(), 'license')
         sp = len(l)/2
         return (l[:sp], l[sp:])
 

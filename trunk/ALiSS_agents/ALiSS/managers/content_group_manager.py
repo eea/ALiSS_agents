@@ -144,7 +144,7 @@ class ContentGroupManager:
 
     def get_groups_list(self):
         #get a list with all items
-        return utils.utSortObjsListByAttr(self.__groups_collection.values(), 'name', 0)
+        return utils.utSortObjsListByAttr(self.__groups_collection.values(), 'name')
 
     def get_group_item(self, id):
         #get an item
