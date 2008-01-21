@@ -12,7 +12,6 @@
 
 	<!-- Alphabet listing -->
 	<ul class="alphabet_list" tal:condition="dtype">
-
 		<li	tal:condition="dtype"
 			tal:define="has_content python:here.hasDigits(menuData);
 						param_letter python:test(dtype, 'num', '1');
@@ -39,42 +38,6 @@
 				<span class="menu_empty" tal:condition="not:has_content" tal:content="letter" />
 			</tal:menu>
 		</li>
-
-		<!-- #TODO: Old implementation (to be removed)
-		<li	tal:define="has_content python:test(here.isNumeric(letter), here.hasContent(letter, dtype), 0);
-						selected_letter python:here.isNumeric(letter)">
-			<tal:block condition="has_content">
-				<a	class="menu_link"
-					tal:condition="not:selected_letter"
-					tal:attributes="href string:${here/absolute_url}/list_html?letter=num" title="0-9">0-9</a>
-				<span	class="menu_selected"
-						tal:condition="selected_letter">0-9</span>
-			</tal:block>
-			<span	class="menu_empty"
-					tal:condition="not:has_content">0-9</span>
-		</li>
-
-		<tal:block	repeat="alph_letter here/getLettersUpper"
-					condition="dtype"
-					define="first_letter python:letter[0];">
-		<li	tal:define="selected_letter python:here.compareLetter(alph_letter, first_letter);
-						has_content python:here.hasContent(alph_letter, dtype)">
-			<tal:block condition="has_content">
-				<a	class="menu_link"
-					tal:condition="not:selected_letter"
-					tal:attributes="href string:${here/absolute_url}/list_html?letter=${alph_letter};
-									title alph_letter;"
-					tal:content="alph_letter" />
-				<span	class="menu_selected"
-						tal:condition="selected_letter"
-						tal:content="alph_letter" />
-			</tal:block>
-			<span	class="menu_empty"
-					tal:condition="not:has_content"
-					tal:content="alph_letter" />
-		</li>
-		</tal:block>
-		-->
 	</ul>
 
 	<!-- Terms listing -->
