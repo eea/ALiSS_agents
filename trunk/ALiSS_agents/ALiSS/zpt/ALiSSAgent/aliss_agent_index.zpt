@@ -10,29 +10,6 @@
 				   totalConcepts python:data[0];
 				   menuData python:data[1]">
 	<ul class="alphabet_list">
-
-	<!-- #TODO: Old implementation (to be removed)
-		<li	tal:condition="dtype"
-			tal:define="param_letter python:test(dtype, 'num', '1');
-						has_content python:here.hasContent('num', dtype)">
-			<a	tal:condition="has_content" title="0-9" class="menu_link"
-				tal:attributes="href string:${here/absolute_url}/list_html?letter=${param_letter}">0-9</a>
-			<span	tal:condition="not:has_content" class="menu_empty">0-9</span>
-		</li>
-
-		<li	tal:repeat="letter here/getLettersUpper"
-			tal:condition="dtype">
-			<tal:block define="has_content python:here.hasContent(letter, dtype)">
-				<a	tal:condition="has_content" class="menu_link"
-					tal:attributes="href string:${here/absolute_url}/list_html?letter=${letter};
-									title letter;"
-					tal:content="letter" />
-				<span	tal:condition="not:has_content"
-						tal:content="letter" class="menu_empty" />
-			</tal:block>
-		</li>
-	-->
-
 		<li	tal:condition="dtype"
 			tal:define="has_content python:here.hasDigits(menuData);
 						param_letter python:test(dtype, 'num', '1')">
@@ -61,6 +38,7 @@
 		</li>
 	</ul>
 
+	<br /><br />
 	<div style="margin-left: 4em" tal:content="string:A number of ${totalConcepts} terms are available." tal:condition="dtype" />
 </tal:block>
 <br clear="all" />
