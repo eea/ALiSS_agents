@@ -299,8 +299,8 @@ class ALiSSAgent(Folder,
             return []
 
         if extended:
+            terms = []
             for aliss_center in self.getAlissCenters():
-                terms = []
                 for elem in aliss_center.getElementsByNames(query, True):
                     if elem.name not in terms:
                         terms.append(elem.name)
