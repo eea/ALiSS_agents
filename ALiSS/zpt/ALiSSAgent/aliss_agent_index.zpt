@@ -39,7 +39,8 @@
 	</ul>
 
 	<br /><br />
-	<div style="margin-left: 4em" tal:content="string:A number of ${totalConcepts} terms are available." tal:condition="dtype" />
+	<!-- #TODO: modify the below label -->
+	<!-- div style="margin-left: 4em" tal:content="string:A number of ${totalConcepts} terms are available." tal:condition="dtype" / -->
 </tal:block>
 <br clear="all" />
 
