@@ -40,7 +40,7 @@
 
 	<br /><br />
 	<!-- #TODO: modify the below label -->
-	<!-- div style="margin-left: 4em" tal:content="string:A number of ${totalConcepts} terms are available." tal:condition="dtype" / -->
+	<!-- div style="margin: 1.5em; font-weight:bold;" tal:content="string:A number of ${totalConcepts} terms are available." tal:condition="dtype" / -->
 </tal:block>
 <br clear="all" />
 
