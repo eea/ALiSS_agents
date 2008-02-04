@@ -192,6 +192,10 @@ class ElementItem:
         try:    return self.translations[langcode]
         except: return ''
 
+    def getName(self):
+        """ return lower name (for catalog use) """
+        return self.name.lower()
+
     ####################################
     #   GOOGLE ENABLE/DISABLE RELATED  #
     ####################################

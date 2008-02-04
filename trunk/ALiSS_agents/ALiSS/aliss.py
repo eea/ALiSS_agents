@@ -156,14 +156,15 @@ class ALiSS(Folder):
         return ALISS_DEFAULT_GOOGLE[name]
 
     def getElementsByNames(self, names, suggest=False):
-        """ search term across all centers in this aliss instance. return all cataloged elements with names=names available or if suggest=True 
-suggest which terms matches the names"""
+        """ Search term across all centers in this aliss instance.
+        Return all cataloged elements with names=names available
+        or if suggest=True suggest which terms matches the names """
         names = utils.utToUnicode(names)
-        query =  {'meta_type':     {'query':METATYPE_ALISSELEMENT, 'operator':'and '},}
+        query =  {'meta_type': {'query':METATYPE_ALISSELEMENT, 'operator':'and '},}
         if suggest:
             query['name_suggest'] = names
         else:
-            query['name'] = {'query':names, 'operator':'and '}
+            query['getName'] = {'query':names, 'operator':'and '}
         cat_res = self.catalog(query)
         return cat_res
 
