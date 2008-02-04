@@ -8,7 +8,7 @@
 <dtml-let kuku_group=sequence-item kuku_pages="kuku_group['Pages']">
 
 	<ul class="AlissTable">
-	<li class="AlissRow"><h4><a href="http://10.0.0.14:8080/ALISS_new/<dtml-var "REQUEST['agent']">/concept_html?term=<dtml-var "kuku_group['RelationID']">"><dtml-var "kuku_group['RelationLabel'].encode('utf-8')"></a></h4>
+	<li class="AlissRow"><h4><a href="/webservices/aliss/<dtml-var "REQUEST['agent']">/concept_html?term=<dtml-var "kuku_group['RelationID']">"><dtml-var "kuku_group['RelationLabel'].encode('utf-8')"></a></h4>
 	<p class="AlissPreviewDescription"><dtml-var "kuku_group['RelationDescription']"></p>
 	<br/>
 	</li>
@@ -31,7 +31,7 @@
 			</dtml-try>
 		</dtml-let>
 	</dtml-in>
-	<li class="AlissRow"><a href="http://10.0.0.14:8080/ALISS_new/<dtml-var "REQUEST['agent']">/concept_html?term=<dtml-var "kuku_group['RelationID']">">More about <dtml-var "kuku_group['RelationLabel'].encode('utf-8')">...</a></li>
+	<li class="AlissRow"><a href="/webservices/aliss/<dtml-var "REQUEST['agent']">/concept_html?term=<dtml-var "kuku_group['RelationID']">">More about <dtml-var "kuku_group['RelationLabel'].encode('utf-8')">...</a></li>
 	</ul>
 </dtml-let>
 <dtml-else>
