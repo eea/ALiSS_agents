@@ -37,10 +37,10 @@ function getTextRelated(agent,text, element) {
 }
 
 function registerAjaxInfo() {
-   ajaxEngine.registerRequest( 'getKeywordsSuggestions', '/webservices/aliss/ajax_response_terms_suggestion' );
-   ajaxEngine.registerRequest( 'getKeywordsRelated', '/webservices/aliss/ajax_response_terms_related' );
-   ajaxEngine.registerRequest( 'getPageRelated', '/webservices/aliss/ajax_response_page_related' );
-   ajaxEngine.registerRequest( 'getTextRelated', '/webservices/aliss/ajax_response_text_related' );
+   ajaxEngine.registerRequest( 'getKeywordsSuggestions', 'http://10.0.0.14:8080/ALISS_new/ajax_response_terms_suggestion' );
+   ajaxEngine.registerRequest( 'getKeywordsRelated', 'http://10.0.0.14:8080/ALISS_new/ajax_response_terms_related' );
+//   ajaxEngine.registerRequest( 'getPageRelated', 'http://10.0.0.14:8080/ALISS_new/ajax_response_page_related' );
+//   ajaxEngine.registerRequest( 'getTextRelated', 'http://10.0.0.14:8080/ALISS_new/ajax_response_text_related' );
 }
 
 registerAjaxInfo();

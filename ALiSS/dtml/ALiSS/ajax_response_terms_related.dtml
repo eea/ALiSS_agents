@@ -4,8 +4,9 @@ REQUEST parameters
 'terms': the terms labes to search on. Multiple terms can be separeted by ','.
 </dtml-comment>
 <dtml-call "REQUEST.RESPONSE.setHeader('Content-type','text/xml; charset=UTF-8')">
-<ajax-response> 
-    <response type="element" id="<dtml-var element missing="AlissKeywordsRelated">"> 
+
+<ajax-response>
+    <response type="element" id="<dtml-var element missing="AlissKeywordsRelated">">
     <fieldset class="AlissRelatedContainer">
       <legend id="relatedPagesLegend"><img src="http://glossary.eea.eu.int/misc_/EEAGlossary/search_ico.gif" align="absmiddle" /> Related pages (BETA)</legend>
       <dtml-let theagent="_[REQUEST['agent']]">

@@ -302,8 +302,8 @@ class ALiSSAgent(Folder,
             terms = []
             for aliss_center in self.getAlissCenters():
                 for elem in aliss_center.getElementsByNames(query, True):
-                    if elem.name not in terms:
-                        terms.append(elem.name)
+                    if elem.name.lower() not in terms:
+                        terms.append(elem.name.lower())
                         results.append(elem)
         else:
             #TODO: to return brains
