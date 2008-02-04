@@ -359,14 +359,15 @@ class ALiSSCenter(Folder,
         return self.catalog.searchCatalog(query)
 
     def getElementsByNames(self, names, suggest=False):
-        """ return all cataloged elements with names=names part to this center or if suggest=True suggest which terms matches the names"""
+        """ return all cataloged elements with names=names part to this center
+        or if suggest=True suggest which terms matches the names """
         names = utils.utToUnicode(names)
         query =  {'meta_type':     {'query':METATYPE_ALISSELEMENT, 'operator':'and '},
                   'center_parent': {'query':self.center_uid, 'operator':'and '}}
         if suggest:
             query['name_suggest'] = names
         else:
-            query['name'] = {'query':names, 'operator':'and '}
+            query['getName'] = {'query':names, 'operator':'and '}
         cat_res = self.catalog(query)
         return cat_res
 

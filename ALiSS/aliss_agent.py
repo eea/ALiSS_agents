@@ -403,7 +403,7 @@ class ALiSSAgent(Folder,
 
         #search all terms associated with this ALiSS Agent
         for aliss_center in self.getAlissCenters():
-            [terms_list.append(aliss_term) for aliss_term in aliss_center.getElementsByNames(term_name) if aliss_term]
+            [terms_list.append(aliss_term) for aliss_term in aliss_center.getElementsByNames(term_name.lower()) if aliss_term]
 
         #case of no terms found
         if not terms_list:  return None
@@ -496,6 +496,27 @@ class ALiSSAgent(Folder,
     def isNumeric(self, param): return utils.isNumeric(param)
     def compareLetter(self, letter1, letter2):
         return utils.compareLetter(letter1, letter2)
+    def hasDigits(self, data):
+        """ """
+        digits = self.getDigits()
+        for key in data.keys():
+            if key in digits: return True
+        return false
+
+    def generateMenu(self):
+        """ generate the alphabetic menu """
+        menuData = {}
+        conceptsNumber = 0
+        for aliss_center in self.getAlissCenters():
+            query = {'meta_type':     {'query':METATYPE_ALISSELEMENT, 'operator':'and '},
+                     'center_parent': {'query':aliss_center.center_uid}}
+            for term in utils.utElimintateDuplicates(self.catalog(query), 'name'):
+                if len(term.name)>0:
+                    conceptsNumber += 1
+                    first_letter = str(term.name[0].upper())
+                    if not menuData.has_key(first_letter): menuData[first_letter] = 1
+                    else: menuData[first_letter] += 1
+        return (conceptsNumber, menuData)
 
     security.declarePublic('testFirstLetter')
     def testFirstLetter(self, word, letter, dtype):
@@ -609,30 +630,5 @@ class ALiSSAgent(Folder,
             return False
         return True
 
-    #####################
-    #   OPTIMISATIONS   #
-    #####################
-    #TODO: cleanup unused code and move the logic where it belongs
-    def generateMenu(self):
-        """ """
-        menuData = {}
-        conceptsNumber = 0
-        for aliss_center in self.getAlissCenters():
-            query = {'meta_type':     {'query':METATYPE_ALISSELEMENT, 'operator':'and '},
-                     'center_parent': {'query':aliss_center.center_uid}}
-            for term in utils.utElimintateDuplicates(self.catalog(query), 'name'):
-                if len(term.name)>0:
-                    conceptsNumber += 1
-                    first_letter = str(term.name[0].upper())
-                    if not menuData.has_key(first_letter): menuData[first_letter] = 1
-                    else: menuData[first_letter] += 1
-        return (conceptsNumber, menuData)
-
-    def hasDigits(self, data):
-        """ """
-        digits = self.getDigits()
-        for key in data.keys():
-            if key in digits: return True
-        return false
 
 InitializeClass(ALiSSAgent)

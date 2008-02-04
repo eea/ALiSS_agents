@@ -66,7 +66,7 @@ def utElimintateDuplicates(p_objects, p_attr='id'):
     """ eliminate duplicates from a list of objects (with ids) """
     dict = {}
     for l_object in p_objects:
-        dict[getattr(l_object, p_attr)] = l_object
+        dict[getattr(l_object, p_attr).lower()] = l_object
     return dict.values()
 
 def utInsensitiveSort(inlist, minisort=True):

@@ -91,7 +91,7 @@ currentLetter)">A</strong>-folder.<br/>
 									title term_label" />
 					<ul class="concept_list">
 						<tal:block tal:repeat="term_sugg python:here.getTermSuggestionsBrains(term_label,True)" tal:on-error="nothing">
-							<tal:block condition="python:term_sugg.name!=term_label">
+							<tal:block condition="python:term_sugg.name.lower()!=term_label.lower()">
 								<li>
 									<a	tal:attributes="
 									href string:${here/absolute_url}/concept_html?term=${term_sugg/name};
