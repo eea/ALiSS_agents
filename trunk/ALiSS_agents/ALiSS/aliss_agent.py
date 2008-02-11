@@ -302,7 +302,7 @@ class ALiSSAgent(Folder,
             terms = []
             for aliss_center in self.getAlissCenters():
                 for elem in aliss_center.getElementsByNames(query, True):
-                    if elem.name.lower() not in terms:
+                    if elem.name.lower() not in terms and elem.name.lower()!=query.lower():
                         terms.append(elem.name.lower())
                         results.append(elem)
         else:
