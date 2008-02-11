@@ -4,10 +4,12 @@
 <h1>List of terminology sources</h1>
 
 			<ul>
-			<li tal:repeat="aliss_center here/getAllCenters" tal:attributes="style python:test(aliss_center.center_uid in here.getAlissCentersIds(), 'font-weight: bold', '')">
-				<a tal:content="aliss_center/title_or_id" tal:attributes="href aliss_center/gloss_url" /><br />
-				<small tal:content="aliss_center/gloss_url" />
-			</li>
+			<tal:block repeat="aliss_center here/getAllCenters">
+				<li tal:condition="python:aliss_center.center_uid in here.getAlissCentersIds()">
+					<a tal:content="aliss_center/title_or_id" tal:attributes="href aliss_center/gloss_url" /><br />
+					<small tal:content="aliss_center/gloss_url" />
+				</li>
+			</tal:block>
 			</ul>
 
 <span tal:replace="structure here/standard_html_footer" />

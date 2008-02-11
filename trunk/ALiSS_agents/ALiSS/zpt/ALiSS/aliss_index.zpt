@@ -12,9 +12,9 @@
                 Term name
                 </label>
                 <div class="formHelp">
-                 Please enter part of the term name.
+                 Please enter part of the term name. At least 3 characters.
                 </div>
-                <input type="text" tabindex="0" size="40" name="term_name" id="term_name"/>
+                <input type="text" tabindex="0" size="30" name="term_name" id="term_name"/>
               </div>
         
             <div class="formControls">
@@ -25,16 +25,15 @@
 </form>
 </div>
 
-
-<div id="main" class="main" style="width:48%;float:left;">
+<div id="main" class="main">
 <h1>Live Search</h1>
 <form action="#" method="get" name="frmSmartSearch">
 <fieldset>
 <legend>Find environmental term</legend>
-<strong>Start typing in the search box to begin your search.</strong>
+<p><strong>Start typing in the search box to begin your search.</strong></p>
         <div id="smartsearchcontainer"
-		style="border:solid 0px #000000;z-index:50;position:absolute;height:30px;width:200px;">
-		<p>Place the HTML to be displayed when there is no flash player here</p>
+		style="border:solid 0px #000000;z-index:50;position:absolute;height:30px;width:100%;">
+		<p>This is an advanced live search which uses a Flash plugin.<br />Please install Flash on your browser.</p>
         </div>
 <br />
 <br />
@@ -50,7 +49,7 @@
 
    var fo = new SWFObject("flashclient.swf", "smartsearch", "100%", "100%", "8", "#FFFFFF");
 
-   fo.addVariable("variable1", "/aliss2/flash_config_xml");
+   fo.addVariable("variable1", "flash_config_xml");
    fo.addParam("quality", "medium");
    fo.addParam("wmode", "transparent");
    fo.addParam("salign", "TL");
@@ -89,17 +88,14 @@
 
 <br class="visualClear" />
 
-<h2>Glossaries</h2>
-        <p>The below list shows the available environmental terminologies services on this website.</p>
-        <ul>
-                <li tal:repeat="agent here/getAllAgents">
-                        <a      tal:attributes="href agent/absolute_url;
-                                                                title agent/title"
-                                tal:content="python:test(agent.title, agent.title, 'no title')" />
-                        <small><tal:block content="agent/description" /></small>
-                </li>
-        </ul>
-
-
+<h2>A-Z Index</h2>
+<ul>
+	<li tal:repeat="agent here/getAllAgents">
+		<a tal:attributes="href agent/absolute_url;
+							title agent/title"
+			tal:content="python:test(agent.title, agent.title, 'no title')" />
+		<small><tal:block content="agent/description" /></small>
+	</li>
+</ul>
 
 <tal:block tal:replace="structure here/standard_html_footer"/>

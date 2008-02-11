@@ -67,7 +67,13 @@
 					<tal:block	condition="python:concept_definitions[source_url]!='Definition not available.'" 
 								define="terms_indef python:here.getTermsInText(concept_definitions[source_url],100)">
 					<div tal:content="structure terms_indef/marked_text" />
-					<div class="definition_source"><p><strong>Terminology source:</strong> <a tal:define="url_idx python:source_url.find('/',8)" tal:attributes="href string:terminology_sources_html;title source_url;" title="terminology tool source" tal:content="python:source_url[:int(url_idx)]" /></p></div>
+					<div class="definition_source">
+						<p> <strong>Terminology source:</strong>
+							<a  tal:define="url_idx python:source_url.find('/',8)"
+								tal:attributes="href string:terminology_sources_html;title source_url;"
+								title="terminology tool source"
+								tal:content="python:source_url[:int(url_idx)]" /></p>
+					</div>
 					</tal:block>
 				</dd>
 				</tal:block>
@@ -113,8 +119,28 @@
 					</tal:block>
 				</tal:block>
 			</tal:block>
+
+			<div id="see-also">
+				<h2>See also</h2>
+
+				<ul class="concept_list">
+					<tal:block tal:repeat="term_sugg python:here.getTermSuggestionsBrains(concept_name,True)" tal:on-error="nothing">
+						<tal:block condition="python:term_sugg.name.lower()!=concept_name.lower()">
+							<li>
+								<a	tal:attributes="
+								href string:${here/absolute_url}/concept_html?term=${term_sugg/name};
+								title term_sugg/name"
+									tal:content="term_sugg/name">term related</a>
+							</li>
+						</tal:block>
+					</tal:block>
+				</ul>
+
 			</div>
 
+
+
+			</div>
 		</tal:block>
 	</tal:block>
 
