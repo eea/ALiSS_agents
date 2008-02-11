@@ -120,25 +120,20 @@
 				</tal:block>
 			</tal:block>
 
-			<div id="see-also">
+			<tal:block define="related_terms python:here.getTermSuggestionsBrains(concept_name,True)">
+			<div id="see-also" tal:condition="python:len(related_terms)>0">
 				<h2>See also</h2>
-
 				<ul class="concept_list">
-					<tal:block tal:repeat="term_sugg python:here.getTermSuggestionsBrains(concept_name,True)" tal:on-error="nothing">
-						<tal:block condition="python:term_sugg.name.lower()!=concept_name.lower()">
-							<li>
-								<a	tal:attributes="
-								href string:${here/absolute_url}/concept_html?term=${term_sugg/name};
-								title term_sugg/name"
-									tal:content="term_sugg/name">term related</a>
-							</li>
-						</tal:block>
+					<tal:block tal:repeat="term_sugg related_terms" tal:on-error="nothing">
+						<li>
+							<a	tal:attributes="href string:${here/absolute_url}/concept_html?term=${term_sugg/name};
+												title term_sugg/name"
+								tal:content="term_sugg/name">term related</a>
+						</li>
 					</tal:block>
 				</ul>
-
 			</div>
-
-
+			</tal:block>
 
 			</div>
 		</tal:block>
