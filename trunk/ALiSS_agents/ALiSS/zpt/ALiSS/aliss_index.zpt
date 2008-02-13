@@ -2,7 +2,7 @@
 <span tal:replace="python:request.RESPONSE.setHeader('content-type', 'text/html;charset=UTF-8')"/>
 <p class="documentDescription"><dtml-var description></p>
 
-<div id="standard-term-search" style="width:48%;float:right;">
+<div id="standard-term-search">
 <h1>Standard Search</h1>
 <form action="results" method="post" name="frmSearch">
 <fieldset>
