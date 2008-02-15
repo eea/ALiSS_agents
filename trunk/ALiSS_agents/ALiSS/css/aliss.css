@@ -89,3 +89,8 @@ ul.subalphabet_list li {
 .AlissRightContainer {
  width: 28%;
 }
+
+.gsc-query {
+ color: green;
+ font-weight: bold;
+}
