@@ -67,6 +67,7 @@
 
         // execute a starter search
         this.searchForm.execute("<dtml-if term_name><dtml-var term_name></dtml-if>");
+        queryDisplay(this.searchForm);
       }
 
       // when the form fires a submit, grab its
@@ -75,6 +76,7 @@
         var q = form.input.value;
         if (q && q!= "") {
           this.rightControl.execute(q);
+          queryDisplay(form);
         }
         return false;
       }
@@ -84,6 +86,27 @@
         this.rightControl.clearAllResults();
         form.input.value = "";
         return false;
+      }
+
+      function queryDisplay(form) {
+        var ob_form = form.input.parentNode.parentNode.parentNode.parentNode.parentNode;
+        var q = form.input.value
+
+        if (ob_form.childNodes.length < 3) {
+          var ob_query = document.createElement("em");
+          ob_query.innerHTML = q;
+          ob_query.className = "gsc-query";
+          ob_form.appendChild(ob_query);
+        }
+        else {
+          if (q && q!= "") {
+            var ob_txt = document.createTextNode(q);
+            ob_form.childNodes[2].innerHTML = '';
+            ob_form.childNodes[2].appendChild(ob_txt);
+          }
+        }
+
+        form.input.value = "";
       }
 
       function OnLoad() {
