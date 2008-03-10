@@ -3,7 +3,7 @@
 <p class="documentDescription"><dtml-var description></p>
 
 <div id="standard-term-search">
-	<h1>Standard Search</h1>
+	<h1>Search</h1>
 	<form action="results" method="post" name="frmSearch">
 		<fieldset>
 			<legend>Find environmental term</legend>
@@ -21,66 +21,10 @@
 	</form>
 </div>
 
-<div id="main" class="main">
-	<h1>Live Search</h1>
-	<form action="#" method="get" name="frmSmartSearch">
-		<fieldset>
-			<legend>Find environmental term</legend>
-			<p><strong>Start typing in the search box to begin your search.</strong></p>
-			<div id="smartsearchcontainer"
-				style="border:solid 0px #000000;z-index:50;position:absolute;height:30px;width:100%;">
-				<p>This is an advanced live search which uses a Flash plugin.<br />Please install Flash on your browser.</p>
-			</div>
-			<br /><br /><br />
-		</fieldset>
-	</form>
-</div>
-
-<script>
-// <![CDATA[
-
-	var fo = new SWFObject("flashclient.swf", "smartsearch", "100%", "100%", "8", "#FFFFFF");
-
-	fo.addVariable("variable1", "flash_config_xml");
-	fo.addParam("quality", "medium");
-	fo.addParam("wmode", "transparent");
-	fo.addParam("salign", "TL");
-	fo.addParam("scale", "noscale");
-	fo.addParam("allowscriptaccess", "always");
-	fo.addParam("AllowScriptAccess", "always");
-
-	fo.write("smartsearchcontainer");
-
-
-	/*====================================
-	*  The following code sets up the correct containers
-	*   and flash controls for the 
-	*  BrowserLayoutManager controller.
-	*  This is the only required script for usage.
-	*/
-
-	
-
-	browserLayoutManager_registerFlashContainerForLayout("smartsearchcontainer");	
-	browserLayoutManager_registerFlashObjectForLayout("smartsearch");	
-	browserLayoutManager_addListener(window,"resize",browserLayoutManager_Resize,false);
-	
-	//INCLUDE THE BELOW LINE FOR ONBLUR SUPPORT
-	browserLayoutManager_addListener(browserLayoutManager_getObject('smartsearch'),"blur",browserLayoutManager_onBlur,false);
-	browserLayoutManager_addListener(browserLayoutManager_getObject('smartsearch'),"focus",browserLayoutManager_onFocus,false);
-
-	browserLayoutManager_alert("ENVIRONMENT READY");
-	
-	//browserLayoutManager_getObject("debugger").style.visibility ='hidden';
-	
-	
-	
-// ]]>
-</script>
 
 <br class="visualClear" />
 
-<h2>A-Z Index</h2>
+<h1>A-Z Index</h1>
 <ul>
 	<li tal:repeat="agent here/getAllAgents">
 		<a tal:attributes="href agent/absolute_url;
