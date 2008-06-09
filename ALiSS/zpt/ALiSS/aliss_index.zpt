@@ -10,7 +10,7 @@
 			<div class="field">
 				<label for="sender_fullname">Term name</label>
 				<div class="formHelp">Please enter part of the term name. At least 3 characters.</div>
-				<input type="text" tabindex="0" size="30" name="term_name" id="term_name"/>
+				<input type="text" tabindex="0" size="30" name="term_name:utf8:ustring" id="term_name"/>
 			</div>
 
 			<div class="formControls">
