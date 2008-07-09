@@ -47,7 +47,6 @@ good_chars= '___________AAAAAA' \
 
 TRANSMAP = string.maketrans(bad_chars, good_chars)
 
-
 def utGenRandomId(p_length=10, p_chars=string.digits):
     """ generate a random numeric id """
     return ''.join([choice(p_chars) for i in range(p_length)])
@@ -232,8 +231,10 @@ def utToUTF8(p_string):
 
 def ut_to_unicode(p_string):
     """ convert to unicode """
-    if not isinstance(p_string, unicode): return unicode(p_string, 'utf-8')
-    else: return p_string
+    if not isinstance(p_string, unicode):
+        return unicode(p_string, 'utf-8')
+    else:
+        return p_string
 
 def utToUnicode(p_data):
     """ convert to unicode """
