@@ -72,6 +72,7 @@ misc_ = {
     'ALiSSStopwords.gif':   ImageFile('images/ALiSSStopwords.gif', globals()),
     #aliss main css
     'aliss.css':            ImageFile('css/aliss.css', globals()),
+    'open_quote.gif':            ImageFile('images/open_quote.gif', globals()),
     #flash client
     'flashclient.swf':          ImageFile('client/flash/distribution/flashclient.swf', globals()),
     'swfobject.js':           ImageFile('client/flash/distribution/js/swfobject.js', globals()),

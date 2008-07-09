@@ -51,7 +51,7 @@ ul.subalphabet_list li {
 }
 
 .definitions_list dd {
- background:#ECF3D0 url(http://www.eea.europa.eu/open_quote.gif) no-repeat scroll 0.5em 0.75em;
+ background:#ECF3D0 url(open_quote.gif) no-repeat scroll 0.5em 0.75em;
  color:#000000;
  margin:1em auto;
  padding:1.5em 1em 1em 3em;
@@ -93,4 +93,37 @@ ul.subalphabet_list li {
 .gsc-query {
  color: green;
  font-weight: bold;
+}
+
+/* Google Custom search CSS */
+.search-control {
+ width : 100%;
+}
+
+.search-control .gsc-control {
+ width : 100%;
+}
+
+/* Disable built in search forms */
+.gsc-control form.gsc-search-box {
+ display : none;
+}
+
+/* restrict global search form width */
+#GCSSearchForm {
+ width : 100%;
+}
+
+/* no ads: we are a governmental agency. This is ok by the terms */
+.gsc-ad-box {
+ display : none;
+}
+
+/* long form visible urls should be on */
+.gsc-webResult div.gs-visibleUrl-long {
+ display : block;
+}
+
+.gsc-webResult div.gs-visibleUrl-short {
+ display : none;
 }

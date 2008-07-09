@@ -473,7 +473,7 @@ class ALiSSAgent(Folder,
 
     security.declarePublic('concept_html')
     concept_html =    PageTemplateFile('zpt/ALiSSAgent/aliss_agent_concept', globals())
-    
+
     security.declarePublic('terminology_sources_html')
     terminology_sources_html =    PageTemplateFile('zpt/ALiSSAgent/aliss_agent_list_sources', globals())
 
