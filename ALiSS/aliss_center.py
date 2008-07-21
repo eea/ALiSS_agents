@@ -205,6 +205,7 @@ class ALiSSCenter(Folder,
             self._p_changed = 1
             response_msg = 'ok'
         if REQUEST: REQUEST.RESPONSE.redirect('manage_update_html?update=%s' % response_msg)
+        else: return response_msg
 
     security.declareProtected(view_management_screens, 'manageCleanUp')
     def manageCleanUp(self, REQUEST=None):
