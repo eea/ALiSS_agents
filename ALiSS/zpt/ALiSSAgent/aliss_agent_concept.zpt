@@ -145,7 +145,7 @@
 	<tal:wiki condition="here/getWikiState" define="wiki_info python:here.getWikiImages(term_name)">
 		<div style="float:right; width:47%;"
 			 tal:condition="python:len(wiki_info.keys())>0">
-			<h2>Image(s)</h2>
+			<h2>Images</h2>
 
 			<tal:wiki_image repeat="wiki python:wiki_info.keys()">
 				<div style="float:left; padding-right: 5px;">
