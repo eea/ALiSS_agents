@@ -141,6 +141,24 @@
 		</tal:block>
 	</tal:block>
 
+	<!-- MediaWiki images -->
+	<tal:wiki condition="here/getWikiState" define="wiki_info python:here.getWikiImages(term_name)">
+		<div style="float:right; width:47%;"
+			 tal:condition="python:len(wiki_info.keys())>0">
+			<h2>Image(s)</h2>
+
+			<tal:wiki_image repeat="wiki python:wiki_info.keys()">
+				<div style="float:left; padding-right: 5px;">
+					<img style="" tal:attributes="src python:wiki_info[wiki]['thumb']" alt="" title="" /><br />
+					<a style="" tal:attributes="href python:wiki_info[wiki]['orig']" title="See original image" target="_blank">original size</a>
+				</div>
+			</tal:wiki_image>
+
+			<br clear="both" />
+			<p style="text-align: right; border-top:1px solid #E9EFCD; margin-top: 1em;">powered by <a href="http://www.mediawiki.org" title="MediaWiki">MediaWiki</a></p>
+		</div>
+	</tal:wiki>
+
 	<!-- Google custom search area -->
 	<div id="google-custom-search-area">
 		<span tal:replace="structure here/google_cs_ajax_js" />
