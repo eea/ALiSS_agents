@@ -20,6 +20,13 @@
 import urllib2
 import sgmllib
 import sys
+
+from xml.sax.handler import ContentHandler
+from xml.sax import *
+from cStringIO import StringIO
+from types import StringType, UnicodeType
+
+#Product imports
 from Products.ALiSS.utils import utUrlEncode
 
 ############
@@ -30,6 +37,109 @@ from Products.ALiSS.utils import utUrlEncode
 
 MIME_TYPES = ['image/jpeg', 'image/jpg', 'image/jpe', 'image/svg', 'image/svg+xml', 'image/png']
 
+#Get MediaWiki data in XML format
+class mediawiki_handler(ContentHandler):
+    """ """
+
+    def __init__(self):
+        """constructor """
+        self.__images = []
+
+        self.__thumbs = []
+        self.__origs = []
+        self.__mimes = []
+
+    def get_images(self):
+        return self.__images
+
+    def set_images(self, url):
+        self.__images.append(url)
+
+
+    def get_thumbs(self):
+        return self.__thumbs
+
+    def set_thumbs(self, url):
+        self.__thumbs.append(url)
+
+    def get_origs(self):
+        return self.__origs
+
+    def set_origs(self, url):
+        self.__origs.append(url)
+
+    def get_mimes(self):
+        return self.__mimes
+
+    def set_mimes(self, url):
+        self.__mimes.append(url)
+
+
+    def get_urls(self):
+        res = {}
+        if len(self.get_thumbs())==len(self.get_origs()):
+            for k in range(len(self.get_thumbs())):
+                if self.__mimes[k] in MIME_TYPES:
+                    res[k] = {'thumb': self.__thumbs[k], 'orig': self.__origs[k]}
+        return res
+
+
+    def startElement(self, name, attrs):
+        if name == 'im':
+            for attr in attrs.keys():
+                if attr == 'title':
+                    self.set_images(attrs[attr])
+        if name == 'ii':
+            for attr in attrs.keys():
+                if attr == 'thumburl':
+                    self.set_thumbs(attrs[attr])
+                if attr == 'descriptionurl':
+                    self.set_origs(attrs[attr])
+                if attr == 'mime':
+                    self.set_mimes(attrs[attr])
+
+
+class mediawiki_parser:
+    """ """
+
+    def __init__(self):
+        """ """
+        pass
+
+    def parseContent(self, xml_string):
+        """ """
+        chandler = mediawiki_handler()
+        parser = make_parser()
+        parser.setContentHandler(chandler)
+        parser.setFeature(handler.feature_external_ges, 0)
+        inpsrc = InputSource()
+        inpsrc.setByteStream(StringIO(xml_string))
+        try:
+            parser.parse(inpsrc)
+            return chandler
+        except:
+            return None
+
+    def parseHeader(self, file):
+        parser = make_parser()
+        chandler = mediawiki_handler()
+        parser.setContentHandler(chandler)
+        try:    parser.setFeature(handler.feature_external_ges, 0)
+        except: pass
+        inputsrc = InputSource()
+
+        try:
+            if type(file) is StringType:
+                inputsrc.setByteStream(StringIO(file))
+            else:
+                filecontent = file.read()
+                inputsrc.setByteStream(StringIO(filecontent))
+            parser.parse(inputsrc)
+            return chandler
+        except:
+            return None
+
+#Get MediaWiki data in HTML format
 class ParserWikipedia(sgmllib.SGMLParser):
     """ """
 
@@ -88,9 +198,6 @@ class WikipediaImages:
         res = {}
         s = ''
 
-        #TODO: for 'bacteria' query the images are SVG and/or PNG ... same as Wiki logos (e.g. abatement). We need a way to separate them.
-
-        #TODO: use format=XML to grt/parse data
         #TODO: the DIV with google custom search jumps if few data on page
         #TODO: to decide display location on page and to move CSS for MW widget from aliss_agent_concept.zpt
 
@@ -98,14 +205,18 @@ class WikipediaImages:
 
         #Get images list
         try:
-            f = urllib2.urlopen("%s/w/api.php?action=query&titles=%s&prop=images&imlimit=%s" % 
+            f = urllib2.urlopen("%s/w/api.php?action=query&titles=%s&prop=images&imlimit=%s&format=xml" % 
                                     (host, utUrlEncode(self.titles), number))
             s = f.read()
         except:
             self.error_log.raising(sys.exc_info())
 
-        images_info = ParserWikipedia()
-        images_info.parse(s)
+        parser = mediawiki_parser()
+        images_info = parser.parseHeader(s)
+
+        ###For HTML format
+        #images_info = ParserWikipedia()
+        #images_info.parse(s)
 
         #Get image(s) url
         images_list = images_info.get_images()
@@ -114,13 +225,17 @@ class WikipediaImages:
         if len(images_list) > 0:
             param = '|'.join(images_list)
             try:
-                f = urllib2.urlopen("%s/w/api.php?action=query&titles=%s&prop=imageinfo&iiprop=url|size|mime&iiurlheight=%s&iiurlwidth=%s" % 
+                f = urllib2.urlopen("%s/w/api.php?action=query&titles=%s&prop=imageinfo&iiprop=url|size|mime&iiurlheight=%s&iiurlwidth=%s&format=xml" % 
                                         (host, utUrlEncode(param), height, width))
                 s = f.read()
             except:
                 self.error_log.raising(sys.exc_info())
 
-        urls_info = ParserWikipedia()
-        urls_info.parse(s)
+        parser = mediawiki_parser()
+        urls_info = parser.parseHeader(s)
+
+        ###For HTML format
+        #urls_info = ParserWikipedia()
+        #urls_info.parse(s)
 
         return urls_info.get_urls()
