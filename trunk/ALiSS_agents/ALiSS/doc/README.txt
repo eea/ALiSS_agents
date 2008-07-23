@@ -45,6 +45,6 @@ TODO: add some real examples.
 
 Contributors:
 
-   Alexandru Ghica - Finsiel Romania
+   Alexandru Ghica - Eau de Web
    Antonio De Marinis - EEA
    Sasha Vinčić - Systemvaruhuset

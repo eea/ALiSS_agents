@@ -131,6 +131,36 @@
 			</tr>
 		</table>
 	</form>
+
+	<p class="list-header">Setup <strong>MediaWiki</strong> settings on the form below.</p>
+	<form name="frmEdit" method="post" action="manageMediaWiki" enctype="multipart/form-data">
+		<table border="0" cellspacing="0" cellpadding="2">
+			<tr>
+				<th>Activate/Deactivate service</th>
+				<td><input type="checkbox" name="wiki_service" value="1" 
+							tal:attributes="checked python:test(here.getWikiState(), 'checked', '')"/></td>
+			</tr>
+			<tr>
+				<th>Number of images shown</th>
+				<td><input type="text" name="wiki_images:int" size="3" tal:attributes="value here/getWikiNumber" />&nbsp <small>(integer)</small></td>
+			</tr>
+			<tr>
+				<th>Image height x width</th>
+				<td>
+					<input type="text" name="wiki_height" size="3" tal:attributes="value here/getWikiHeight" />&nbsp;x
+					<input type="text" name="wiki_width" size="3" tal:attributes="value here/getWikiWidth" />&nbsp; 
+					<small>(pixels)</small>
+				</td>
+			</tr>
+			<tr>
+				<th>Host</th>
+				<td><input type="text" name="wiki_host" size="30" tal:attributes="value here/getWikiHost" /></td>
+			</tr>
+			<tr>
+				<td colspan="2"><input type="submit" name="wiki_save" value="Save changes" style="margin-top:3px;" /></td>
+			</tr>
+		</table>
+	</form>
 </fieldset>
 
 <span tal:replace="structure here/manage_page_footer"/>

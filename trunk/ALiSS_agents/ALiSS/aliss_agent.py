@@ -9,12 +9,12 @@
 # rights and limitations under the License.
 #
 # The Initial Owner of the Original Code is European Environment
-# Agency (EEA).  Portions created by Finsiel Romania are
+# Agency (EEA).  Portions created by Finsiel Romania and Eau de Web are
 # Copyright (C) European Environment Agency. All
 # Rights Reserved.
 #
 # Authors:
-# Alexandru Ghica - Finsiel Romania
+# Alexandru Ghica - Eau de Web
 # Antonio De Marinis - EEA
 
 #Python imports
@@ -32,9 +32,10 @@ from AccessControl.Permissions                  import view_management_screens, 
 from Products.PageTemplates.PageTemplateFile    import PageTemplateFile
 
 #Product imports
-from Products.ALiSS             import utils
-from Products.ALiSS.utils       import batch_utils
-from Products.ALiSS.constants   import *
+from Products.ALiSS                     import utils
+from Products.ALiSS.utils               import batch_utils
+from Products.ALiSS.constants           import *
+from Products.ALiSS.managers.wikipedia  import WikipediaImages
 
 
 manage_addAlissAgent_html = PageTemplateFile('zpt/ALiSSAgent/aliss_agent_add', globals())
@@ -89,6 +90,19 @@ class ALiSSAgent(Folder,
         if not hasattr(self, 'res_per_page'):
             #default number of results per page
             self.res_per_page = 10
+
+        #mediawiki settings
+        if not hasattr(self, 'wiki_service'):
+            self.wiki_service = 0
+        if not hasattr(self, 'wiki_images'):
+            self.wiki_images = 1
+        if not hasattr(self, 'wiki_height'):
+            self.wiki_height = 200
+        if not hasattr(self, 'wiki_width'):
+            self.wiki_width = 200
+        if not hasattr(self, 'wiki_host'):
+            self.wiki_host = 'http://en.wikipedia.org'
+
 
     #########################
     #   PROPERTIES ACTIONS  #
@@ -157,7 +171,7 @@ class ALiSSAgent(Folder,
     #########################
     #   GOOGLE SERVERS      #
     #########################
-    security.declareProtected(view_management_screens, 'getAlissCenter')
+    security.declareProtected(view_management_screens, 'manageGoogleServers')
     def manageGoogleServers(self, ids=[], REQUEST=None):
         """ manage associated google servers """
         self.google_servers =   ids
@@ -169,6 +183,35 @@ class ALiSSAgent(Folder,
         """ return associated content groups """
         return self.google_servers
 
+
+    #########################
+    #   MEDIAWIKI SETTINGS  #
+    #########################
+    security.declareProtected(view_management_screens, 'manageMediaWiki')
+    def manageMediaWiki(self, wiki_service=0, wiki_images=1, wiki_height=200, wiki_width=200, wiki_host='', REQUEST=None):
+        """ manage mediawiki settings """
+        self.wiki_service = wiki_service
+        self.wiki_images =  wiki_images
+        self.wiki_height =  wiki_height
+        self.wiki_width =   wiki_width
+        self.wiki_host =    wiki_host
+        self._p_changed = 1
+        if REQUEST: REQUEST.RESPONSE.redirect('manage_settings_html?save=ok')
+
+    def getWikiState(self):  return self.wiki_service
+    def getWikiHost(self):   return self.wiki_host
+    def getWikiHeight(self): return self.wiki_height
+    def getWikiWidth(self):  return self.wiki_width
+    def getWikiNumber(self): return self.wiki_images
+
+    security.declarePublic('getWikiImages')
+    def getWikiImages(self, query, type='single'):
+        """ """
+        wiki = WikipediaImages(query)
+        return wiki.getImages(self.getWikiHeight(),
+                              self.getWikiWidth(),
+                              self.getWikiNumber(),
+                              self.getWikiHost())
 
     #########################
     #   DISPLAY TYPE        #
@@ -629,6 +672,5 @@ class ALiSSAgent(Folder,
                     return True
             return False
         return True
-
 
 InitializeClass(ALiSSAgent)
