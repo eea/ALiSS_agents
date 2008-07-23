@@ -28,7 +28,7 @@ from Products.ALiSS.utils import utUrlEncode
 #     - http://en.wikipedia.org/w/api.php
 ################################################
 
-MIME_TYPES = ['image/jpeg', 'image/jpg', 'image/jpe']
+MIME_TYPES = ['image/jpeg', 'image/jpg', 'image/jpe', 'image/svg', 'image/svg+xml', 'image/png']
 
 class ParserWikipedia(sgmllib.SGMLParser):
     """ """
@@ -88,9 +88,12 @@ class WikipediaImages:
         res = {}
         s = ''
 
+        #TODO: for 'bacteria' query the images are SVG and/or PNG ... same as Wiki logos (e.g. abatement). We need a way to separate them.
+
         #TODO: use format=XML to grt/parse data
         #TODO: the DIV with google custom search jumps if few data on page
         #TODO: to decide display location on page and to move CSS for MW widget from aliss_agent_concept.zpt
+
         #TODO: maybe to cache the images or at least URLs retreived from WikiMedia
 
         #Get images list

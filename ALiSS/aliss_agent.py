@@ -81,6 +81,13 @@ class ALiSSAgent(Folder,
         self.display_type =     1
         self.res_per_page =     10
 
+        #MediaWiki
+        self.wiki_service = 0
+        self.wiki_images =  1
+        self.wiki_height =  200
+        self.wiki_width =   200
+        self.wiki_host =    'http://en.wikipedia.org'
+
     def __setstate__(self,state):
         """ """
         ALiSSAgent.inheritedAttribute('__setstate__')(self, state)
