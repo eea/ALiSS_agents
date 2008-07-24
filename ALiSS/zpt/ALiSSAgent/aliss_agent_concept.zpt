@@ -144,13 +144,13 @@
 	<!-- MediaWiki images -->
 	<tal:wiki condition="here/getWikiState" define="wiki_info python:here.getWikiImages(term_name)">
 		<div style="float:right; width:47%;"
-			 tal:condition="python:len(wiki_info.keys())>0">
+			 tal:condition="python:len(wiki_info)>0">
 			<h2>Images</h2>
 
-			<tal:wiki_image repeat="wiki python:wiki_info.keys()">
+			<tal:wiki_image repeat="wiki wiki_info">
 				<div style="float:left; padding-right: 5px;">
-					<img style="" tal:attributes="src python:wiki_info[wiki]['thumb']" alt="" title="" /><br />
-					<a style="" tal:attributes="href python:wiki_info[wiki]['orig']" title="See original image" target="_blank">original size</a>
+					<img style="" tal:attributes="src wiki/thumburl" alt="" title="" /><br />
+					<a style="" tal:attributes="href wiki/descriptionurl" title="See image source" target="_blank">image source</a>
 				</div>
 			</tal:wiki_image>
 

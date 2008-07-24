@@ -26,6 +26,10 @@ from xml.sax import *
 from cStringIO import StringIO
 from types import StringType, UnicodeType
 
+#Zope imports
+from Globals        import InitializeClass
+from AccessControl  import ClassSecurityInfo
+
 #Product imports
 from Products.ALiSS.utils import utUrlEncode
 
@@ -33,71 +37,80 @@ from Products.ALiSS.utils import utUrlEncode
 #   Info:
 #     - http://www.mediawiki.org/wiki/API
 #     - http://en.wikipedia.org/w/api.php
+#   Examples:
+#     - http://en.wikipedia.org/w/api.php?action=query&titles=water&prop=images&imlimit=3&format=xml
+#     - http://en.wikipedia.org/w/api.php?action=query&titles=Image%3A200407-sandouping-sanxiadaba-4.med.jpg%7CImage%3A3D%20model%20hydrogen%20bonds%20in%20water.jpg%7CImage%3ABay%20of%20Fundy%20High%20Tide.jpg&&prop=imageinfo&iiprop=url|size|mime&iiurlheight=200&iiurlwidth=200&format=xml
 ################################################
 
+# Mime Types we use
 MIME_TYPES = ['image/jpeg', 'image/jpg', 'image/jpe', 'image/svg', 'image/svg+xml', 'image/png']
+# Image IDs to be ignored. Remeber to replace any '_' with ' ' in the image ID.
+WIKI_LOGOS = ['Image:Commons-logo.svg', 'Image:Disambig gray.svg', 'Image:Wiktionary-logo-en.png', 'Image:Wikisource-logo.svg', 'Image:Ambox content.png']
 
 #Get MediaWiki data in XML format
+class WikiImage:
+    """ """
+
+    def __init__(self, title=''):
+        """ constructor """
+        self.title          = ''
+        self.size           = ''
+        self.width          = ''
+        self.height         = ''
+        self.thumburl       = ''
+        self.thumbwidth     = ''
+        self.thumbheight    = ''
+        self.url            = ''
+        self.descriptionurl = ''
+        self.mime           = ''
+
+    def set_properties(self, data={}):
+        for key, value in data.items():
+            setattr(self, key, value)
+
+    security = ClassSecurityInfo()
+    security.setDefaultAccess("allow")
+
+InitializeClass(WikiImage)
+
 class mediawiki_handler(ContentHandler):
     """ """
 
     def __init__(self):
-        """constructor """
+        """ constructor """
         self.__images = []
+        self.__ids = []
+        self.__wikiimg = None
 
-        self.__thumbs = []
-        self.__origs = []
-        self.__mimes = []
+    def get_ids(self):
+        return self.__ids
+
+    def set_ids(self, url):
+        if url not in WIKI_LOGOS and url not in self.__ids:
+             self.__ids.append(url)
 
     def get_images(self):
-        return self.__images
-
-    def set_images(self, url):
-        self.__images.append(url)
-
-
-    def get_thumbs(self):
-        return self.__thumbs
-
-    def set_thumbs(self, url):
-        self.__thumbs.append(url)
-
-    def get_origs(self):
-        return self.__origs
-
-    def set_origs(self, url):
-        self.__origs.append(url)
-
-    def get_mimes(self):
-        return self.__mimes
-
-    def set_mimes(self, url):
-        self.__mimes.append(url)
-
-
-    def get_urls(self):
-        res = {}
-        if len(self.get_thumbs())==len(self.get_origs()):
-            for k in range(len(self.get_thumbs())):
-                if self.__mimes[k] in MIME_TYPES:
-                    res[k] = {'thumb': self.__thumbs[k], 'orig': self.__origs[k]}
+        res = []
+        for img in self.__images:
+            if img.mime in MIME_TYPES:
+                res.append(img)
         return res
-
 
     def startElement(self, name, attrs):
         if name == 'im':
             for attr in attrs.keys():
                 if attr == 'title':
-                    self.set_images(attrs[attr])
-        if name == 'ii':
-            for attr in attrs.keys():
-                if attr == 'thumburl':
-                    self.set_thumbs(attrs[attr])
-                if attr == 'descriptionurl':
-                    self.set_origs(attrs[attr])
-                if attr == 'mime':
-                    self.set_mimes(attrs[attr])
+                    self.set_ids(attrs[attr])
+        if (name == 'page') and 'pageid' not in attrs.keys():
+            self.__wikiimg = WikiImage(attrs['title'])
+        if name == 'ii' and self.__wikiimg is not None:
+            self.__wikiimg.set_properties(attrs)
 
+    def endElement(self, name):
+        if name == 'ii':
+            if self.__wikiimg is not None:
+                self.__images.append(self.__wikiimg)
+            self.__wikiimg = None
 
 class mediawiki_parser:
     """ """
@@ -139,53 +152,6 @@ class mediawiki_parser:
         except:
             return None
 
-#Get MediaWiki data in HTML format
-class ParserWikipedia(sgmllib.SGMLParser):
-    """ """
-
-    def __init__(self, verbose=0):
-        sgmllib.SGMLParser.__init__(self, verbose)
-        self.images = []
-        self.thumbs = []
-        self.origs = []
-        self.mimes = []
-        self.inside_span_element = 0
-
-    def start_span(self, attributes):
-        self.inside_span_element = 1
-
-    def end_span(self):
-        self.inside_span_element = 0
-
-    def start_a(self, attributes):
-        for name, value in attributes:
-            if name == "href":
-                if ('upload.wikimedia.org' in value) and ('thumb' in value): self.thumbs.append(value)
-                if 'commons.wikimedia.org' in value: self.origs.append(value)
-
-    def get_images(self):
-        return self.images
-
-    def get_urls(self):
-        res = {}
-        if len(self.thumbs)==len(self.origs):
-            for k in range(len(self.thumbs)):
-                if self.mimes[k] in MIME_TYPES:
-                    res[k] = {'thumb': self.thumbs[k], 'orig': self.origs[k]}
-        return res
-
-    def handle_data(self, data):
-        if self.inside_span_element:
-            if 'Image:' in data:
-                self.images.append(data)
-            if 'image/' in data:
-                self.mimes.append(data)
-
-    def parse(self, s):
-        self.feed(s)
-        self.close()
-
-
 class WikipediaImages:
     """ """
 
@@ -195,15 +161,10 @@ class WikipediaImages:
 
     def getImages(self, height, width, number, host):
         """ """
-        res = {}
+        res = []
         s = ''
 
-        #TODO: the DIV with google custom search jumps if few data on page
-        #TODO: to decide display location on page and to move CSS for MW widget from aliss_agent_concept.zpt
-
-        #TODO: maybe to cache the images or at least URLs retreived from WikiMedia
-
-        #Get images list
+       #Get images list
         try:
             f = urllib2.urlopen("%s/w/api.php?action=query&titles=%s&prop=images&imlimit=%s&format=xml" % 
                                     (host, utUrlEncode(self.titles), number))
@@ -214,12 +175,8 @@ class WikipediaImages:
         parser = mediawiki_parser()
         images_info = parser.parseHeader(s)
 
-        ###For HTML format
-        #images_info = ParserWikipedia()
-        #images_info.parse(s)
-
         #Get image(s) url
-        images_list = images_info.get_images()
+        images_list = images_info.get_ids()
         s = ''
 
         if len(images_list) > 0:
@@ -234,8 +191,5 @@ class WikipediaImages:
         parser = mediawiki_parser()
         urls_info = parser.parseHeader(s)
 
-        ###For HTML format
-        #urls_info = ParserWikipedia()
-        #urls_info.parse(s)
-
-        return urls_info.get_urls()
+        if urls_info: res = urls_info.get_images()
+        return res
