@@ -158,7 +158,7 @@ class ALiSSCenter(Folder,
         skos_elements_list = SkosImport(self.gloss_skos)
 
         #set RDF's data
-        if skos_elements_list == 'err':
+        if skos_elements_list == 'err' or len(skos_elements_list.items()) == 0:
             response_msg = 'err'
         else:
             element_manager = self.element_manager
@@ -204,6 +204,7 @@ class ALiSSCenter(Folder,
             self.last_updated = utils.getCurrentDate()
             self._p_changed = 1
             response_msg = 'ok'
+
         if REQUEST: REQUEST.RESPONSE.redirect('manage_update_html?update=%s' % response_msg)
         else: return response_msg
 

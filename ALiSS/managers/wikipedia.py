@@ -18,7 +18,6 @@
 
 #Python imports
 import urllib2
-import sgmllib
 import sys
 
 from xml.sax.handler import ContentHandler
