@@ -46,6 +46,16 @@ ul.subalphabet_list li {
  clear: left;
 }
 
+#translations-area ul, #translations-area ul li {
+ display: inline;
+ list-style: none;
+}
+
+#translations-area ul li {
+	margin-left: -15px;
+	padding: 3px 25px 3px 0px;
+}
+
 .definitions_list dt {
  display:none;
 }
