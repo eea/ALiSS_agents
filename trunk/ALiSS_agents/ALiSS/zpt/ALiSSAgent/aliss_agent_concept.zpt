@@ -145,7 +145,7 @@
 	<tal:wiki condition="here/getWikiState" define="wiki_info python:here.getWikiImages(term_name)">
 		<div style="float:right; width:47%;"
 			 tal:condition="python:len(wiki_info)>0">
-			<h2>Images</h2>
+			<h2>Sample images</h2>
 
 			<tal:wiki_image repeat="wiki wiki_info">
 				<div style="float:left; padding-right: 5px;">
@@ -155,7 +155,11 @@
 			</tal:wiki_image>
 
 			<br clear="both" />
-			<p style="text-align: right; border-top:1px solid #E9EFCD; margin-top: 1em;">powered by <a href="http://www.mediawiki.org" title="MediaWiki">MediaWiki</a></p>
+			<p class="discreet" style="text-align: right; border-top:1px solid #E9EFCD; 
+margin-top: 1em;">powered 
+by <a href="http://www.mediawiki.org" title="MediaWiki">MediaWiki</a> | <a 
+href="http://www.mediawiki.org/wiki/Project:General_disclaimer" 
+title="MediaWiki disclaimer">Disclaimer</a></p>
 		</div>
 	</tal:wiki>
 
