@@ -157,9 +157,9 @@
 			<br clear="both" />
 			<p class="discreet" style="text-align: right; border-top:1px solid #E9EFCD; 
 margin-top: 1em;">powered 
-by <a href="http://www.mediawiki.org" title="MediaWiki">MediaWiki</a> | <a 
-href="http://www.mediawiki.org/wiki/Project:General_disclaimer" 
-title="MediaWiki disclaimer">Disclaimer</a></p>
+by <a href="http://www.mediawiki.org" title="MediaWiki">MediaWiki</a> | Images freely provided by Wikimedia, see <a 
+href="http://commons.wikimedia.org/wiki/Commons:General_disclaimer" 
+title="Wikimedia disclaimer">disclaimer</a></p>
 		</div>
 	</tal:wiki>
 
