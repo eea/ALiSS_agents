@@ -83,6 +83,8 @@ misc_ = {
     'red.gif':              ImageFile('images/red.gif', globals()),
     'green.gif':            ImageFile('images/green.gif', globals()),
     'googleprogress.gif':   ImageFile('images/googleprogress.gif', globals()),
+    #gfslideshow
+    'gfslideshow.js':  ImageFile('managers/gfslideshow.js', globals()),
     }
 
 ModuleSecurityInfo('Products.ALiSS.utils').declarePublic('joinToList')

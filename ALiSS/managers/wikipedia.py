@@ -28,6 +28,7 @@ from types import StringType, UnicodeType
 #Zope imports
 from Globals        import InitializeClass
 from AccessControl  import ClassSecurityInfo
+from DateTime import DateTime
 
 #Product imports
 from Products.ALiSS.utils import utUrlEncode
@@ -62,6 +63,8 @@ class WikiImage:
         self.url            = ''
         self.descriptionurl = ''
         self.mime           = ''
+        self.timestamp      = ''
+        self.comment        = ''
 
     def set_properties(self, data={}):
         for key, value in data.items():
@@ -181,7 +184,7 @@ class WikipediaImages:
         if len(images_list) > 0:
             param = '|'.join(images_list)
             try:
-                f = urllib2.urlopen("%s/w/api.php?action=query&titles=%s&prop=imageinfo&iiprop=url|size|mime&iiurlheight=%s&iiurlwidth=%s&format=xml" % 
+                f = urllib2.urlopen("%s/w/api.php?action=query&titles=%s&prop=imageinfo&iiprop=timestamp|user|comment|url|size|sha1|mime|metadata|archivename|bitdepth&iiurlheight=%s&iiurlwidth=%s&format=xml" % 
                                         (host, utUrlEncode(param), height, width))
                 s = f.read()
             except:
@@ -192,3 +195,66 @@ class WikipediaImages:
 
         if urls_info: res = urls_info.get_images()
         return res
+
+    def getFeed(self, height, width, number, host, REQUEST=None):
+        """ """
+        ###RSS Header
+        res = """<?xml version='1.0' encoding='UTF-8'?>
+<rss xmlns:media='http://search.yahoo.com/mrss/' version='2.0'>
+  <channel>
+    <lastBuildDate>%s</lastBuildDate>
+    <title>AJAX Feed SlideShow</title>
+    <description>These are a sampling of free images from MediaWiki.</description>
+    <link>http://www.mediawiki.org</link>
+    <image>
+      <url>http://www.mediawiki.org/</url>
+      <title>MediaWiki Samples</title>
+      <link>http://www.mediawiki.org</link>
+    </image>
+    <managingEditor>antonio.de.marinis@eea.europa.eu</managingEditor>
+              """ % (DateTime())
+
+        ###RSS Body
+        images = self.getImages(height, width, number, host)
+        for img in images:
+            res += """
+    <item>
+      <guid isPermaLink='false'>%s</guid>
+      <pubDate>%s</pubDate>
+      <title>%s</title>
+      <link>%s</link>
+      <media:group>
+        <media:title type='plain'>%s</media:title>
+        <media:description type='plain'></media:description>
+        <media:keywords></media:keywords>
+        <media:content
+            url='%s'
+            height='1200' width='1600' type='image/jpeg'
+            medium='image'>
+        </media:content>
+        <media:thumbnail
+            url='%s'
+            height='216' width='288'>
+        </media:thumbnail>
+        <media:credit>Ryan Bliss - Digital Blasphemy</media:credit>
+      </media:group>
+    </item>
+                   """ % (img.descriptionurl, img.timestamp, img.title, img.descriptionurl, img.title, img.url, img.thumburl)
+
+        ###RSS Footer
+        res += """
+  </channel>
+</rss>
+               """
+        return res
+
+
+#TODOs:
+#    - for 'dog' RSS feed throw error
+#    - to fill all fileds in RSS with proper data (e.g. title)
+#    - queries for compund qords dont work when quering wiki
+#    - to pus settings of the slideshow on agent management
+#    - the old implementation to work in paralel with the slideshow
+#    - change columns on concept view so if no term found only the google search to show up (merge search and concept_html), e.g.:
+#           http://glossary.eea.europa.eu/terminology/search?term=water
+#    - above: it should be accessible through http://search.eea.europa.eu/search?term=water or even http://search.eea.europa.eu/?term=water
