@@ -220,6 +220,34 @@ class ALiSSAgent(Folder,
                               self.getWikiNumber(),
                               self.getWikiHost())
 
+    security.declarePublic('getWikiImages')
+    def getWikiFeed(self, query, type='single', REQUEST=None):
+        """ """
+        wiki = WikipediaImages(query)
+        REQUEST.RESPONSE.setHeader('content-type', 'text/xml')
+        return wiki.getFeed(self.getWikiHeight(),
+                              self.getWikiWidth(),
+                              self.getWikiNumber(),
+                              self.getWikiHost())
+
+    def getWikiFeddJS(self, query):
+        """ """
+        return """
+  <script type="text/javascript">
+    function load() {
+      var samples = "%s/getWikiFeed?query=%s";
+      var options = {
+        displayTime: 2000,
+        transistionTime: 600,
+        linkTarget : google.feeds.LINK_TARGET_BLANK
+      };
+      new GFslideShow(samples, "slideshow", options);
+
+    }
+    google.load("feeds", "1");
+    google.setOnLoadCallback(load);
+  </script>""" % (self.absolute_url(), query)
+
     #########################
     #   DISPLAY TYPE        #
     #########################
