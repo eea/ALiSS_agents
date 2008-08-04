@@ -45,7 +45,10 @@ from Products.ALiSS.utils import utUrlEncode
 # Mime Types we use
 MIME_TYPES = ['image/jpeg', 'image/jpg', 'image/jpe', 'image/svg', 'image/svg+xml', 'image/png']
 # Image IDs to be ignored. Remeber to replace any '_' with ' ' in the image ID.
-WIKI_LOGOS = ['Image:Commons-logo.svg', 'Image:Disambig gray.svg', 'Image:Wiktionary-logo-en.png', 'Image:Wikisource-logo.svg', 'Image:Ambox content.png', 'Image:Wikibooks-logo.svg', 'Image:Wikinews-logo.svg', 'Image:Wikiquote-logo.svg', 'Image:Wikiversity-logo-Snorky.svg']
+WIKI_LOGOS = ['Image:Commons-logo.svg', 'Image:Disambig gray.svg', 'Image:Wiktionary-logo-en.png',
+              'Image:Wikisource-logo.svg', 'Image:Ambox content.png', 'Image:Wikibooks-logo.svg',
+              'Image:Wikinews-logo.svg', 'Image:Wikiquote-logo.svg', 'Image:Wikiversity-logo-Snorky.svg',
+              'Image:Wikiquote-logo-en.svg', 'Image:Wiki_letter_w.svg', 'Image:Wikispecies-logo.svg']
 
 #Get MediaWiki data in XML format
 class WikiImage:
@@ -251,8 +254,10 @@ class WikipediaImages:
 
 #TODOs:
 #    - for 'dog' RSS feed throw error
+#    - check about the feed cached inside slideshow (related to above)
 #    - to fill all fileds in RSS with proper data (e.g. title)
 #    - queries for compund qords dont work when quering wiki
+#    - check under IE if JS slideshow works
 #    - to pus settings of the slideshow on agent management
 #    - the old implementation to work in paralel with the slideshow
 #    - change columns on concept view so if no term found only the google search to show up (merge search and concept_html), e.g.:
