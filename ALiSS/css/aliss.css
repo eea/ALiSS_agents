@@ -33,7 +33,7 @@ ul.subalphabet_list li {
  width: 47%
 }
 
-#definitions-area {
+#definitions-area #wikimedia-area {
  float:left;
 }
 
@@ -52,8 +52,8 @@ ul.subalphabet_list li {
 }
 
 #translations-area ul li {
-	margin-left: -15px;
-	padding: 3px 25px 3px 0px;
+ margin-left: -15px;
+ padding: 3px 25px 3px 0px;
 }
 
 .definitions_list dt {
@@ -136,4 +136,14 @@ ul.subalphabet_list li {
 
 .gsc-webResult div.gs-visibleUrl-short {
  display : none;
+}
+
+/* Slideshow related CSS */
+.gss a img {border : none;}
+.gss {
+ width: 288px;
+ height: 216px;
+ color: #dddddd;
+ background-color: #000000;
+ padding: 8px;
 }
