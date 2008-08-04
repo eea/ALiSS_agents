@@ -45,7 +45,7 @@ from Products.ALiSS.utils import utUrlEncode
 # Mime Types we use
 MIME_TYPES = ['image/jpeg', 'image/jpg', 'image/jpe', 'image/svg', 'image/svg+xml', 'image/png']
 # Image IDs to be ignored. Remeber to replace any '_' with ' ' in the image ID.
-WIKI_LOGOS = ['Image:Commons-logo.svg', 'Image:Disambig gray.svg', 'Image:Wiktionary-logo-en.png', 'Image:Wikisource-logo.svg', 'Image:Ambox content.png']
+WIKI_LOGOS = ['Image:Commons-logo.svg', 'Image:Disambig gray.svg', 'Image:Wiktionary-logo-en.png', 'Image:Wikisource-logo.svg', 'Image:Ambox content.png', 'Image:Wikibooks-logo.svg', 'Image:Wikinews-logo.svg', 'Image:Wikiquote-logo.svg', 'Image:Wikiversity-logo-Snorky.svg']
 
 #Get MediaWiki data in XML format
 class WikiImage:
@@ -53,7 +53,7 @@ class WikiImage:
 
     def __init__(self, title=''):
         """ constructor """
-        self.title          = ''
+        self.title          = title
         self.size           = ''
         self.width          = ''
         self.height         = ''
@@ -236,7 +236,7 @@ class WikipediaImages:
             url='%s'
             height='216' width='288'>
         </media:thumbnail>
-        <media:credit>Ryan Bliss - Digital Blasphemy</media:credit>
+        <media:credit></media:credit>
       </media:group>
     </item>
                    """ % (img.descriptionurl, img.timestamp, img.title, img.descriptionurl, img.title, img.url, img.thumburl)
