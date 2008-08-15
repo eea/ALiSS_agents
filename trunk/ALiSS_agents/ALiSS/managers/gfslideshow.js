@@ -99,6 +99,7 @@ GFslideShow.prototype.parseOptions = function(options) {
   } else {
     maxEntries = 20;
   }
+
   // Default Options
   this.options = {
     numResults : maxEntries,

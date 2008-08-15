@@ -60,13 +60,15 @@
 			<h1 tal:content="concept_name" />
 
 	<!-- MediaWiki images -->
-		<div id="wikimedia-area">
-			<h2>Sample images</h2>
+		<div id="wikimedia-area" tal:condition="here/getWikiState">
+			<a style="float: right" class="feedButton" tal:attributes="href string:${here/absolute_url}/getWikiFeed?query=${term_name}"><img src="/misc_/ALiSS/RSSFeedRecipe_icon.png" title="Media RSS" alt="Media RSS"/>&nbsp;Media RSS</a>
+			<h2>
+				Sample images
+			</h2>
 			<br clear="both" />
 			<script tal:attributes="src string:${here/absolute_url}/misc_/ALiSS/gfslideshow.js" type="text/javascript"></script>
 			<tal:block content="structure python:here.getWikiFeddJS(term_name)" />
 			<div id="body">
-				<a class="feedButton" tal:attributes="href string:${here/absolute_url}/getWikiFeed?query=${term_name}"><img src="/misc_/ALiSS/RSSFeedRecipe_icon.png" title="Media RSS" alt="Media RSS"/>&nbsp;Media RSS</a>
 				<div id="slideshow" class="gss">Loading...</div>
 			</div>
 

@@ -256,7 +256,7 @@ class WikipediaImages:
 #    - for 'dog' RSS feed throw error
 #    - check about the feed cached inside slideshow (related to above)
 #    - to fill all fileds in RSS with proper data (e.g. title)
-#    - queries for compund qords dont work when quering wiki
+#    - queries for compund words dont work when quering wiki
 #    - check under IE if JS slideshow works
 #    - to pus settings of the slideshow on agent management
 #    - the old implementation to work in paralel with the slideshow
