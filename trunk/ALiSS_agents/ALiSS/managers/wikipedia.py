@@ -206,15 +206,16 @@ class WikipediaImages:
 <rss xmlns:media='http://search.yahoo.com/mrss/' version='2.0'>
   <channel>
     <lastBuildDate>%s</lastBuildDate>
-    <title>SlideShow feed from Mediawiki</title>
-    <description>These are a sampling of free images from MediaWiki.</description>
-    <link>http://www.mediawiki.org</link>
+    <title>SlideShow feed from Wikimedia Commons</title>
+    <description>These are a sampling of free images from Wikimedia Commons. See disclaimer 
+http://commons.wikimedia.org/wiki/Commons:General_disclaimer</description>
+    <link>http://commons.wikimedia.org</link>
     <image>
-      <url>http://www.mediawiki.org/</url>
-      <title>MediaWiki Samples</title>
-      <link>http://www.mediawiki.org</link>
+      <url>http://commons.wikimedia.org/wiki/Image:Commons-logo-en.png</url>
+      <title>Wikimedia Commons</title>
+      <link>http://commons.wikimedia.org</link>
     </image>
-    <managingEditor>antonio.de.marinis@eea.europa.eu</managingEditor>
+    <managingEditor>info-en@wikimedia.org</managingEditor>
               """ % (DateTime())
 
         ###RSS Body
