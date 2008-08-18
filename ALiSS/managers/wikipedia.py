@@ -73,6 +73,8 @@ class WikiImage:
         for key, value in data.items():
             setattr(self, key, value)
 
+    def get(self, prop): return getattr(self, prop, '').encode('utf-8')
+
     security = ClassSecurityInfo()
     security.setDefaultAccess("allow")
 
@@ -109,6 +111,8 @@ class mediawiki_handler(ContentHandler):
         if (name == 'page') and 'pageid' not in attrs.keys():
             self.__wikiimg = WikiImage(attrs['title'])
         if name == 'ii' and self.__wikiimg is not None:
+            self.__wikiimg.set_properties(attrs)
+        if name == 'metadata' and self.__wikiimg is not None:
             self.__wikiimg.set_properties(attrs)
 
     def endElement(self, name):
@@ -221,6 +225,8 @@ http://commons.wikimedia.org/wiki/Commons:General_disclaimer</description>
         ###RSS Body
         images = self.getImages(height, width, number, host)
         for img in images:
+            user = img.get('Artist')
+            if user == '': user = img.get('user')
             res += """
     <item>
       <guid isPermaLink='false'>%s</guid>
@@ -229,7 +235,7 @@ http://commons.wikimedia.org/wiki/Commons:General_disclaimer</description>
       <link>%s</link>
       <media:group>
         <media:title type='plain'>%s</media:title>
-        <media:description type='plain'>%s</media:description>
+        <media:description type='plain'><![CDATA[%s]]></media:description>
         <media:keywords>%s</media:keywords>
         <media:content
             url='%s'
@@ -243,9 +249,11 @@ http://commons.wikimedia.org/wiki/Commons:General_disclaimer</description>
         <media:credit>%s</media:credit>
       </media:group>
     </item>
-                   """ % (img.descriptionurl, img.timestamp, img.title, img.descriptionurl, img.title,
-                          img.comment, img.metadata, img.url, img.height, img.width, img.mime, img.thumburl,
-                          img.thumbheight, img.thumbwidth, img.user)
+                   """ % (img.get('descriptionurl'), img.get('timestamp'), img.get('title'),
+                          img.get('descriptionurl'), img.get('title'), img.get('comment'),
+                          img.get('metadata'), img.get('url'), img.get('height'), img.get('width'),
+                          img.get('mime'), img.get('thumburl'), img.get('thumbheight'),
+                          img.get('thumbwidth'), user)
 
         ###RSS Footer
         res += """
