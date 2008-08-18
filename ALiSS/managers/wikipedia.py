@@ -206,7 +206,7 @@ class WikipediaImages:
 <rss xmlns:media='http://search.yahoo.com/mrss/' version='2.0'>
   <channel>
     <lastBuildDate>%s</lastBuildDate>
-    <title>AJAX Feed SlideShow</title>
+    <title>SlideShow feed from Mediawiki</title>
     <description>These are a sampling of free images from MediaWiki.</description>
     <link>http://www.mediawiki.org</link>
     <image>
@@ -228,21 +228,23 @@ class WikipediaImages:
       <link>%s</link>
       <media:group>
         <media:title type='plain'>%s</media:title>
-        <media:description type='plain'></media:description>
-        <media:keywords></media:keywords>
+        <media:description type='plain'>%s</media:description>
+        <media:keywords>%s</media:keywords>
         <media:content
             url='%s'
-            height='1200' width='1600' type='image/jpeg'
+            height='%s' width='%s' type='%s'
             medium='image'>
         </media:content>
         <media:thumbnail
             url='%s'
-            height='216' width='288'>
+            height='%s' width='%s'>
         </media:thumbnail>
-        <media:credit></media:credit>
+        <media:credit>%s</media:credit>
       </media:group>
     </item>
-                   """ % (img.descriptionurl, img.timestamp, img.title, img.descriptionurl, img.title, img.url, img.thumburl)
+                   """ % (img.descriptionurl, img.timestamp, img.title, img.descriptionurl, img.title,
+                          img.comment, img.metadata, img.url, img.height, img.width, img.mime, img.thumburl,
+                          img.thumbheight, img.thumbwidth, img.user)
 
         ###RSS Footer
         res += """
@@ -250,16 +252,3 @@ class WikipediaImages:
 </rss>
                """
         return res
-
-
-#TODOs:
-#    - for 'dog' RSS feed throw error
-#    - check about the feed cached inside slideshow (related to above)
-#    - to fill all fileds in RSS with proper data (e.g. title)
-#    - queries for compund words dont work when quering wiki
-#    - check under IE if JS slideshow works
-#    - to pus settings of the slideshow on agent management
-#    - the old implementation to work in paralel with the slideshow
-#    - change columns on concept view so if no term found only the google search to show up (merge search and concept_html), e.g.:
-#           http://glossary.eea.europa.eu/terminology/search?term=water
-#    - above: it should be accessible through http://search.eea.europa.eu/search?term=water or even http://search.eea.europa.eu/?term=water
