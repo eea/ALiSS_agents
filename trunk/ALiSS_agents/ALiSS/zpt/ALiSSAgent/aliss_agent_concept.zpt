@@ -75,13 +75,12 @@
 			<script tal:attributes="src string:${here/absolute_url}/misc_/ALiSS/gfslideshow.js" type="text/javascript"></script>
 			<tal:block content="structure python:here.getWikiFeddJS(term_name)" />
 			<div id="body">
-				<div id="slideshow" class="gss">Loading...</div>
+				<div id="slideshow" class="gss figure-container">Loading...</div>
 			</div>
 
 			<br clear="both" />
 			<p class="discreet" style="text-align: right; border-top:1px solid #E9EFCD; 
-margin-top: 1em;">powered 
-by <a href="http://www.mediawiki.org" title="MediaWiki">MediaWiki</a> | Images freely provided by Wikimedia, see <a 
+margin-top: 1em;">Images freely provided by <a href="http://wikimedia.org/" title="Wikimedia">Wikimedia</a>, see <a 
 href="http://commons.wikimedia.org/wiki/Commons:General_disclaimer" 
 title="Wikimedia disclaimer">disclaimer</a></p>
 		</div>

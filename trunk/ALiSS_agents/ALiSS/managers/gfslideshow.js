@@ -487,7 +487,7 @@ GFslideShow.prototype.feedLoaded = function(result) {
   if ((this.feedUrl && result.error) ||
       (this.directEntries && this.directEntries.length == 0) ) {
     if (!this.options.feedLoadCallback) {
-      this.container.innerHTML = "<center>feed could not be loaded.</center>";
+      this.container.innerHTML = "<center>Images from feed could not be loaded.</center>";
     }
     return;
   }
@@ -783,7 +783,7 @@ GFslideShow.prototype.createFullControlPanel = function() {
   var padTop = (this.options.fullControlPanelSmallIcons?5:10);
   var padBottom = 5;
   var div = document.createElement('div');
-  div.style.backgroundColor = '#000000';
+  div.style.backgroundColor = '#ffffff';
   div.style.height = h + 'px';
   div.style.top = (this.height - (h+padBottom+padTop)) + 'px';
   div.style.width = '100%';
