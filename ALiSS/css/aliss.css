@@ -137,12 +137,18 @@ ul.subalphabet_list li {
  display : none;
 }
 
+.gsc-tabHeader {
+font-size:1.2em;
+font-weight:bold;
+}
+
+
 /* Slideshow related CSS */
-.gss a img {border : none;}
+.gss a img {}
 .gss {
  width: 288px;
  height: 216px;
- color: #dddddd;
- background-color: #000000;
+ color: #aaaaaa;
+ background-color: #ffffff;
  padding: 8px;
 }
