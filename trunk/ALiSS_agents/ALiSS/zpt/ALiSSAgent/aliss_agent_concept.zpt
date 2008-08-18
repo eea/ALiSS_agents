@@ -39,7 +39,16 @@
 		</ul>
 	</tal:block>
 
-	<!-- Case of NO TERM found -->
+	<!-- Google custom search area -->
+	<div id="google-custom-search-area" tal:attributes="style python:test(aliss_concept, 'width:47%', 'width:100%')">
+		<span tal:replace="structure here/google_cs_ajax_js" />
+		<h1>EEA website search</h1>
+		<div id="GCSSearchForm">Loading...</div>
+		<div id="rightSearchControl" class="search-control">Loading...</div>
+		<p><a href="http://code.google.com/apis/ajaxsearch/index.html"><span class="tagline">powered by The Google AJAX Search API</span></a> and <a href="http://www.google.com/coop/cse"><span class="tagline">Google Custom Search Engines</span></a></p>
+	</div>
+
+	<!-- Case of NO TERM found
 	<div tal:condition="not:aliss_concept" id="no_concept_area">
 		<h1 tal:content="term_name" />
 		<p>No term found matching exactly the name <strong><span tal:replace="term_name" /></strong>.</p>
@@ -48,6 +57,7 @@
 				<div class="AlissShadow" id="AlissSuggest"></div>
 		</div>
 	</div>
+	 -->
 
 	<!-- Case of TERM found -->
 	<tal:block	condition="aliss_concept">
@@ -189,15 +199,6 @@ title="Wikimedia disclaimer">disclaimer</a></p>
 			</div>
 		</tal:block>
 	</tal:block>
-
-	<!-- Google custom search area -->
-	<div id="google-custom-search-area">
-		<span tal:replace="structure here/google_cs_ajax_js" />
-		<h1>EEA website search</h1>
-		<div id="GCSSearchForm">Loading...</div>
-		<div id="rightSearchControl" class="search-control">Loading...</div>
-		<p><a href="http://code.google.com/apis/ajaxsearch/index.html"><span class="tagline">powered by The Google AJAX Search API</span></a> and <a href="http://www.google.com/coop/cse"><span class="tagline">Google Custom Search Engines</span></a></p>
-	</div>
 
 </tal:block>
 <tal:block tal:replace="structure here/standard_html_footer"/>

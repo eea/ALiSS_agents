@@ -66,13 +66,17 @@
         this.rightControl.draw(rightScDiv, drawOptions);
 
         // execute a starter search
-        this.searchForm.execute("<dtml-if term_name><dtml-var term_name></dtml-if>");
+        this.searchForm.input.name = "term"
+        this.searchForm.input.value = "<dtml-var term_name missing=''>";
         queryDisplay(this.searchForm);
+        this.rightControl.execute("<dtml-var term_name missing=''>");
       }
 
       // when the form fires a submit, grab its
       // value and call the left and right control
       cse.prototype.onSubmit = function(form) {
+        return form.submit();
+
         var q = form.input.value;
         if (q && q!= "") {
           this.rightControl.execute(q);
@@ -105,8 +109,6 @@
             ob_form.childNodes[2].appendChild(ob_txt);
           }
         }
-
-        form.input.value = "";
       }
 
       function OnLoad() {
