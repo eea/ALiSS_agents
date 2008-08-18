@@ -38,6 +38,12 @@
 			</li>
 		</ul>
 	</tal:block>
+        <!-- Case of NO TERM found -->
+        <div tal:condition="not:aliss_concept" id="no_concept_area">
+                <h1>Terminology results for <em tal:content="term_name" /></h1>
+                <p>No term found matching exactly the name <strong><span tal:replace="term_name" /></strong>.</p>
+        </div>
+
 
 	<!-- Google custom search area -->
 	<div id="google-custom-search-area" tal:attributes="style python:test(aliss_concept, 'width:47%', 'width:100%')">
@@ -48,16 +54,6 @@
 		<p><a href="http://code.google.com/apis/ajaxsearch/index.html"><span class="tagline">powered by The Google AJAX Search API</span></a> and <a href="http://www.google.com/coop/cse"><span class="tagline">Google Custom Search Engines</span></a></p>
 	</div>
 
-	<!-- Case of NO TERM found
-	<div tal:condition="not:aliss_concept" id="no_concept_area">
-		<h1 tal:content="term_name" />
-		<p>No term found matching exactly the name <strong><span tal:replace="term_name" /></strong>.</p>
-		<script type="text/javascript" tal:content="python:'registerAlissKeywordsSuggestions(\''+here.id+'\',\'AlissSuggest\',\''+term_name+'\',\'True\');'"></script>
-		<div class="AlissResult">
-				<div class="AlissShadow" id="AlissSuggest"></div>
-		</div>
-	</div>
-	 -->
 
 	<!-- Case of TERM found -->
 	<tal:block	condition="aliss_concept">
@@ -90,33 +86,8 @@ href="http://commons.wikimedia.org/wiki/Commons:General_disclaimer"
 title="Wikimedia disclaimer">disclaimer</a></p>
 		</div>
 
-	<!-- MediaWiki images (old thumb display) -->
-<!--
-	<tal:wiki condition="here/getWikiState" define="wiki_info python:here.getWikiImages(term_name)">
-		<div style="float:right; width:47%;"
-			 tal:condition="python:len(wiki_info)>0">
-			<h2>Sample images</h2>
-
-			<tal:wiki_image repeat="wiki wiki_info">
-				<div style="float:left; padding-right: 5px;">
-					<img style="" tal:attributes="src wiki/thumburl" alt="" title="" /><br />
-					<a style="" tal:attributes="href wiki/descriptionurl" title="See image source" target="_blank">image source</a>
-				</div>
-			</tal:wiki_image>
-
-			<br clear="both" />
-			<p class="discreet" style="text-align: right; border-top:1px solid #E9EFCD; 
-margin-top: 1em;">powered 
-by <a href="http://www.mediawiki.org" title="MediaWiki">MediaWiki</a> | Images freely provided by Wikimedia, see <a 
-href="http://commons.wikimedia.org/wiki/Commons:General_disclaimer" 
-title="Wikimedia disclaimer">disclaimer</a></p>
-
-		</div>
-	</tal:wiki>
--->
 
 	<!-- Definitions and translations -->
-			<script type="text/javascript" tal:content="python:'registerAlissKeywordsSuggestions(\''+here.id+'\',\'AlissSuggest\',\''+concept_name+'\',\'True\');'"></script>
 			<div id="definitions-area">
 			<h2>Definitions</h2>
 			<p tal:condition="not:concept_definitions">Definition not available.</p>
