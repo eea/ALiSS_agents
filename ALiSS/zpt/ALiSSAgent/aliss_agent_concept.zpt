@@ -74,7 +74,7 @@
 			<tal:block content="structure python:here.getWikiFeddJS(term_name)" />
 			<div id="body"><div id="slideshow" class="gss figure-container">Loading...</div></div>
 
-			<br clear="both" />
+			<br clear="all" />
 			<p class="discreet" style="text-align: right; border-top:1px solid #E9EFCD; 
 margin-top: 1em;">Images freely provided by <a href="http://wikimedia.org/" title="Wikimedia">Wikimedia</a>, see <a 
 href="http://commons.wikimedia.org/wiki/Commons:General_disclaimer" 
@@ -104,7 +104,7 @@ title="Wikimedia disclaimer">disclaimer</a></p>
 				</tal:block>
 			</dl>
 			<p class="more_definitions"><a class="moreLink" tal:attributes="href string:http://www.google.com/search?q=define%3A${concept_url}&amp;start=0&amp;start=0&amp;ie=utf-8&amp;oe=utf-8">Find more definitions (via Google)</a></p>
-			<br clear="both" />
+			<br clear="all" />
 			</div>
 
 			<div id="translations-area">
