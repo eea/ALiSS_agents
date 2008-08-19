@@ -27,7 +27,8 @@
         var cseId = "010617083146134556574:ymkqzb7sibw";
         searcher = new GwebSearch();
         options = new GsearcherOptions();
-        searcher.setSiteRestriction(cseId,null,"http://www.google.com/cse?cx=010617083146134556574%3Aymkqzb7sibw&q=__QUERY__&sa=Search&client=google-coop-np&cof=FORID%3A0&hl=__HL__");
+        
+searcher.setSiteRestriction(cseId,null,"http://www.google.com/cse?cx=010617083146134556574%3Aymkqzb7sibw&amp;q=__QUERY__&amp;sa=Search&amp;client=google-coop-np&amp;cof=FORID%3A0&amp;hl=__HL__");
         searcher.setUserDefinedLabel("EEA - Global search");
         options.setExpandMode(GSearchControl.EXPAND_MODE_OPEN);
         this.rightControl.addSearcher(searcher, options);
