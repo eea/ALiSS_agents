@@ -2,14 +2,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>resizetest</title>
-<script>
+<script type="text/javascript">
+// <![CDATA[
 function flashResize(w,h){
 alert("JS GOT "+w+","+h+" "+document.getElementById("smartsearchcontainer").style.width);
 alert("GOT:"+document.getElementById("smartsearchcontainer"));
 document.getElementById("smartsearchcontainer").style.width='500px';
 document.getElementById("smartsearchcontainer").style.height=h;
-
-
 }
 function resizeSmartSearch(w,h){  
 	
@@ -37,6 +36,7 @@ function getMaxSmartSearchHeight(){
 	flashTarget.style.height = result + "px"; 
 	return result;
 }
+// ]]>
 </script>
 </head>
 <body bgcolor="#cccccc">
