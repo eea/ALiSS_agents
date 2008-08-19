@@ -1,5 +1,5 @@
 <script type="text/javascript">
-
+// <![CDATA[
       // the cse class encapsulates a left and right search control
       // both controls are driven by a shared search form
       function cse() {
@@ -116,4 +116,5 @@ searcher.setSiteRestriction(cseId,null,"http://www.google.com/cse?cx=01061708314
         new cse();
       }
       GSearch.setOnLoadCallback(OnLoad);
+// ]]>
 </script>
