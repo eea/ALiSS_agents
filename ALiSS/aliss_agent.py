@@ -236,13 +236,15 @@ class ALiSSAgent(Folder,
   <script type="text/javascript">
     function load() {
       var samples = "%s/getWikiFeed?query=%s";
-      var options = {
-        displayTime: 2000,
-        transistionTime: 600,
-        linkTarget : google.feeds.LINK_TARGET_BLANK
-      };
-      new GFslideShow(samples, "slideshow", options);
 
+      var options = {
+        linkTarget : google.feeds.LINK_TARGET_BLANK,
+        fullControlPanel : true,
+        transistionTime: 600,
+        displayTime: 4000
+      };
+
+      new GFslideShow(samples, "slideshow", options);
     }
     google.load("feeds", "1");
     google.setOnLoadCallback(load);

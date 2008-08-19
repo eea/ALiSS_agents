@@ -203,6 +203,20 @@ class WikipediaImages:
         if urls_info: res = urls_info.get_images()
         return res
 
+    def checkCopyright(self, img):
+        """ """
+        licenses = ['CC-BY', 'GFDL', 'CC-BY-SA', 'Public domain']
+        copyright = img.get('Copyright')
+        comment = img.get('comment')
+
+        if copyright != '':
+            for lic in licenses:
+                if lic in copyright: return 1
+        else:
+            for lic in licenses:
+                if lic in comment: return 1
+        return 0
+
     def getFeed(self, height, width, number, host, REQUEST=None):
         """ """
         ###RSS Header
@@ -225,9 +239,10 @@ http://commons.wikimedia.org/wiki/Commons:General_disclaimer</description>
         ###RSS Body
         images = self.getImages(height, width, number, host)
         for img in images:
-            user = img.get('Artist')
-            if user == '': user = img.get('user')
-            res += """
+            if self.checkCopyright(img):
+                user = img.get('Artist')
+                if user == '': user = img.get('user')
+                res += """
     <item>
       <guid isPermaLink='false'>%s</guid>
       <pubDate>%s</pubDate>
