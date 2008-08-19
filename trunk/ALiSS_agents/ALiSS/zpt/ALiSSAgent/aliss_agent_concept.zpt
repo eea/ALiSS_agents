@@ -4,6 +4,7 @@
 <tal:block	define="utils			modules/Products.ALiSS.utils;
 					term_name		python:utils.utToUnicode(request.get('term', ' '));
 					aliss_concept	python:here.getConceptDetails(term_name)">
+
 	<!-- Alphabet listing and navigation -->
 	<tal:block define="dtype here/getDisplayType;
 						data here/generateMenu;
@@ -38,12 +39,11 @@
 			</li>
 		</ul>
 	</tal:block>
-        <!-- Case of NO TERM found -->
-        <div tal:condition="not:aliss_concept" id="no_concept_area">
-                <h1>Terminology results for <em tal:content="term_name" /></h1>
-                <p>No term found matching exactly the name <strong><span tal:replace="term_name" /></strong>.</p>
-        </div>
-
+		<!-- Case of NO TERM found -->
+		<div tal:condition="not:aliss_concept" id="no_concept_area">
+				<h1>Terminology results for <em tal:content="term_name" /></h1>
+				<p>No term found matching exactly the name <strong><span tal:replace="term_name" /></strong>.</p>
+		</div>
 
 	<!-- Google custom search area -->
 	<div id="google-custom-search-area" tal:attributes="style python:test(aliss_concept, 'width:47%', 'width:100%')">
@@ -53,7 +53,6 @@
 		<div id="rightSearchControl" class="search-control">Loading...</div>
 		<p><a href="http://code.google.com/apis/ajaxsearch/index.html"><span class="tagline">powered by The Google AJAX Search API</span></a> and <a href="http://www.google.com/coop/cse"><span class="tagline">Google Custom Search Engines</span></a></p>
 	</div>
-
 
 	<!-- Case of TERM found -->
 	<tal:block	condition="aliss_concept">
@@ -67,16 +66,13 @@
 
 	<!-- MediaWiki images -->
 		<div id="wikimedia-area" tal:condition="here/getWikiState">
-			<a style="float: right" class="feedButton" tal:attributes="href string:${here/absolute_url}/getWikiFeed?query=${term_name}"><img src="/misc_/ALiSS/RSSFeedRecipe_icon.png" title="Media RSS" alt="Media RSS"/>&nbsp;Media RSS</a>
-			<h2>
-				Sample images
-			</h2>
+			<!-- a style="float: right" class="feedButton" tal:attributes="href string:${here/absolute_url}/getWikiFeed?query=${term_name}"><img src="/misc_/ALiSS/RSSFeedRecipe_icon.png" title="Media RSS" alt="Media RSS"/>&nbsp;Media RSS</a -->
+			<h2>Sample images</h2>
+
 			<br clear="both" />
 			<script tal:attributes="src string:${here/absolute_url}/misc_/ALiSS/gfslideshow.js" type="text/javascript"></script>
 			<tal:block content="structure python:here.getWikiFeddJS(term_name)" />
-			<div id="body">
-				<div id="slideshow" class="gss figure-container">Loading...</div>
-			</div>
+			<div id="body"><div id="slideshow" class="gss figure-container">Loading...</div></div>
 
 			<br clear="both" />
 			<p class="discreet" style="text-align: right; border-top:1px solid #E9EFCD; 
@@ -84,7 +80,6 @@ margin-top: 1em;">Images freely provided by <a href="http://wikimedia.org/" titl
 href="http://commons.wikimedia.org/wiki/Commons:General_disclaimer" 
 title="Wikimedia disclaimer">disclaimer</a></p>
 		</div>
-
 
 	<!-- Definitions and translations -->
 			<div id="definitions-area">
