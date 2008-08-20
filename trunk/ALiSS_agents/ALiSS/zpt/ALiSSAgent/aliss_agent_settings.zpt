@@ -153,10 +153,6 @@
 				</td>
 			</tr>
 			<tr>
-				<th>Host</th>
-				<td><input type="text" name="wiki_host" size="30" tal:attributes="value here/getWikiHost" /></td>
-			</tr>
-			<tr>
 				<td colspan="2"><input type="submit" name="wiki_save" value="Save changes" style="margin-top:3px;" /></td>
 			</tr>
 		</table>

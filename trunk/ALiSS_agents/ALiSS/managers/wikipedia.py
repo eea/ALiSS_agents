@@ -20,15 +20,15 @@
 import urllib2
 import sys
 
-from xml.sax.handler import ContentHandler
-from xml.sax import *
-from cStringIO import StringIO
-from types import StringType, UnicodeType
+from xml.sax.handler    import ContentHandler
+from xml.sax            import *
+from cStringIO          import StringIO
+from types              import StringType, UnicodeType
 
 #Zope imports
 from Globals        import InitializeClass
 from AccessControl  import ClassSecurityInfo
-from DateTime import DateTime
+from DateTime       import DateTime
 
 #Product imports
 from Products.ALiSS.utils import utUrlEncode
@@ -109,7 +109,7 @@ class mediawiki_handler(ContentHandler):
             for attr in attrs.keys():
                 if attr == 'title':
                     self.set_ids(attrs[attr])
-        if (name == 'page') and 'pageid' not in attrs.keys():
+        if name == 'page':
             self.__wikiimg = WikiImage(attrs['title'])
         if name == 'ii' and self.__wikiimg is not None:
             self.__wikiimg.set_properties(attrs)
@@ -169,34 +169,36 @@ class WikipediaImages:
         """ """
         self.titles = titles
 
+    def get_wiki_images(self, number, host="http://commons.wikimedia.org"):
+        try:
+            f = urllib2.urlopen("%s/w/api.php?action=query&titles=%s&prop=images&imlimit=%s&format=xml&redirects" % 
+                                    (host, utUrlEncode(self.titles), number))
+            s = f.read()
+        except:
+            pass
+
+        parser = mediawiki_parser()
+        images_info = parser.parseHeader(s)
+        images_list = images_info.get_ids()
+        return images_list
+
     def getImages(self, height, width, number, host):
         """ """
         res = []
         s = ''
+        images_list = self.get_wiki_images(number)
 
-       #Get images list
-        try:
-            f = urllib2.urlopen("%s/w/api.php?action=query&titles=%s&prop=images&imlimit=%s&format=xml" % 
-                                    (host, utUrlEncode(self.titles), number))
-            s = f.read()
-        except:
-            self.error_log.raising(sys.exc_info())
-
-        parser = mediawiki_parser()
-        images_info = parser.parseHeader(s)
-
-        #Get image(s) url
-        images_list = images_info.get_ids()
-        s = ''
+        if len(images_list) == 0:
+            images_list = self.get_wiki_images(number, 'http://en.wikipedia.org')
 
         if len(images_list) > 0:
             param = '|'.join(images_list)
             try:
-                f = urllib2.urlopen("%s/w/api.php?action=query&titles=%s&prop=imageinfo&iiprop=timestamp|user|comment|url|size|sha1|mime|metadata|archivename|bitdepth&iiurlheight=%s&iiurlwidth=%s&format=xml" % 
-                                        (host, utUrlEncode(param), height, width))
+                f = urllib2.urlopen("http://commons.wikimedia.org/w/api.php?action=query&titles=%s&prop=imageinfo&iiprop=timestamp|user|comment|url|size|sha1|mime|metadata|archivename|bitdepth&iiurlheight=%s&iiurlwidth=%s&format=xml" % 
+                                        (utUrlEncode(param), height, width))
                 s = f.read()
             except:
-                self.error_log.raising(sys.exc_info())
+                pass
 
         parser = mediawiki_parser()
         urls_info = parser.parseHeader(s)
@@ -226,9 +228,10 @@ http://commons.wikimedia.org/wiki/Commons:General_disclaimer</description>
         ###RSS Body
         images = self.getImages(height, width, number, host)
         for img in images:
-            user = img.get('Artist')
-            if user == '': user = img.get('user')
-            res += """
+            if img.get('thumburl') != '':
+                user = img.get('Artist')
+                if user == '': user = img.get('user')
+                res += """
     <item>
       <guid isPermaLink='false'>%s</guid>
       <pubDate>%s</pubDate>
