@@ -391,7 +391,7 @@ GFslideShow.prototype.grabThumb = function(thumbNodes) {
   var node = thumbNodes[ti];
   var thumb = null;
   var thumb = node.getAttribute("url");
-  if (!thumb) {
+  if (!thumb && thumb!='') {
     thumb = node.firstChild.nodeValue;
   }
   return thumb;

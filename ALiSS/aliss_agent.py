@@ -86,7 +86,7 @@ class ALiSSAgent(Folder,
         self.wiki_images =  1
         self.wiki_height =  200
         self.wiki_width =   200
-        self.wiki_host =    'http://en.wikipedia.org'
+        self.wiki_host =    'http://en.wikipedia.org' #deprecated
 
     def __setstate__(self,state):
         """ """
@@ -195,13 +195,12 @@ class ALiSSAgent(Folder,
     #   MEDIAWIKI SETTINGS  #
     #########################
     security.declareProtected(view_management_screens, 'manageMediaWiki')
-    def manageMediaWiki(self, wiki_service=0, wiki_images=1, wiki_height=200, wiki_width=200, wiki_host='', REQUEST=None):
+    def manageMediaWiki(self, wiki_service=0, wiki_images=1, wiki_height=200, wiki_width=200, REQUEST=None):
         """ manage mediawiki settings """
         self.wiki_service = wiki_service
         self.wiki_images =  wiki_images
         self.wiki_height =  wiki_height
         self.wiki_width =   wiki_width
-        self.wiki_host =    wiki_host
         self._p_changed = 1
         if REQUEST: REQUEST.RESPONSE.redirect('manage_settings_html?save=ok')
 
