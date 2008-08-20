@@ -48,7 +48,8 @@ MIME_TYPES = ['image/jpeg', 'image/jpg', 'image/jpe', 'image/svg', 'image/svg+xm
 WIKI_LOGOS = ['Image:Commons-logo.svg', 'Image:Disambig gray.svg', 'Image:Wiktionary-logo-en.png',
               'Image:Wikisource-logo.svg', 'Image:Ambox content.png', 'Image:Wikibooks-logo.svg',
               'Image:Wikinews-logo.svg', 'Image:Wikiquote-logo.svg', 'Image:Wikiversity-logo-Snorky.svg',
-              'Image:Wikiquote-logo-en.svg', 'Image:Wiki_letter_w.svg', 'Image:Wikispecies-logo.svg']
+              'Image:Wikiquote-logo-en.svg', 'Image:Wiki_letter_w.svg', 'Image:Wikispecies-logo.svg',
+              'Image:Wiktionary-logo-en.svg']
 
 #Get MediaWiki data in XML format
 class WikiImage:
@@ -203,20 +204,6 @@ class WikipediaImages:
         if urls_info: res = urls_info.get_images()
         return res
 
-    def checkCopyright(self, img):
-        """ """
-        licenses = ['CC-BY', 'GFDL', 'CC-BY-SA', 'Public domain']
-        copyright = img.get('Copyright')
-        comment = img.get('comment')
-
-        if copyright != '':
-            for lic in licenses:
-                if lic in copyright: return 1
-        else:
-            for lic in licenses:
-                if lic in comment: return 1
-        return 0
-
     def getFeed(self, height, width, number, host, REQUEST=None):
         """ """
         ###RSS Header
@@ -239,10 +226,9 @@ http://commons.wikimedia.org/wiki/Commons:General_disclaimer</description>
         ###RSS Body
         images = self.getImages(height, width, number, host)
         for img in images:
-            if self.checkCopyright(img):
-                user = img.get('Artist')
-                if user == '': user = img.get('user')
-                res += """
+            user = img.get('Artist')
+            if user == '': user = img.get('user')
+            res += """
     <item>
       <guid isPermaLink='false'>%s</guid>
       <pubDate>%s</pubDate>
