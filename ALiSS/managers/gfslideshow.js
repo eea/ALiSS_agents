@@ -462,12 +462,17 @@ GFslideShow.prototype.processEntries = function(entries) {
                            entries[i].xmlNode,
                            this.options.thumbnailNamespace,
                            this.options.thumbnailTag);
+      var usrNodes = google.feeds.getElementsByTagNameNS(
+                           entries[i].xmlNode,
+                           this.options.thumbnailNamespace,
+                           'credit');
       if (thumbNodes && thumbNodes.length > 0) {
         thumbUrl = this.grabThumb(thumbNodes);
       }
     }
     if (thumbUrl) {
       entries[i].thumbUrl = thumbUrl;
+      entries[i].wiki_user = usrNodes[0].firstChild.nodeValue;
       this.entries.push(entries[i]);
     }
   }
@@ -1262,6 +1267,10 @@ GFslideShow.prototype.snapToNextPhoto = function() {
   this.setOpacity(this.current, 0);
   this.current = this.next;
   this.setDisplayTimer();
+  var auth = document.getElementById('wiki-author');
+  var photo_credit = document.getElementById('photo_credit');
+  auth.innerHTML = this.entries[this.photo_index].wiki_user
+  photo_credit.href = this.entries[this.photo_index].link
   if (this.options.transitionCallback) {
     this.options.transitionCallback(this.entries[this.photo_index],
                                     this.options.transitionTime);
