@@ -49,7 +49,7 @@ WIKI_LOGOS = ['Image:Commons-logo.svg', 'Image:Disambig gray.svg', 'Image:Wiktio
               'Image:Wikisource-logo.svg', 'Image:Ambox content.png', 'Image:Wikibooks-logo.svg',
               'Image:Wikinews-logo.svg', 'Image:Wikiquote-logo.svg', 'Image:Wikiversity-logo-Snorky.svg',
               'Image:Wikiquote-logo-en.svg', 'Image:Wiki_letter_w.svg', 'Image:Wikispecies-logo.svg',
-              'Image:Wiktionary-logo-en.svg']
+              'Image:Wiktionary-logo-en.svg', 'Image:Wikipedia-logo.png', 'Image:Padlock-silver-medium.svg']
 
 #Get MediaWiki data in XML format
 class WikiImage:
