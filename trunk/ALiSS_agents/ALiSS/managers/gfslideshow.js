@@ -445,7 +445,6 @@ GFslideShow.prototype.processThumbs = function(opt_chunk, opt_timeout) {
   }
 };
 
-
 /**
  * Process and setup the entries
  * @param {Object} entries Entries array.
@@ -472,7 +471,13 @@ GFslideShow.prototype.processEntries = function(entries) {
     }
     if (thumbUrl) {
       entries[i].thumbUrl = thumbUrl;
-      entries[i].wiki_user = usrNodes[0].firstChild.nodeValue;
+      if (usrNodes.length > 0) {
+        if (usrNodes[0].firstChild != null) {
+          entries[i].wiki_user = usrNodes[0].firstChild.nodeValue;
+        }
+        else {entries[i].wiki_user = 'Wikimedia Commons';}
+      }
+      else {entries[i].wiki_user = 'Wikimedia Commons';}
       this.entries.push(entries[i]);
     }
   }
