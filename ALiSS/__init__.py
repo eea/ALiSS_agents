@@ -85,6 +85,7 @@ misc_ = {
     'googleprogress.gif':   ImageFile('images/googleprogress.gif', globals()),
     #gfslideshow
     'gfslideshow.js':           ImageFile('managers/gfslideshow.js', globals()),
+    'qTip.js':                  ImageFile('managers/qTip.js', globals()),
     'RSSFeedRecipe_icon.png':   ImageFile('images/RSSFeedRecipe_icon.png', globals()),
     }
 

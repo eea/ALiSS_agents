@@ -423,6 +423,9 @@ GFslideShow.prototype.processThumbs = function(opt_chunk, opt_timeout) {
     if (this.options.linkTarget) {
       if (!this.opera) {
         var link = this.createLink(this.entries[i].link);
+        // Wiki tooltip
+        link.title = this.entries[i].wiki_desc;
+        link.tiptitle= this.entries[i].wiki_desc;
         link.appendChild(image);
         this.container.appendChild(link);
       } else { // Opera Hack
@@ -443,6 +446,7 @@ GFslideShow.prototype.processThumbs = function(opt_chunk, opt_timeout) {
     }
     this.thumbs_index++;
   }
+  tooltip.init();
 };
 
 /**
@@ -465,6 +469,10 @@ GFslideShow.prototype.processEntries = function(entries) {
                            entries[i].xmlNode,
                            this.options.thumbnailNamespace,
                            'credit');
+      var descNodes = google.feeds.getElementsByTagNameNS(
+                           entries[i].xmlNode,
+                           this.options.thumbnailNamespace,
+                           'description');
       if (thumbNodes && thumbNodes.length > 0) {
         thumbUrl = this.grabThumb(thumbNodes);
       }
@@ -478,6 +486,15 @@ GFslideShow.prototype.processEntries = function(entries) {
         else {entries[i].wiki_user = 'Wikimedia Commons';}
       }
       else {entries[i].wiki_user = 'Wikimedia Commons';}
+
+      if (descNodes.length > 0) {
+        if (descNodes[0].firstChild != null) {
+          entries[i].wiki_desc = descNodes[0].firstChild.nodeValue;
+        }
+        else {entries[i].wiki_desc = '';}
+      }
+      else {entries[i].wiki_desc = '';}
+
       this.entries.push(entries[i]);
     }
   }
