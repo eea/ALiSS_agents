@@ -233,6 +233,7 @@ class ALiSSAgent(Folder,
         """ """
         return """
   <script type="text/javascript">
+    //<![CDATA[
     function load() {
       var samples = "%s/getWikiFeed?query=%s";
 
@@ -247,6 +248,7 @@ class ALiSSAgent(Folder,
     }
     google.load("feeds", "1");
     google.setOnLoadCallback(load);
+    // ]]>
   </script>""" % (self.absolute_url(), query)
 
     #########################
@@ -580,7 +582,7 @@ class ALiSSAgent(Folder,
         digits = self.getDigits()
         for key in data.keys():
             if key in digits: return True
-        return false
+        return False
 
     def generateMenu(self):
         """ generate the alphabetic menu """

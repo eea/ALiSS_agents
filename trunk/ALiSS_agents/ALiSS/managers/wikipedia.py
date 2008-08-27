@@ -39,7 +39,9 @@ from Products.ALiSS.utils import utUrlEncode
 #     - http://en.wikipedia.org/w/api.php
 #   Examples:
 #     - http://en.wikipedia.org/w/api.php?action=query&titles=water&prop=images&imlimit=3&format=xml
-#     - http://en.wikipedia.org/w/api.php?action=query&titles=Image%3A200407-sandouping-sanxiadaba-4.med.jpg%7CImage%3A3D%20model%20hydrogen%20bonds%20in%20water.jpg%7CImage%3ABay%20of%20Fundy%20High%20Tide.jpg&&prop=imageinfo&iiprop=url|size|mime&iiurlheight=200&iiurlwidth=200&format=xml
+#     - http://commons.wikimedia.org/w/api.php?action=query&titles=Image:Capillarity.svg&prop=imageinfo|categories|revisions&iiprop=timestamp|user|comment|url|size|sha1|mime|metadata|archivename|bitdepth&iiurlheight=200&iiurlwidth=200&rvprop=content&format=xml
+#   Example of our query:
+#     - http://commons.wikimedia.org/w/api.php?action=query&titles=Image:Cuisson%20des%20pates.jpg|Image:Capillarity.svg|Image:Blue%20Linckia%20Starfish.JPG|Image:Bay%20of%20Fundy%20Low%20Tide.jpg|Image:200407-sandouping-sanxiadaba-4.med.jpg|Image:3D%20model%20hydrogen%20bonds%20in%20water.jpg|Image:Bay%20of%20Fundy%20High%20Tide.jpg&prop=imageinfo|revisions&iiprop=timestamp|user|url|size|mime|metadata&iiurlheight=200&iiurlwidth=200&rvprop=content&format=xml
 ################################################
 
 # Mime Types we use
@@ -49,7 +51,8 @@ WIKI_LOGOS = ['Image:Commons-logo.svg', 'Image:Disambig gray.svg', 'Image:Wiktio
               'Image:Wikisource-logo.svg', 'Image:Ambox content.png', 'Image:Wikibooks-logo.svg',
               'Image:Wikinews-logo.svg', 'Image:Wikiquote-logo.svg', 'Image:Wikiversity-logo-Snorky.svg',
               'Image:Wikiquote-logo-en.svg', 'Image:Wiki_letter_w.svg', 'Image:Wikispecies-logo.svg',
-              'Image:Wiktionary-logo-en.svg', 'Image:Wikipedia-logo.png', 'Image:Padlock-silver-medium.svg']
+              'Image:Wiktionary-logo-en.svg', 'Image:Wikipedia-logo.png', 'Image:Padlock-silver-medium.svg',
+              'Image:Disambig.svg']
 
 #Get MediaWiki data in XML format
 class WikiImage:
@@ -89,6 +92,7 @@ class mediawiki_handler(ContentHandler):
         self.__images = []
         self.__ids = []
         self.__wikiimg = None
+        self.__data = []
 
     def get_ids(self):
         return self.__ids
@@ -121,6 +125,13 @@ class mediawiki_handler(ContentHandler):
             if self.__wikiimg is not None:
                 self.__images.append(self.__wikiimg)
             self.__wikiimg = None
+        if name == 'rev':
+            data = u''.join(self.__data).strip()
+            self.__images[-1].set_properties({'revision': data})
+        self.__data = []
+
+    def characters(self, content):
+        self.__data.append(content)
 
 class mediawiki_parser:
     """ """
@@ -169,6 +180,24 @@ class WikipediaImages:
         """ """
         self.titles = titles
 
+    def getDescription(self, desc):
+        """ """
+        res = ''
+        start = desc.find('|Description')
+        if start > -1: start += 12
+        end =   desc.find('|Source')
+        desc =  desc[start:end]
+
+        while 1:
+            span = (desc.find('{{'), desc.find('}}'))
+            if not -1 in span:
+                res += desc[span[0]+2:span[1]] + '<br />'
+                desc = desc[span[1]+2:]
+            else:
+                break
+
+        return res
+
     def get_wiki_images(self, number, host="http://commons.wikimedia.org"):
         try:
             f = urllib2.urlopen("%s/w/api.php?action=query&titles=%s&prop=images&imlimit=%s&format=xml&redirects" % 
@@ -194,7 +223,7 @@ class WikipediaImages:
         if len(images_list) > 0:
             param = '|'.join(images_list)
             try:
-                f = urllib2.urlopen("http://commons.wikimedia.org/w/api.php?action=query&titles=%s&prop=imageinfo&iiprop=timestamp|user|comment|url|size|sha1|mime|metadata|archivename|bitdepth&iiurlheight=%s&iiurlwidth=%s&format=xml" % 
+                f = urllib2.urlopen("http://commons.wikimedia.org/w/api.php?action=query&titles=%s&prop=imageinfo|revisions&iiprop=timestamp|user|comment|url|size|mime|metadata&iiurlheight=%s&iiurlwidth=%s&rvprop=content&format=xml" % 
                                         (utUrlEncode(param), height, width))
                 s = f.read()
             except:
@@ -229,35 +258,48 @@ http://commons.wikimedia.org/wiki/Commons:General_disclaimer</description>
         images = self.getImages(height, width, number, host)
         for img in images:
             if img.get('thumburl') != '':
+
                 user = img.get('Artist')
                 if user == '': user = img.get('user')
+
+                description = self.getDescription(img.get('revision'))
+                if description == '': description = img.get('ImageDescription')
+
                 res += """
     <item>
-      <guid isPermaLink='false'>%s</guid>
-      <pubDate>%s</pubDate>
-      <title>%s</title>
-      <link>%s</link>
+      <guid isPermaLink='false'>%(descriptionurl)s</guid>
+      <pubDate>%(timestamp)s</pubDate>
+      <title>%(title)s</title>
+      <link>%(descriptionurl)s</link>
       <media:group>
-        <media:title type='plain'>%s</media:title>
-        <media:description type='plain'><![CDATA[%s]]></media:description>
-        <media:keywords>%s</media:keywords>
+        <media:title type='plain'>%(title)s</media:title>
+        <media:description type='plain'><![CDATA[%(description)s]]></media:description>
+        <media:keywords>%(metadata)s</media:keywords>
         <media:content
-            url='%s'
-            height='%s' width='%s' type='%s'
+            url='%(url)s'
+            height='%(height)s' width='%(width)s' type='%(mime)s'
             medium='image'>
         </media:content>
         <media:thumbnail
-            url='%s'
-            height='%s' width='%s'>
+            url='%(thumburl)s'
+            height='%(thumbheight)s' width='%(thumbwidth)s'>
         </media:thumbnail>
-        <media:credit>%s</media:credit>
+        <media:credit>%(user)s</media:credit>
       </media:group>
     </item>
-                   """ % (img.get('descriptionurl'), img.get('timestamp'), img.get('title'),
-                          img.get('descriptionurl'), img.get('title'), img.get('comment'),
-                          img.get('metadata'), img.get('url'), img.get('height'), img.get('width'),
-                          img.get('mime'), img.get('thumburl'), img.get('thumbheight'),
-                          img.get('thumbwidth'), user)
+                   """ % {'descriptionurl': img.get('descriptionurl'),
+                          'timestamp': img.get('timestamp'),
+                          'title': img.get('title'),
+                          'description': description,
+                          'metadata': img.get('metadata'),
+                          'url': img.get('url'),
+                          'height': img.get('height'),
+                          'width': img.get('width'),
+                          'mime': img.get('mime'),
+                          'thumburl': img.get('thumburl'),
+                          'thumbheight': img.get('thumbheight'),
+                          'thumbwidth': img.get('thumbwidth'),
+                          'user': user}
 
         ###RSS Footer
         res += """
