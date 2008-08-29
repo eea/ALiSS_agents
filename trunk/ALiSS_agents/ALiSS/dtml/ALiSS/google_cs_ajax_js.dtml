@@ -67,7 +67,7 @@ searcher.setSiteRestriction(cseId,null,"http://www.google.com/cse?cx=01061708314
         this.rightControl.draw(rightScDiv, drawOptions);
 
         // execute a starter search
-        this.searchForm.input.name = "term"
+        this.searchForm.input.name = "term";
         this.searchForm.input.value = "<dtml-var term_name missing=''>";
         queryDisplay(this.searchForm);
         this.rightControl.execute("<dtml-var term_name missing=''>");

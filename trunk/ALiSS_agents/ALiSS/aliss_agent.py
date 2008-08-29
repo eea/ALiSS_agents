@@ -561,6 +561,9 @@ class ALiSSAgent(Folder,
     security.declarePublic('flash_search')
     flash_search =    PageTemplateFile('zpt/ALiSSAgent/aliss_flash_search', globals())
 
+    security.declarePublic('sitesearch')
+    sitesearch =  PageTemplateFile('zpt/ALiSSAgent/sitesearch', globals()) 
+
     #####################
     #   FLASH CLIENT    #
     #####################
