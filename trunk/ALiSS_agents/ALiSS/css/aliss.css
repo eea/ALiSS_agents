@@ -49,6 +49,9 @@ ul.subalphabet_list li {
  display:none;
 }
 
+#search-results-area {
+ float:left;
+}
 
 #see-also ul li {
  display: inline;
