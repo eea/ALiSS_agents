@@ -15,6 +15,7 @@
 #
 # Authors:
 # Alexandru Ghica - Eau de Web
+# Antonio De Marinis - EEA
 
 #Python imports
 import urllib2
@@ -52,7 +53,7 @@ WIKI_LOGOS = ['Image:Commons-logo.svg', 'Image:Disambig gray.svg', 'Image:Wiktio
               'Image:Wikinews-logo.svg', 'Image:Wikiquote-logo.svg', 'Image:Wikiversity-logo-Snorky.svg',
               'Image:Wikiquote-logo-en.svg', 'Image:Wiki_letter_w.svg', 'Image:Wikispecies-logo.svg',
               'Image:Wiktionary-logo-en.svg', 'Image:Wikipedia-logo.png', 'Image:Padlock-silver-medium.svg',
-              'Image:Disambig.svg']
+              'Image:Disambig.svg','Image:Globe_important.svg']
 
 #Get MediaWiki data in XML format
 class WikiImage:
