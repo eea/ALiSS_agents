@@ -2,19 +2,19 @@
 <span tal:replace="python:request.RESPONSE.setHeader('content-type', 'text/html;charset=UTF-8')"/>
 
 <tal:block	define="utils			modules/Products.ALiSS.utils;
-					term_name		python:utils.utToUnicode(request.get('term', ' '));
-					aliss_concept	python:here.getConceptDetails(term_name)">
+					term_name		python:utils.utToUnicode(request.get('term', ''));
+					aliss_concept	python:here.getConceptDetails(term_name);">
         <h1>EEA advanced search</h1>
         <div id="search-results-area" tal:attributes="style python:test(aliss_concept, 'width:47%', 'width:100%')">
         <div metal:use-macro="here/concept_html/macros/googlecse-result" />
         </div>
 	<tal:block	condition="aliss_concept">
-	 <tal:block	define="concept_name		python:aliss_concept['term_name'];
-							concept_url			python:aliss_concept['term_url'];
-							concept_definitions	python:aliss_concept['definitions'];
-							translations		python:aliss_concept['translations'];
-							terms_list			python:aliss_concept['terms_list']">
-	  <div style="float:right;width:47%;">
+	 <tal:block	define="concept_name            python:aliss_concept['term_name'];
+      				concept_url		python:aliss_concept['term_url'];
+				concept_definitions	python:aliss_concept['definitions'];
+				translations		python:aliss_concept['translations'];
+				terms_list			python:aliss_concept['terms_list']">
+	  <div style="float:right;width:47%;" tal:condition="concept_name">
 	   <h1>Terminology: <em><span tal:replace="concept_name" /></em></h1> 
            <div metal:use-macro="here/concept_html/macros/definitions" />
 	   <div metal:use-macro="here/concept_html/macros/translations" />
