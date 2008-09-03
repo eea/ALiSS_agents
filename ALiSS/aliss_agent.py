@@ -475,6 +475,10 @@ class ALiSSAgent(Folder,
         terms_list = []
         definitions = {}
         translations = {}
+
+        if not term_name:
+           return None
+
         term_name=term_name.strip()
         results={'term_name':'',
                  'term_url':'',
