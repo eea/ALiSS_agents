@@ -3,7 +3,7 @@
 <p class="documentDescription"><dtml-var description></p>
 
 <div id="standard-term-search">
-	<h1>Search</h1>
+	<h1>Search term</h1>
 	<form action="results" method="post" name="frmSearch">
 		<fieldset>
 			<legend>Find environmental term</legend>
@@ -26,12 +26,14 @@
 
 <h1>A-Z Index</h1>
 <ul>
-	<li tal:repeat="agent here/getAllAgents">
+	<tal:block repeat="agent here/getAllAgents">
+	<li tal:condition="python:agent.id == 'terminology'">
 		<a tal:attributes="href agent/absolute_url;
 							title agent/title"
 			tal:content="python:test(agent.title, agent.title, 'no title')" />
 		<small><tal:block content="agent/description" /></small>
 	</li>
+	</tal:block>
 </ul>
 
 <tal:block tal:replace="structure here/standard_html_footer"/>
