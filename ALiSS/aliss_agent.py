@@ -445,18 +445,35 @@ class ALiSSAgent(Folder,
                     a_start = text[wEnd:].find('<a')
                     a_end = text[wEnd:].find('/a>')
 
-                    if (a_start > a_end) and (a_end > -1):
-                        wReplace = findTerm
-                    elif (a_start == -1) and (a_end > -1):
-                        wReplace = findTerm
-                    else:
-                        wReplace = '<a href=\"' + suggestionterms[resterm]['concept_url'] + '\">' + findTerm + '</a>'
-                        text = text[:wStart] + wReplace + text[wEnd:]
-                        linkedterms.append([wStart,wEnd,findTerm])
+                    wReplace = findTerm
+                    origTerm = text[wStart:wEnd]
+                    if self.textCompare(origTerm, findTerm):
+                        if (a_start > a_end) and (a_end > -1):
+                            wReplace = findTerm
+                        elif (a_start == -1) and (a_end > -1):
+                            wReplace = findTerm
+                        else:
+                            wReplace = '<a href=\"%s\" title=\"%s\">%s</a>' % \
+                                            (suggestionterms[resterm]['concept_url'],
+                                             findTerm,
+                                             origTerm)
+                            text = text[:wStart] + wReplace + text[wEnd:]
+                            linkedterms.append([wStart,wEnd,findTerm])
                     pos = wStart + len(wReplace)
                 else:
                     break
         return {'foundterms':foundterms, 'linkedterms':linkedterms, 'marked_text':text.strip()}
+
+    security.declarePublic('textCompare')
+    def textCompare(self, orig, sugg):
+        """ Make sure not to replace a acronym instead of a noun """
+        cmp1 = ''
+        cmp2 = ''
+        for word in orig.split(' '):
+            cmp1 += "%s%s" % (word[0].lower(), word[1:])
+        for word in sugg.split(' '):
+            cmp2 += "%s%s" % (word[0].lower(), word[1:])
+        return cmp1 == cmp2
 
     security.declarePublic('getConceptInfo')
     def getConceptInfo(self, term_name, returnobj='return objects'):
