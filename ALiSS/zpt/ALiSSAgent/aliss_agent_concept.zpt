@@ -46,14 +46,14 @@
 		</div>
 
 	<!-- Google custom search area -->
-	<div metal:define-macro="googlecse" id="google-custom-search-area" tal:attributes="style python:test(aliss_concept, 'width:47%', 'width:100%')"><h1>EEA website search</h1>
-          <div id="googlecse-result" metal:define-macro="googlecse-result">
-                <span tal:replace="structure here/google_cs_ajax_js" />
-                <div id="GCSSearchForm">Loading...</div>
-		<div id="rightSearchControl" class="search-control">Loading...</div>
-                <p class="discreet">powered by <a href="http://code.google.com/apis/ajaxsearch/index.html"><span class="tagline">The Google AJAX Search API</span></a> and <a href="http://www.google.com/coop/cse"><span class="tagline">Google Custom Search Engines</span></a></p></div>
-
-		
+	<div metal:define-macro="googlecse" id="google-custom-search-area" tal:attributes="style python:test(aliss_concept, 'width:47%', 'width:100%')">
+		<h1>EEA website search</h1>
+		<div id="googlecse-result" metal:define-macro="googlecse-result">
+			<span tal:replace="structure here/google_cs_ajax_js" />
+			<div id="GCSSearchForm">Loading...</div>
+			<div id="rightSearchControl" class="search-control">Loading...</div>
+			<p class="discreet">powered by <a href="http://code.google.com/apis/ajaxsearch/index.html"><span class="tagline">The Google AJAX Search API</span></a> and <a href="http://www.google.com/coop/cse"><span class="tagline">Google Custom Search Engines</span></a></p>
+		</div>
 	</div>
 
 	<!-- Case of TERM found -->
@@ -79,10 +79,10 @@
 				<div id="slideshow" class="gss figure-container">Loading...</div>
 			</div>
 			<br clear="all" />
-                        <div id="image-info" class="discreet">
-			<span>Author: <span id="wiki-author"></span></span><br />
-			Credits: <a id="photo_credit" href="#">Wikimedia Commons</a>
-                        </div>
+			<div id="image-info" class="discreet">
+				<span>Author: <span id="wiki-author"></span></span><br />
+				Credits: <a id="photo_credit" href="#">Wikimedia Commons</a>
+			</div>
 			<br clear="all" />
 		</div>
 

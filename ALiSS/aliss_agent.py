@@ -234,8 +234,8 @@ class ALiSSAgent(Folder,
         return """
   <script type="text/javascript">
     //<![CDATA[
+    samples = "%(context)s/getWikiFeed?query=%(query)s&invalidate="+Math.random();
     function load() {
-      var samples = "%s/getWikiFeed?query=%s";
 
       var options = {
         linkTarget : google.feeds.LINK_TARGET_BLANK,
@@ -249,7 +249,7 @@ class ALiSSAgent(Folder,
     google.load("feeds", "1");
     google.setOnLoadCallback(load);
     // ]]>
-  </script>""" % (self.absolute_url(), query)
+  </script>""" % {'context': self.absolute_url(), 'query': query}
 
     #########################
     #   DISPLAY TYPE        #
