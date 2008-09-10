@@ -36,6 +36,7 @@ function GFslideShow(photoFeed, container, options) {
   this.setup();
 }
 
+loaded = 0;
 // Thumbnail size preferences.
 
 GFslideShow.THUMBNAILS_SMALL = "small";
@@ -507,13 +508,21 @@ GFslideShow.prototype.processEntries = function(entries) {
  * @private
  */
 GFslideShow.prototype.feedLoaded = function(result) {
+  loaded = loaded + 1;
   if (this.options.feedLoadCallback) {
     this.options.feedLoadCallback(result);
   }
 
   if ((this.feedUrl && result.error) ||
       (this.directEntries && this.directEntries.length == 0) ) {
-    if (!this.options.feedLoadCallback) {
+
+    if (loaded == 1); {
+      this.container.innerHTML = "<center>Wikimedia Commons</center>";
+      //this.setup();
+      load();
+    }
+
+    if (!this.options.feedLoadCallback && loaded != 1) {
       this.container.innerHTML = "<center>Images from feed could not be loaded.</center>";
     }
     return;
