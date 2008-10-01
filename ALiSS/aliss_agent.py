@@ -618,7 +618,7 @@ class ALiSSAgent(Folder,
             for term in utils.utElimintateDuplicates(self.catalog(query), 'name'):
                 if len(term.name)>0:
                     conceptsNumber += 1
-                    first_letter = str(term.name[0].upper())
+                    first_letter = term.name[0].upper().encode('utf8')
                     if not menuData.has_key(first_letter): menuData[first_letter] = 1
                     else: menuData[first_letter] += 1
         return (conceptsNumber, menuData)
