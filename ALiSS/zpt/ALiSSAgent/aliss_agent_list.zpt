@@ -12,8 +12,7 @@
 
 	<!-- Alphabet listing -->
 	<ul class="alphabet_list" tal:condition="dtype">
-		<li	tal:condition="dtype"
-			tal:define="has_content python:here.hasDigits(menuData);
+		<li	tal:define="has_content python:here.hasDigits(menuData);
 						param_letter python:test(dtype, 'num', '1');
 						selected_letter python:here.isNumeric(currentLetter)">
 			<tal:block condition="has_content">
@@ -24,7 +23,7 @@
 			<span class="menu_empty" tal:condition="not:has_content">0-9</span>
 		</li>
 
-		<li tal:repeat="letter here/getLettersUpper" tal:condition="dtype">
+		<li tal:repeat="letter here/getLettersUpper">
 			<tal:menu define="has_content python:menuData.has_key(letter);
 							  selected_letter python:here.compareLetter(letter, currentLetter)">
 				<tal:block condition="has_content">
@@ -37,6 +36,15 @@
 				</tal:block>
 				<span class="menu_empty" tal:condition="not:has_content" tal:content="letter" />
 			</tal:menu>
+		</li>
+
+		<li tal:define="has_content python:here.hasOther(menuData);
+						selected_letter python:test(currentLetter.lower()=='other', 1, 0)">
+			<tal:block condition="has_content">
+				<a	tal:condition="not:selected_letter" title="Other" class="menu_link"
+					tal:attributes="href string:${here/absolute_url}/list_html?letter=other">Other</a>
+				<span class="menu_selected" tal:condition="selected_letter">Other</span>
+			</tal:block>
 		</li>
 	</ul>
 

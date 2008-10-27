@@ -32,6 +32,14 @@
 			</tal:menu>
 		</li>
 
+		<li tal:define="has_content python:here.hasOther(menuData)">
+			<tal:block condition="has_content">
+				<a	tal:condition="has_content" title="Other" class="menu_link"
+					tal:attributes="href string:${here/absolute_url}/list_html?letter=other">Other</a>
+				<span class="menu_selected" tal:condition="not:has_content">Other</span>
+			</tal:block>
+		</li>
+
 		<li tal:condition="not:dtype">
 			<a	tal:attributes="href string:${here/absolute_url}/list_html?letter=all" title="Terms list">
 			View terms list</a>

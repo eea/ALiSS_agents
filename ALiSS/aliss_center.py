@@ -397,10 +397,19 @@ class ALiSSCenter(Folder,
         elif letter == 'all':
             query = {'meta_type':     {'query':METATYPE_ALISSELEMENT, 'operator':'and '},
                      'center_parent': {'query':self.center_uid}}
+        elif letter == 'other':
+            query = {'meta_type':     {'query':METATYPE_ALISSELEMENT, 'operator':'and '},
+                     'center_parent': {'query':self.center_uid}}
+            tmp_cat_res = self.catalog(query)
+            cat_res = []
+            for k in tmp_cat_res:
+                if len(k.name) > 0:
+                    if not (k.name[0] in utils.getDigits() or k.name[0].lower() in utils.getLettersLower()):
+                        cat_res.append(k)
         else:
             query = {'meta_type':     {'query':''}}
 
-        cat_res = self.catalog(query)
+        if letter != 'other': cat_res = self.catalog(query)
         return cat_res
 
 

@@ -371,6 +371,7 @@ class ALiSSAgent(Folder,
     def getTermSuggestionsBrains(self, query, extended=False,size=100):
         """ Returns term suggetions (max by default size=100 terms) in all centers and returns a list of unique terms. """
         results = []
+        orig_query = query
 
         # filter out stop words and normalize
         words=self.filterStopWords(query)
@@ -383,7 +384,7 @@ class ALiSSAgent(Folder,
             terms = []
             for aliss_center in self.getAlissCenters():
                 for elem in aliss_center.getElementsByNames(query, True):
-                    if elem.name.lower() not in terms and elem.name.lower()!=query.lower():
+                    if elem.name.lower() not in terms and elem.name.lower()!=orig_query.lower():
                         terms.append(elem.name.lower())
                         results.append(elem)
         else:
@@ -607,6 +608,13 @@ class ALiSSAgent(Folder,
         for key in data.keys():
             if key in digits: return True
         return False
+    def hasOther(self, data):
+        """ """
+        digits = self.getDigits()
+        for key in data.keys():
+             if not (key in digits or key.lower() in self.getLettersLower()):
+                return True
+        return False
 
     def generateMenu(self):
         """ generate the alphabetic menu """
@@ -632,6 +640,9 @@ class ALiSSAgent(Folder,
         if letter == 'num':
             if word[0] in self.getDigits(): res = True
             else:                           res = False
+        elif letter == 'other':
+            if not (word[0] in self.getDigits() or word[0].lower() in self.getLettersLower()):
+                res = True
         elif letter in self.getDigits():
             res = utils.compareLetter(word[0], letter)
         else:
