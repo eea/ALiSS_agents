@@ -52,8 +52,9 @@ WIKI_LOGOS = ['Image:Commons-logo.svg', 'Image:Disambig gray.svg', 'Image:Wiktio
               'Image:Wikisource-logo.svg', 'Image:Ambox content.png', 'Image:Wikibooks-logo.svg',
               'Image:Wikinews-logo.svg', 'Image:Wikiquote-logo.svg', 'Image:Wikiversity-logo-Snorky.svg',
               'Image:Wikiquote-logo-en.svg', 'Image:Wiki_letter_w.svg', 'Image:Wikispecies-logo.svg',
-              'Image:Wiktionary-logo-en.svg', 'Image:Wikipedia-logo.png', 'Image:Padlock-silver-medium.svg',
-              'Image:Disambig.svg','Image:Globe_important.svg']
+              'Image:Wiktionary-logo-en.svg', 'Image:Wikipedia-logo.png', 'Image:Disambig.svg',
+              'Image:Globe_important.svg', 'Image:Padlock-silver-medium.svg',
+              'Image:Wiki letter w.svg', 'Image:Nuvola_filesystems_folder_locked.png']
 
 #Get MediaWiki data in XML format
 class WikiImage:
@@ -201,7 +202,7 @@ class WikipediaImages:
 
     def get_wiki_images(self, number, host="http://commons.wikimedia.org"):
         try:
-            f = urllib2.urlopen("%s/w/api.php?action=query&titles=%s&prop=images&imlimit=%s&format=xml&redirects" % 
+            f = urllib2.urlopen("%s/w/api.php?action=query&titles=%s&prop=images&imlimit=%s&format=xml&redirects" %
                                     (host, utUrlEncode(self.titles), number))
             s = f.read()
         except:
@@ -224,7 +225,7 @@ class WikipediaImages:
         if len(images_list) > 0:
             param = '|'.join(images_list)
             try:
-                f = urllib2.urlopen("http://commons.wikimedia.org/w/api.php?action=query&titles=%s&prop=imageinfo|revisions&iiprop=timestamp|user|comment|url|size|mime|metadata&iiurlheight=%s&iiurlwidth=%s&rvprop=content&format=xml" % 
+                f = urllib2.urlopen("http://commons.wikimedia.org/w/api.php?action=query&titles=%s&prop=imageinfo|revisions&iiprop=timestamp|user|comment|url|size|mime|metadata&iiurlheight=%s&iiurlwidth=%s&rvprop=content&format=xml" %
                                         (utUrlEncode(param), height, width))
                 s = f.read()
             except:
@@ -244,7 +245,7 @@ class WikipediaImages:
   <channel>
     <lastBuildDate>%s</lastBuildDate>
     <title>SlideShow feed from Wikimedia Commons</title>
-    <description>These are a sampling of free images from Wikimedia Commons. See disclaimer 
+    <description>These are a sampling of free images from Wikimedia Commons. See disclaimer
 http://commons.wikimedia.org/wiki/Commons:General_disclaimer</description>
     <link>http://commons.wikimedia.org</link>
     <image>
