@@ -167,6 +167,7 @@
 				</tal:block>
 			</tal:block>
 
+			<tal:comment replace="nothing">
 			<tal:block metal:define-macro="suggestions" define="related_terms python:here.getTermSuggestionsBrains(concept_name,True)">
 			<div id="see-also" tal:condition="python:len(related_terms)>0">
 				<h2>Related terms</h2>
@@ -181,6 +182,7 @@
 				</ul>
 			</div>
 			</tal:block>
+			</tal:comment>
 
 			</div>
 

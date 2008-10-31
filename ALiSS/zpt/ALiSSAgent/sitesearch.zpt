@@ -25,7 +25,9 @@
 				<h1>Terminology: <em><span tal:replace="term_name" /></em></h1>
 				<div metal:use-macro="here/concept_html/macros/definitions" />
 				<div metal:use-macro="here/concept_html/macros/translations" />
-				<div metal:use-macro="here/concept_html/macros/suggestions" />
+				<tal:comment replace="nothing">
+					<div metal:use-macro="here/concept_html/macros/suggestions" />
+				</tal:comment>
 			</div>
 
 		</tal:block>
