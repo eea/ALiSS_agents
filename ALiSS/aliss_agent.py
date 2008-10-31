@@ -514,6 +514,16 @@ class ALiSSAgent(Folder,
         for aliss_center in self.getAlissCenters():
             [terms_list.append(aliss_term) for aliss_term in aliss_center.getElementsByNamesUTF8(term_name.lower()) if aliss_term]
 
+        #find exact match
+        tmp_terms_list = []
+        for term in terms_list:
+            aliss_path_list = self.getCatalog().getpath(term.data_record_id_).split('/')
+            gloss_center = self.getCenterByUID(aliss_path_list[0])
+            aliss_term = gloss_center.element_manager.get_element_item(aliss_path_list[1])
+
+            if term_name in aliss_term.getTranslationsList():
+                tmp_terms_list.append(aliss_term)
+
         #case of no terms found
         if not terms_list:  return None
 
@@ -522,11 +532,8 @@ class ALiSSAgent(Folder,
         results['term_url'] = utils.utUrlEncode(terms_list[0].name)
 
         l_terms_list = []
-        for aliss_term in terms_list:
+        for aliss_term in tmp_terms_list:
             #set terms list
-            aliss_path_list = self.getCatalog().getpath(aliss_term.data_record_id_).split('/')
-            gloss_center = self.getCenterByUID(aliss_path_list[0])
-            aliss_term = gloss_center.element_manager.get_element_item(aliss_path_list[1])
             if utils.isEmptyString(aliss_term.definition):
                 definitions[aliss_term.url] = 'Definition not available.'
             else:
