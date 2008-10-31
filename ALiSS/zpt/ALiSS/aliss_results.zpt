@@ -1,33 +1,46 @@
 <tal:block tal:replace="structure here/standard_html_header"/>
 <span tal:replace="python:request.RESPONSE.setHeader('content-type', 'text/html;charset=UTF-8')"/>
-<p class="documentDescription"><dtml-var description></p>
-<h2>Term search results for <em tal:content="request/term_name" /></h2>
+<tal:block define="term_name request/term_name">
 
-<tal:block condition="python:len(request['term_name'])>2"
-			define="exactterm python:here.getElementsByNames(request['term_name'],False);terms_list python:context.terminology.getTermSuggestionsBrains(request['term_name']+'*',True)">
-	<ul class="concept_list">
-		<tal:block condition="exactterm" repeat="term python:exactterm[0:1]">
-<li><a href="" style="font-weight:bold;" tal:attributes="href python:'terminology/concept_html?term='+term.name;title term/name; name term/name"
-							tal:content="term/name"></a></li>
+	<p class="documentDescription"><dtml-var description></p>
+	<h2>Term search results for <em tal:content="term_name" /></h2>
 
-		</tal:block>
-                <tal:block condition="python:len(exactterm)<1">
-                 <p class="portalMessage">No exact term found.</p>
-                </tal:block>
-        </ul>
-<h3>See also:</h3>
-	<ul class="concept_list">
-		<tal:block condition="terms_list" repeat="term terms_list">
-			<li><a href="" tal:attributes="href python:'terminology/concept_html?term='+term.name;title term/name; name term/name"
-							tal:content="term/name"></a></li>
+	<tal:block condition="python:len(term_name)>2"
+				define="exactterm python:here.getElementsByNamesUTF8(term_name,False);
+						terms_list python:context.fullagent.getTermSuggestionsBrains(term_name+'*',True)">
+		<ul class="concept_list">
+			<tal:block condition="exactterm" repeat="term python:exactterm[0:1]">
+				<!--
+				<li><a href="" style="font-weight:bold;"
+						tal:attributes="href python:'fullagent/concept_html?term='+term.name;title term/name; name term/name"
+						tal:content="term/name"></a></li>
+				-->
+				<li><a href="" style="font-weight:bold;"
+						tal:attributes="href python:'fullagent/concept_html?term='+term_name;title term_name; name term_name"
+						tal:content="term_name"></a></li>
+			</tal:block>
+			<tal:block condition="python:len(exactterm)<1">
+				<p class="portalMessage">No exact term found.</p>
+			</tal:block>
+		</ul>
 
-		</tal:block>
-                <tal:block condition="python:len(terms_list)<1">
-                 <p class="portalMessage">No more terms found.</p>
-                </tal:block>
-	</ul>
-</tal:block>
-<tal:block condition="python:len(request['term_name'])<3">
-<p class="portalMessage">Please use more the two letters when searching.</p>
+	<tal:comment replace="nothing">
+		<h3>See also:</h3>
+		<ul class="concept_list">
+			<tal:block condition="terms_list" repeat="term terms_list">
+				<li><a href="" tal:attributes="href python:'fullagent/concept_html?term='+term.name;title term/name; name term/name"
+								tal:content="term/name"></a></li>
+			</tal:block>
+			<tal:block condition="python:len(terms_list)<1">
+				<p class="portalMessage">No more terms found.</p>
+			</tal:block>
+		</ul>
+	</tal:comment>
+	</tal:block>
+
+	<tal:block condition="python:len(term_name)<3">
+		<p class="portalMessage">Please use more the two letters when searching.</p>
+	</tal:block>
+
 </tal:block>
 <tal:block tal:replace="structure here/standard_html_footer"/>

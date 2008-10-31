@@ -99,6 +99,8 @@ ModuleSecurityInfo('Products.ALiSS.utils').apply(globals())
 ###################################
 #   ZCTextIndex Lexicon related   #
 ###################################
+import UnicodeSplitter
+
 lang_reg = re.compile('#\s*language\s*=\s*([\w]+)')
 
 def read_stopwords():

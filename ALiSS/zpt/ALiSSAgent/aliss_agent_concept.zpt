@@ -47,11 +47,12 @@
 			</li>
 		</ul>
 	</tal:block>
-		<!-- Case of NO TERM found -->
-		<div tal:condition="not:aliss_concept" id="no_concept_area">
-				<h1>Terminology results for <em tal:content="term_name" /></h1>
-				<p>No term found matching exactly the name <strong><span tal:replace="term_name" /></strong>.</p>
-		</div>
+
+	<!-- Case of NO TERM found -->
+	<div tal:condition="not:aliss_concept" id="no_concept_area">
+			<h1>Terminology results for <em tal:content="term_name" /></h1>
+			<p>No term found matching exactly the name <strong><span tal:replace="term_name" /></strong>.</p>
+	</div>
 
 	<!-- Google custom search area -->
 	<div metal:define-macro="googlecse" id="google-custom-search-area" tal:attributes="style python:test(aliss_concept, 'width:47%', 'width:100%')">
@@ -64,6 +65,7 @@
 		</div>
 	</div>
 
+
 	<!-- Case of TERM found -->
 	<tal:block	condition="aliss_concept">
 		<tal:block	define="concept_name		python:aliss_concept['term_name'];
@@ -72,29 +74,32 @@
 							translations		python:aliss_concept['translations'];
 							terms_list			python:aliss_concept['terms_list']">
 			<div id="concept_area">
-			<h1 tal:content="concept_name" />
+			<tal:comment replace="nothing">
+				<h1 tal:content="concept_name" />
+			</tal:comment>
+			<h1 tal:content="term_name" />
 
-	<!-- MediaWiki images -->
-		<div metal:define-macro="wikimedia-images" id="wikimedia-area" tal:condition="here/getWikiState">
-			<a style="float: right; border: 1px solid #ccc; background-color: #f0f0f0; padding: 1px;" target="_blank" tal:attributes="href string:http://www.eea.europa.eu/help/contact-info?message=${template/absolute_url}?term=${term_name}">report bad image</a>
-			<h2>Sample images</h2>
-			<br clear="all" />
-			<script tal:attributes="src string:${here/absolute_url}/misc_/ALiSS/qTip.js" type="text/javascript"></script>
-			<script tal:attributes="src string:${here/absolute_url}/misc_/ALiSS/gfslideshow.js" type="text/javascript"></script>
-			<tal:block content="structure python:here.getWikiFeddJS(term_name)" />
-			<div id="body">
-			<a style="float: right" title="" class="link-rss" tal:attributes="title python:'Media feed for '+term_name;href string:${here/absolute_url}/getWikiFeed?query=${term_name}">Media RSS</a>
-				<div id="slideshow" class="gss figure-container">Loading...</div>
+			<!-- MediaWiki images -->
+			<div metal:define-macro="wikimedia-images" id="wikimedia-area" tal:condition="here/getWikiState">
+				<a style="float: right; border: 1px solid #ccc; background-color: #f0f0f0; padding: 1px;" target="_blank" tal:attributes="href string:http://www.eea.europa.eu/help/contact-info?message=${template/absolute_url}?term=${term_name}">report bad image</a>
+				<h2>Sample images</h2>
+				<br clear="all" />
+				<script tal:attributes="src string:${here/absolute_url}/misc_/ALiSS/qTip.js" type="text/javascript"></script>
+				<script tal:attributes="src string:${here/absolute_url}/misc_/ALiSS/gfslideshow.js" type="text/javascript"></script>
+				<tal:block content="structure python:here.getWikiFeddJS(term_name)" />
+				<div id="body">
+				<a style="float: right" title="" class="link-rss" tal:attributes="title python:'Media feed for '+term_name;href string:${here/absolute_url}/getWikiFeed?query=${term_name}">Media RSS</a>
+					<div id="slideshow" class="gss figure-container">Loading...</div>
+				</div>
+				<br clear="all" />
+				<div id="image-info" class="discreet">
+					<span>Author: <span id="wiki-author"></span></span><br />
+					Credits: <a id="photo_credit" href="#">Wikimedia Commons</a>
+				</div>
+				<br clear="all" />
 			</div>
-			<br clear="all" />
-			<div id="image-info" class="discreet">
-				<span>Author: <span id="wiki-author"></span></span><br />
-				Credits: <a id="photo_credit" href="#">Wikimedia Commons</a>
-			</div>
-			<br clear="all" />
-		</div>
 
-	<!-- Definitions and translations -->
+			<!-- Definitions and translations -->
 			<div metal:define-macro="definitions" id="definitions-area">
 			<h2>Definitions</h2>
 			<p tal:condition="not:concept_definitions">Definition not available.</p>
@@ -125,6 +130,9 @@
 			<ul tal:condition="python:len(translations.keys())>0"
 				tal:define="trans python:translations.keys();
 							transcodes python:trans.sort()">
+				<li tal:condition="python:concept_name!=term_name">
+					<span class="langcode">en</span> <a tal:attributes="href python:'sitesearch?term='+concept_name"><span tal:content="concept_name" /></a>
+				</li>
 				<li tal:repeat="langcode trans">
 					<span class="langcode" tal:content="langcode" /> <a tal:attributes="href python:'sitesearch?term='+' '.join(translations[langcode])"><span tal:content="python:'; '.join(translations[langcode])" /></a>
 				</li>
@@ -175,8 +183,10 @@
 			</tal:block>
 
 			</div>
+
 		</tal:block>
 	</tal:block>
+
 
 </tal:block>
 
