@@ -496,7 +496,6 @@ class ALiSSAgent(Folder,
         and source terms elements objects list. None object is returned if term not found. 
         'return_objects' is default True and means that the list of python terms object is returned. 
         When calling this method via xml-rpc you need to set this argument to False. """
-        print 'getConceptDetails START'
         terms_list = []
         definitions = {}
         translations = {}
@@ -511,14 +510,10 @@ class ALiSSAgent(Folder,
                  'translations':translations,
                  'terms_list':terms_list}
 
-        print 1
-        print 'x: ', len(self.getAlissCenters())
         #search all terms associated with this ALiSS Agent
         for aliss_center in self.getAlissCenters():
-            print 'x'
             [terms_list.append(aliss_term) for aliss_term in aliss_center.getElementsByNamesUTF8(term_name.lower()) if aliss_term]
 
-        print 2
         #case of no terms found
         if not terms_list:  return None
 
@@ -554,7 +549,6 @@ class ALiSSAgent(Folder,
 
             l_terms_list.append(aliss_term)
 
-        print 3
         results['definitions'] = definitions
         results['translations'] = translations
         if return_objects:
@@ -564,7 +558,6 @@ class ALiSSAgent(Folder,
             # Needed when calling this method via xml-rpc, cannot marshall objects
             results['terms_list'] = []
 
-        print 'getConceptDetails ENDs'
         return results
 
 
