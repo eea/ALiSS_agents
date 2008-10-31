@@ -24,40 +24,49 @@
 
         // configure left control
         // Site Restrict to CSE ID for EEA search
+        // Selected language: <dtml-var "SELECTED_LANGUAGE">
         var cseId = "010617083146134556574:ymkqzb7sibw";
         searcher = new GwebSearch();
         options = new GsearcherOptions();
         
 searcher.setSiteRestriction(cseId,null,"http://www.google.com/cse?cx=010617083146134556574%3Aymkqzb7sibw&amp;q=__QUERY__&amp;sa=Search&amp;client=google-coop-np&amp;cof=FORID%3A0&amp;hl=__HL__");
-        searcher.setUserDefinedLabel("EEA - Global search");
+        searcher.setUserDefinedLabel("EEA");
         options.setExpandMode(GSearchControl.EXPAND_MODE_OPEN);
         this.rightControl.addSearcher(searcher, options);
-
+        
         // configure right control for
         // -- publications search
         searcher = new GwebSearch();
         options = new GsearcherOptions();
-        searcher.setSiteRestriction(cseId, "Publications");
-        searcher.setUserDefinedLabel("Publications");
+        searcher.setSiteRestriction(cseId,"Publications");
+        searcher.setUserDefinedLabel("<dtml-var "messages('Publications')">");
         this.rightControl.addSearcher(searcher, options);
 
         searcher = new GwebSearch();
         options = new GsearcherOptions();
         searcher.setSiteRestriction(cseId, "Maps_and_graphs");
-        searcher.setUserDefinedLabel("Maps and graphs");
+        searcher.setUserDefinedLabel("<dtml-var "messages('Maps and graphs')">");
         this.rightControl.addSearcher(searcher, options);
 
         searcher = new GwebSearch();
         options = new GsearcherOptions();
         searcher.setSiteRestriction(cseId, "Data_sets");
-        searcher.setUserDefinedLabel("Data sets");
+        searcher.setUserDefinedLabel("<dtml-var "messages('Datasets')">");
         this.rightControl.addSearcher(searcher, options);
 
         searcher = new GwebSearch();
         options = new GsearcherOptions();
         searcher.setSiteRestriction(cseId, "Indicators");
-        searcher.setUserDefinedLabel("Indicators");
+        searcher.setUserDefinedLabel("<dtml-var "messages('Indicators')">");
         this.rightControl.addSearcher(searcher, options);
+
+        searcher = new GwebSearch();
+        options = new GsearcherOptions();
+        searcher.setSiteRestriction(cseId, "Multimedia");
+        searcher.setUserDefinedLabel("<dtml-var "messages('Multimedia')">");
+        this.rightControl.addSearcher(searcher, options);
+
+
 
         // draw the right controls
         // the right control is drawn in tabbed mode
