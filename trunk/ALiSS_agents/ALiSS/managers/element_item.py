@@ -196,6 +196,16 @@ class ElementItem:
         """ return lower name (for catalog use) """
         return self.name.lower()
 
+    def getTranslationsList(self):
+        """ """
+        trans = self.translations.values()
+        trans.append(self.name)
+        return trans
+
+    def getTranslationsSuggest(self):
+        """ """
+        return ' '.join(self.getTranslationsList())
+
     ####################################
     #   GOOGLE ENABLE/DISABLE RELATED  #
     ####################################

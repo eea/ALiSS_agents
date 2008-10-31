@@ -154,13 +154,15 @@ def futRead(p_path, p_flag='r'):
 def isEmptyString(str):
     """ return true if string is empty: contains only spaces and control chars. """
     str = utToUTF8(str)
+    str = str.strip()
     if len(str)>0:
-         transtab = string.maketrans('', '')
-         idx = string.translate(str, transtab, string.whitespace)
-         if len(idx) < 1: return 1
-         else:            return 0
+        #return 0
+        transtab = string.maketrans('', '')
+        idx = string.translate(str, transtab, string.whitespace)
+        if len(idx) < 1: return 1
+        else:            return 0
     else:
-         return 1
+        return 1
 
     return re.compile(match).search(source,0)
 

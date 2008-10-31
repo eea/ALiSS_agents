@@ -298,7 +298,8 @@ class AlissCatalog(ZCatalog):
 
     def getLexicon(self):
         """ return the default Lexicon object """
-        return self._getOb('Lexicon')
+        #return self._getOb('Lexicon')
+        return self._getOb('LexiconUnicode')
 
     def BuildCatalogPath(self, p_item):
         """ build a path for items to be added in catalog """
