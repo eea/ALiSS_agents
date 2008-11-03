@@ -72,10 +72,10 @@ ALISS_INDEXES = {  'id'                 :('FieldIndex', '', '', ''),  #identifie
 
 #                   'path'               :('PathIndex', '', '', ''),  #not used
                    'name'               :('FieldIndex', '', '', ''),  #element info
-                   'getName'            :('FieldIndex', '', '', ''),  #element info
-                   'name_suggest'       :('ZCTextIndex', 'name',         'Okapi BM25 Rank', 'Lexicon'),   #element info
-                   'id_suggest'         :('ZCTextIndex', 'name',         'Okapi BM25 Rank', 'LexiconID'), #element info
-                   'definition'         :('ZCTextIndex', 'definition',   'Okapi BM25 Rank', 'Lexicon'),   #element info
+                   'objectname_en'      :('FieldIndex', '', '', ''),  #element info
+                   'objecttrans_en'     :('ZCTextIndex', '',           'Okapi BM25 Rank', 'LexiconUnicode'), #element info
+                   'id_suggest'         :('ZCTextIndex', 'name',       'Okapi BM25 Rank', 'LexiconID'),      #element info
+                   'definition'         :('ZCTextIndex', 'definition', 'Okapi BM25 Rank', 'Lexicon'),        #element info
                    'url'                :('FieldIndex', '', '', ''),  #element info
 
                    'google_error'       :('FieldIndex', '', '', ''),  #google info

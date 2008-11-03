@@ -367,7 +367,7 @@ class ALiSSCenter(Folder,
         query =  {'meta_type':     {'query':METATYPE_ALISSELEMENT, 'operator':'and '},
                   'center_parent': {'query':self.center_uid, 'operator':'and '}}
 #        if suggest:
-#            query['name_suggest'] = names
+#            query['objecttrans_en'] = names
 #        else:
 #            query['translations_suggest'] = {'query':names, 'operator':'and '}
 
@@ -375,16 +375,16 @@ class ALiSSCenter(Folder,
         cat_res = self.catalog(query)
         return cat_res
 
-    def getElementsByNames(self, names, suggest=False):
+    def getElementsByNames(self, names, suggest=False, lang='en'):
         """ return all cataloged elements with names=names part to this center
         or if suggest=True suggest which terms matches the names """
         names = utils.utToUnicode(names)
         query =  {'meta_type':     {'query':METATYPE_ALISSELEMENT, 'operator':'and '},
                   'center_parent': {'query':self.center_uid, 'operator':'and '}}
         if suggest:
-            query['name_suggest'] = names
+            query['objecttrans_%s' % lang.lower()] = names
         else:
-            query['getName'] = {'query':names, 'operator':'and '}
+            query['objectname_%s' % lang.lower()] = {'query':names.lower(), 'operator':'and '}
         cat_res = self.catalog(query)
         return cat_res
 
