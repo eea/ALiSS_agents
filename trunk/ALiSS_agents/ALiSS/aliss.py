@@ -162,12 +162,11 @@ class ALiSS(Folder):
         names = utils.utToUnicode(names)
         query = {'meta_type': {'query':METATYPE_ALISSELEMENT, 'operator':'and '},}
         if suggest:
-            query['name_suggest'] = names
+            query['objecttrans_en'] = names
         else:
             query['translations_suggest'] = {'query':names, 'operator':'and '}
         cat_res = self.catalog(query)
 
-        #TODO: fix this via catalog indexes so we dont need to getOb
         res = []
         for term in cat_res:
 
@@ -182,18 +181,24 @@ class ALiSS(Folder):
 
         return res
 
-    def getElementsByNames(self, names, suggest=False):
+    def getElementsByNames(self, names, suggest=False, lang='en'):
         """ Search term across all centers in this aliss instance.
         Return all cataloged elements with names=names available
         or if suggest=True suggest which terms matches the names """
         names = utils.utToUnicode(names)
         query =  {'meta_type': {'query':METATYPE_ALISSELEMENT, 'operator':'and '},}
         if suggest:
-            query['name_suggest'] = names
+            index_name = 'objecttrans_%s' % lang.lower()
+            query[index_name] = names
         else:
-            query['getName'] = {'query':names, 'operator':'and '}
+            index_name = 'objectname_%s' % lang.lower()
+            query[index_name] = {'query':names.lower(), 'operator':'and '}
         cat_res = self.catalog(query)
-        return cat_res
+        if len(cat_res) > 0:
+            elem_path = self.catalog.getpath(cat_res[0].data_record_id_)
+            elem_ob = self.catalog.get_aliss_object(elem_path)
+            return elem_ob
+        return None
 
     def testGroupsIfUsed(self, group_id):
         #test if a content group is used

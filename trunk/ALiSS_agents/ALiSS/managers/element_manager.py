@@ -102,12 +102,14 @@ class ElementManager:
     #   BASIC API   #
     #################
     def add_element_item(self, id, name, definition, translations, url, center_parent):
+        self.catalog.checkCatalogIndexes(translations)
         item = ElementItem(id, name, definition, translations, center_parent, url)
         self.__elements_collection[id] = item
         self.catalog.CatalogObject(item)
 
     def update_element_basic(self, id, name, definition, translations, url):
         if self.__elements_collection.has_key(id):
+            self.catalog.checkCatalogIndexes(translations)
             item = self.__elements_collection[id]
             item.name =         name
             item.definition =   definition

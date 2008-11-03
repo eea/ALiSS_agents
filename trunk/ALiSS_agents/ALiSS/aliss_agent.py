@@ -368,7 +368,15 @@ class ALiSSAgent(Folder,
 
         return results[:size]
 
-    def getTermSuggestionsBrains(self, query, extended=False,size=100):
+    def getBrainData(self, brain, lang):
+        """ """
+        #TODO: fix this in order to get data from brain
+        elem_path = self.catalog.getpath(brain.data_record_id_)
+        elem_ob = self.catalog.get_aliss_object(elem_path)
+        elem_trans = elem_ob.getTranslation(lang)
+        return (elem_ob, elem_trans)
+
+    def getTermSuggestionsBrains(self, query, extended=False, lang='en', size=100):
         """ Returns term suggetions (max by default size=100 terms) in all centers and returns a list of unique terms. """
         results = []
         orig_query = query
@@ -383,22 +391,22 @@ class ALiSSAgent(Folder,
         if extended:
             terms = []
             for aliss_center in self.getAlissCenters():
-#                for elem in aliss_center.getElementsByNames(query, True):
-#                    if elem.name.lower() not in terms and elem.name.lower()!=orig_query.lower():
-#                        terms.append(elem.name.lower())
-#                        results.append(elem)
-                for elem in aliss_center.getElementsByNamesUTF8(query, True):
-                    terms.append(elem.name.lower())
-                    results.append(elem)
+                for elem in aliss_center.getElementsByNames(query, True, lang):
+                    elem_data = self.getBrainData(elem, lang)
+                    elem_ob = elem_data[0]
+                    elem_trans = elem_data[1]
+                    if elem_trans not in terms and elem_trans!=orig_query.lower():
+                        terms.append(elem_trans)
+                        results.append(elem_ob)
         else:
-            #TODO: to return brains
-#            for aliss_center in self.getAlissCenters():
-#                terms = [ elem.name for elem in aliss_center.getElementsByNames(query, True) 
-#                             if elem.name not in results ]
-#                results.extend(terms)
             for aliss_center in self.getAlissCenters():
-                terms = [ elem.name for elem in aliss_center.getElementsByNamesUTF8(query, True)]
-                results.extend(terms)
+                for elem in aliss_center.getElementsByNames(query, True, lang):
+                    elem_data = self.getBrainData(elem, lang)
+                    elem_ob = elem_data[0]
+                    elem_trans = elem_data[1]
+                    if elem_trans not in results:
+                        terms.append(elem_trans)
+                results.extend(elem_ob)
 
         return utils.utSortObjsListByAttr(results[:size], 'name')
 

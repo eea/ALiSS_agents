@@ -133,6 +133,27 @@ class AlissCatalog(ZCatalog):
 
         manage_addLexicon(self, id, title, elements)
 
+        elements = []
+        wordSplitter = MyData()
+        wordSplitter.group = 'Word Splitter'
+        wordSplitter.name = 'Unicode Whitespace splitter'
+
+        caseNormalizer = MyData()
+        caseNormalizer.group = 'Case Normalizer'
+        caseNormalizer.name = 'Unicode Case Normalizer'
+
+        stopWords = MyData()
+        stopWords.group = 'Stop Words'
+        stopWords.name = " Don't remove stop words"
+
+        elements.append(wordSplitter)
+        elements.append(caseNormalizer)
+        elements.append(stopWords)
+        id = 'LexiconUnicode'
+        title = 'Unicode Lexicon'
+
+        manage_addLexicon(self, id, title, elements)
+
 
     def __generateDefaultIndexes(self):
         available_indexes = self.indexes()
@@ -152,6 +173,18 @@ class AlissCatalog(ZCatalog):
                 self.addIndex(index, self.getIndexById(index)[0], p_extras)
             if not (index in available_metadata):
                 self.addColumn(index)
+
+    def __createObjecttransIndex(self, index):
+        p_extras =              MyData()
+        p_extras.doc_attr =     index
+        p_extras.index_type =   'Okapi BM25 Rank'
+        p_extras.lexicon_id =   'LexiconUnicode'
+        self.addIndex(index, 'ZCTextIndex', p_extras)
+        if not (index in self.schema()):
+            self.addColumn(index)
+
+    def __createObjectnameIndex(self, index):
+        self.addIndex(index, 'FieldIndex')
 
     def searchCatalog(self, filters, zope_obj=None):
         #get catalog
@@ -347,6 +380,16 @@ class AlissCatalog(ZCatalog):
         #get the google page object
         for item in google_item.get_page_collection_objs():
             if my_path_list[3] == item.id: return item
+
+    def checkCatalogIndexes(self, trans):
+        """ check if catalog contain all required language indexes """
+        for lang in trans.keys():
+            index_id = 'objecttrans_%s' % lang
+            if not index_id in self.indexes():
+                self.__createObjecttransIndex(index_id)
+            index_id = 'objectname_%s' % lang
+            if not index_id in self.indexes():
+                self.__createObjectnameIndex(index_id)
 
 
     #################

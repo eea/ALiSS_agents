@@ -105,6 +105,18 @@ class ElementItem:
         self.google_disabled =      []
 
 
+    def __getattr__(self, name):
+        """ """
+        if name.startswith('objecttrans_'):
+            parts = name.split('_')
+            func, lang = parts[0], parts[1]
+            return self.objecttrans(lang)
+        if name.startswith('objectname_'):
+            parts = name.split('_')
+            func, lang = parts[0], parts[1]
+            return self.objectname(lang)
+        raise AttributeError, name
+
     #################################
     #   GOOGLE_COLLECTION BASICS    #
     #################################
@@ -179,6 +191,15 @@ class ElementItem:
         Use this method when you want to display valid excaped URL in <a>-tag. """
         return utUrlEncode(self.url)
 
+#TODO: DEPRECATED
+#    def getName(self):
+#        """ return lower name (for catalog use) """
+#        return self.name.lower()
+
+
+    #####################
+    #   TRANSLATIONS    #
+    #####################
     def hasTranslations(self):
         """ test if the element contains any translation """
         return len(self.translations.keys())
@@ -187,14 +208,11 @@ class ElementItem:
         """ return all translations """
         return self.translations
 
-    def getTranslation(self, langcode):
+    def getTranslation(self, lang):
         """ return a translation for a given language code """
-        try:    return self.translations[langcode]
+        if lang == 'en': return self.name
+        try:    return self.translations[lang]
         except: return ''
-
-    def getName(self):
-        """ return lower name (for catalog use) """
-        return self.name.lower()
 
     def getTranslationsList(self):
         """ """
@@ -205,6 +223,14 @@ class ElementItem:
     def getTranslationsSuggest(self):
         """ """
         return ' '.join(self.getTranslationsList())
+
+    def objecttrans(self, lang):
+        """ used to catalog translations """
+        return self.getTranslation(lang)
+
+    def objectname(self, lang):
+        """ used to catalog translations """
+        return self.getTranslation(lang).lower()
 
     ####################################
     #   GOOGLE ENABLE/DISABLE RELATED  #
