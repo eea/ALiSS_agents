@@ -373,12 +373,15 @@ class ALiSSCenter(Folder,
         cat_res = self.catalog(query)
         return cat_res
 
-    def getElementsByLetter(self, letter):
+    def getElementsByLetter(self, letter, lang):
         """ """
+        #query_letter = utils.utToUnicode(letter)
+        query_letter = letter
+        id_indexname = 'objecttrans_%s' % lang
         if len(letter) in [1, 2]:
             query = {'meta_type':     {'query':METATYPE_ALISSELEMENT, 'operator':'and '},
                      'center_parent': {'query':self.center_uid, 'operator':'and '},
-                     'id_suggest':  {'query':'%s*' % letter}}
+                     id_indexname:  {'query':'%s*' % query_letter}}
         elif letter == 'num':
             digit_query = ''
             length = len(utils.getDigits())
@@ -393,7 +396,7 @@ class ALiSSCenter(Folder,
 
             query = {'meta_type':     {'query':METATYPE_ALISSELEMENT, 'operator':'and '},
                      'center_parent': {'query':self.center_uid, 'operator':'and '},
-                     'id_suggest':  {'query':digit_query}}
+                     id_indexname:  {'query':digit_query}}
         elif letter == 'all':
             query = {'meta_type':     {'query':METATYPE_ALISSELEMENT, 'operator':'and '},
                      'center_parent': {'query':self.center_uid}}
@@ -403,13 +406,23 @@ class ALiSSCenter(Folder,
             tmp_cat_res = self.catalog(query)
             cat_res = []
             for k in tmp_cat_res:
-                if len(k.name) > 0:
-                    if not (k.name[0] in utils.getDigits() or k.name[0].lower() in utils.getLettersLower()):
-                        cat_res.append(k)
+                elem_path = self.catalog.getpath(k.data_record_id_)
+                elem_ob = self.catalog.get_aliss_object(elem_path)
+                trans = elem_ob.getTranslation(lang)
+
+                if len(trans) > 0:
+                    if not (trans[0] in utils.getDigits() or trans[0].lower() in utils.unicode_character_map(lang)):
+                        cat_res.append(elem_ob)
         else:
             query = {'meta_type':     {'query':''}}
 
-        if letter != 'other': cat_res = self.catalog(query)
+        if letter != 'other':
+            cat_res = []
+            res = self.catalog(query)
+            for k in res:
+                elem_path = self.catalog.getpath(k.data_record_id_)
+                elem_ob = self.catalog.get_aliss_object(elem_path)
+                cat_res.append(elem_ob)
         return cat_res
 
 

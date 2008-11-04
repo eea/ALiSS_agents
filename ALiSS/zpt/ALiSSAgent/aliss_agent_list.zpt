@@ -1,9 +1,10 @@
 <tal:block tal:replace="structure here/standard_html_header"/>
 <span tal:replace="python:request.RESPONSE.setHeader('content-type', 'text/html;charset=UTF-8')" />
 <tal:block define="	currentLetter python:request.get('letter', 'A');
+					lang python:request.get('SELECTED_LANGUAGE', 'en');
 					dtype here/getDisplayType;
 					p_start python:request.get('start', 0);
-					data here/generateMenu;
+					data python:here.generateMenu(lang);
 					totalConcepts python:data[0];
 					menuData python:data[1]">
 
@@ -23,7 +24,25 @@
 			<span class="menu_empty" tal:condition="not:has_content">0-9</span>
 		</li>
 
-		<li tal:repeat="letter here/getLettersUpper">
+		<li tal:repeat="data_letter python:here.unicode_map(lang)" tal:condition="dtype">
+			<tal:menu define="letter python:data_letter[0];
+								cap_letter python:letter.upper().encode('utf8');
+								has_content python:menuData.has_key(cap_letter);
+								selected_letter python:here.compareLetter(cap_letter, currentLetter)">
+				<tal:block condition="has_content">
+					<a	tal:condition="not:selected_letter" class="menu_link"
+						tal:define="conceptsNumber python:menuData[cap_letter]"
+						tal:attributes="href string:${here/absolute_url}/list_html?letter=${letter};
+										title string:${conceptsNumber} terms"
+						tal:content="cap_letter" />
+					<span tal:condition="selected_letter" tal:content="letter" class="menu_selected" />
+				</tal:block>
+				<span	tal:condition="not:has_content"
+						tal:content="cap_letter" class="menu_empty" />
+			</tal:menu>
+		</li>
+
+		<!-- li tal:repeat="letter here/getLettersUpper">
 			<tal:menu define="has_content python:menuData.has_key(letter);
 							  selected_letter python:here.compareLetter(letter, currentLetter)">
 				<tal:block condition="has_content">
@@ -36,9 +55,9 @@
 				</tal:block>
 				<span class="menu_empty" tal:condition="not:has_content" tal:content="letter" />
 			</tal:menu>
-		</li>
+		</li -->
 
-		<li tal:define="has_content python:here.hasOther(menuData);
+		<li tal:define="has_content python:here.hasOther(menuData, lang);
 						selected_letter python:test(currentLetter.lower()=='other', 1, 0)">
 			<tal:block condition="has_content">
 				<a	tal:condition="not:selected_letter" title="Other" class="menu_link"
@@ -55,7 +74,7 @@
 currentLetter)">A</strong>-folder.<br/>
 		Click on the term to see the details like definition, translations etc..</p>
 	</div>
-	<tal:block	define="terms_list python:here.getTerms(currentLetter, dtype, p_start);
+	<tal:block	define="terms_list python:here.getTerms(currentLetter, dtype, p_start, lang);
 						results python:terms_list[1];
 						page_search_querystring string:letter=${currentLetter};
 
@@ -92,19 +111,19 @@ currentLetter)">A</strong>-folder.<br/>
 
 	<ul class="concept_list">
 		<tal:block condition="results" repeat="term results">
-			<li tal:define="term_label term/name;
+			<li tal:define="term_label python:term.getTranslation(lang);
 							url_term_label term/page_url">
 				<a	tal:content="term_label"
 					tal:attributes="href string:${here/absolute_url}/concept_html?term=${url_term_label};
 									title term_label" />
-					<tal:block define="related_terms python:here.getTermSuggestionsBrains(term_label,True)">
+					<tal:block define="related_terms python:here.getTermSuggestionsBrains(term_label,True, lang)">
 					<ul class="concept_list" tal:condition="python:len(related_terms)>0">
 						<tal:block tal:repeat="term_sugg related_terms" tal:on-error="nothing">
-							<li>
+							<li tal:define="term_trans python:term_sugg.getTranslation(lang)">
 								<a	tal:attributes="
-								href string:${here/absolute_url}/concept_html?term=${term_sugg/name};
-								title term_sugg/name"
-									tal:content="term_sugg/name">term related</a>
+								href string:${here/absolute_url}/concept_html?term=${term_trans};
+								title term_trans"
+									tal:content="term_trans">term related</a>
 							</li>
 						</tal:block>
 					</ul>

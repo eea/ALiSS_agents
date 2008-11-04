@@ -36,6 +36,7 @@ from Products.ALiSS                     import utils
 from Products.ALiSS.utils               import batch_utils
 from Products.ALiSS.constants           import *
 from Products.ALiSS.managers.wikipedia  import WikipediaImages
+from Products.ALiSS.alphabet_charts     import unicode_character_map
 
 
 manage_addAlissAgent_html = PageTemplateFile('zpt/ALiSSAgent/aliss_agent_add', globals())
@@ -250,6 +251,7 @@ class ALiSSAgent(Folder,
     google.setOnLoadCallback(load);
     // ]]>
   </script>""" % {'context': self.absolute_url(), 'query': query}
+
 
     #########################
     #   DISPLAY TYPE        #
@@ -605,6 +607,7 @@ class ALiSSAgent(Folder,
     security.declarePublic('sitesearch')
     sitesearch =  PageTemplateFile('zpt/ALiSSAgent/sitesearch', globals()) 
 
+
     #####################
     #   FLASH CLIENT    #
     #####################
@@ -615,44 +618,16 @@ class ALiSSAgent(Folder,
     #####################
     #   GENERAL Methods #
     #####################
-    def getLettersUpper(self):  return utils.getLettersUpper()
     def getLettersLower(self):  return utils.getLettersLower()
     def getDigits(self):        return utils.getDigits()
     def isNumeric(self, param): return utils.isNumeric(param)
     def compareLetter(self, letter1, letter2):
         return utils.compareLetter(letter1, letter2)
-    def hasDigits(self, data):
-        """ """
-        digits = self.getDigits()
-        for key in data.keys():
-            if key in digits: return True
-        return False
-    def hasOther(self, data):
-        """ """
-        digits = self.getDigits()
-        for key in data.keys():
-             if not (key in digits or key.lower() in self.getLettersLower()):
-                return True
-        return False
-
-    def generateMenu(self):
-        """ generate the alphabetic menu """
-        menuData = {}
-        conceptsNumber = 0
-        for aliss_center in self.getAlissCenters():
-            query = {'meta_type':     {'query':METATYPE_ALISSELEMENT, 'operator':'and '},
-                     'center_parent': {'query':aliss_center.center_uid}}
-            for term in utils.utElimintateDuplicates(self.catalog(query), 'name'):
-                if len(term.name)>0:
-                    conceptsNumber += 1
-                    first_letter = term.name[0].upper().encode('utf8')
-                    if not menuData.has_key(first_letter): menuData[first_letter] = 1
-                    else: menuData[first_letter] += 1
-        return (conceptsNumber, menuData)
 
     security.declarePublic('testFirstLetter')
     def testFirstLetter(self, word, letter, dtype):
         """ test the first letter of a word if correspond with a given letter """
+        cmp_word = utils.utToUTF8(word)
         if not dtype: return True
 
         res = False
@@ -663,13 +638,15 @@ class ALiSSAgent(Folder,
             if not (word[0] in self.getDigits() or word[0].lower() in self.getLettersLower()):
                 res = True
         elif letter in self.getDigits():
-            res = utils.compareLetter(word[0], letter)
+            #res = utils.compareLetter(word[0], letter)
+            res = utils.compareLetter(word, letter)
         else:
-            res = utils.compareLetter(word[:dtype], letter[:dtype])
+            #res = utils.compareLetter(word[:dtype], letter[:dtype])
+            res = utils.compareLetter(word, letter[:dtype])
         return res
 
     security.declarePublic('get_terms')
-    def get_terms(self, letter, dtype):
+    def get_terms(self, letter, dtype, lang='en'):
         """ return all cataloged terms starting with 'letter' parameter """
         #default data
         terms_list = []
@@ -677,14 +654,15 @@ class ALiSSAgent(Folder,
 
         #get cataloged terms
         for aliss_center in self.getAlissCenters():
-            terms_list.extend(aliss_center.getElementsByLetter(letter))
+            terms_list.extend(aliss_center.getElementsByLetter(letter, lang))
 
         #filter terms by first letter
         for term in utils.utElimintateDuplicates(terms_list, 'name'):
-            if self.testFirstLetter(term.name, letter, dtype):
+            trans = term.getTranslation(lang)
+            if self.testFirstLetter(trans, letter, dtype):
                 term.url =      utils.utUrlEncode(term.url)
-                term.page_url = utils.utUrlEncode(term.name)
-                term.name =     term.name
+                term.page_url = utils.utUrlEncode(trans)
+                term.name =     trans
                 res.append(term)
         return res
 
@@ -694,7 +672,7 @@ class ALiSSAgent(Folder,
         return len(self.get_terms(letter, dtype))
 
     security.declarePublic('getTerms')
-    def getTerms(self, letter, dtype=1, p_start=0):
+    def getTerms(self, letter, dtype=1, p_start=0, lang='en'):
         """ return all cataloged terms starting with 'letter' parameter """
         #default data
         results = []
@@ -702,7 +680,7 @@ class ALiSSAgent(Folder,
         except: p_start = 0
 
         #get data
-        results.extend(utils.utSortObjsListByAttr(self.get_terms(letter, dtype), 'name'))
+        results.extend(utils.utSortObjsListByAttr(self.get_terms(letter, dtype, lang), 'name'))
 
         #batch related
         batch_obj = batch_utils(self.getResPerPage(), len(results), p_start)
@@ -764,5 +742,54 @@ class ALiSSAgent(Folder,
                     return True
             return False
         return True
+
+
+    #####################################
+    #   ALPHABET LISTING AND NAVIGATION #
+    #####################################
+
+    def getLettersUpper(self, lang): return utils.getLettersUpper()
+
+    def generateMenu(self, lang):
+        """ generate the alphabetic menu """
+        menuData = {}
+        conceptsNumber = 0
+        for aliss_center in self.getAlissCenters():
+            query = {'meta_type':     {'query':METATYPE_ALISSELEMENT, 'operator':'and '},
+                     'center_parent': {'query':aliss_center.center_uid}}
+            for term in utils.utElimintateDuplicates(self.catalog(query), 'name'):
+                elem_path = self.catalog.getpath(term.data_record_id_)
+                elem_ob = self.catalog.get_aliss_object(elem_path)
+                trans = elem_ob.getTranslation(lang)
+
+                if len(trans)>0:
+                    conceptsNumber += 1
+                    first_letter = trans[0].upper().encode('utf8')
+                    if not menuData.has_key(first_letter): menuData[first_letter] = 1
+                    else: menuData[first_letter] += 1
+        return (conceptsNumber, menuData)
+
+    def hasOther(self, data, lang):
+        """ """
+        digits = self.getDigits()
+        for key in data.keys():
+             if not (key in digits or key.lower() in self.getLettersLower()):
+                return True
+        return False
+
+    def hasDigits(self, data):
+        """ """
+        digits = self.getDigits()
+        for key in data.keys():
+            if key in digits: return True
+        return False
+
+    def unicode_langs(self):
+        """ temporary list of implemented languages """
+        return unicode_character_map.keys()
+
+    def unicode_map(self, lang):
+        """ return unicode set of characters for a given language """
+        return unicode_character_map[lang]
 
 InitializeClass(ALiSSAgent)
