@@ -6,75 +6,98 @@
 <tal:block define="list_type python:request.get('page', '')">
 
 	<!--	Menu links			-->
-	<p> Informations of this <strong>ALiSS</strong> instance</p>
+	<p id="page0"> Informations of this <strong>ALiSS</strong> instance</p>
 
-	<fieldset><legend class="standard_legend">Default data</legend>
+	<fieldset><legend class="standard_legend">Multilingual info</legend>
 	<div style="padding:5px 3px 7px 3px;">
 		<ul style="margin-top:0; margin-bottom:0;">
-			<li><a href="manage_info_html?page=1" title="Catalog info">Catalog default indexes</a></li>
-			<li><a href="manage_info_html?page=2" title="Google info">Google default settings</a></li>
-			<li><a href="manage_info_html?page=3" title="Content groups info">Content groups info</a></li>
+			<li><a href="manage_info_html?page=4" title="Google info">Translations count (include duplicates)</a></li>
 		</ul>
 	</div>
 	</fieldset>
 
-	<!--	Catalog info		-->
-	<tal:block condition="python:list_type=='1'">
-		<p> Indexes list created default into <strong>ALiSS Catalog</strong>.</p>
+	<fieldset><legend class="standard_legend">Default data</legend>
+	<div style="padding:5px 3px 7px 3px;">
+		<ul style="margin-top:0; margin-bottom:0;">
+			<li><a href="#page1" title="Catalog info">Catalog default indexes</a></li>
+			<li><a href="#page2" title="Google info">Google default settings</a></li>
+			<li><a href="#page3" title="Content groups info">Content groups info</a></li>
+		</ul>
+	</div>
+	</fieldset>
 
-		<fieldset><legend class="standard_legend">Default indexes</legend>
-		<table cellspacing="0" cellpadding="2" border="0" width="100%" style="margin:10px 3px 3px 3px;">
-			<tr class="list-header">
-				<th width="50%">Name</th>
-				<th>Type</th>
-			</tr>
-			<tr tal:repeat="index here/getDefaultIndexes"
-				tal:attributes="class python:test(path('repeat/index/odd'), 'row-hilite', 'row-normal')">
-				<td tal:content="index"></td>
-				<td tal:content="python:here.getIndexById(index)[0]"></td>
-			</tr>
-		</table>
-		</fieldset>
+	<!--	Translations info		-->
+	<p id="page4"><span style="background-color:f0f0f0">[<a href="#page0">back</a>]</span> Translations info.</p>
+
+	<tal:block define="trans_data here/getLanguagesIndexed">
+	<fieldset><legend class="standard_legend">Translations count</legend>
+	<table cellspacing="0" cellpadding="2" border="0" width="100%" style="margin:10px 3px 3px 3px;">
+		<tr class="list-header">
+			<th>Lang</th>
+			<th>translations number</th>
+		</tr>
+		<tr tal:repeat="lang python:trans_data[0]"
+			tal:attributes="class python:test(path('repeat/lang/odd'), 'row-hilite', 'row-normal')">
+			<td tal:content="lang"></td>
+			<td tal:content="python:trans_data[1][lang]"></td>
+		</tr>
+	</table>
+	</fieldset>
 	</tal:block>
+	<br />
+
+	<!--	Catalog info		-->
+	<p id="page1"><span style="background-color:f0f0f0">[<a href="#page0">back</a>]</span> Indexes list created default into <strong>ALiSS Catalog</strong>.</p>
+
+	<fieldset><legend class="standard_legend">Default indexes</legend>
+	<table cellspacing="0" cellpadding="2" border="0" width="100%" style="margin:10px 3px 3px 3px;">
+		<tr class="list-header">
+			<th width="50%">Name</th>
+			<th>Type</th>
+		</tr>
+		<tr tal:repeat="index here/getDefaultIndexes"
+			tal:attributes="class python:test(path('repeat/index/odd'), 'row-hilite', 'row-normal')">
+			<td tal:content="index"></td>
+			<td tal:content="python:here.getIndexById(index)[0]"></td>
+		</tr>
+	</table>
+	</fieldset>
+	<br />
 
 	<!--	Google info			-->
-	<tal:block condition="python:list_type=='2'">
-		<p> Default google search values list used on updating <strong>ALiSS Centers</strong> content.</p>
+	<p id="page2"><span style="background-color:f0f0f0">[<a href="#page0">back</a>]</span> Default google search values list used on updating <strong>ALiSS Centers</strong> content.</p>
 
-		<fieldset><legend class="standard_legend">Default values</legend>
-		<table cellspacing="1" cellpadding="2" border="0" width="100%" class="update_info" style="margin:10px 3px 3px 3px;">
-			<tr tal:repeat="default_value here/getDefaultGoogleList">
-				<th width="30%" tal:content="default_value"></th>
-				<td tal:content="python:here.getValueById(default_value)"></td>
-			</tr>
-		</table>
-		<br />
-		</fieldset>
-		<br />
-	</tal:block>
+	<fieldset><legend class="standard_legend">Default values</legend>
+	<table cellspacing="1" cellpadding="2" border="0" width="100%" class="update_info" style="margin:10px 3px 3px 3px;">
+		<tr tal:repeat="default_value here/getDefaultGoogleList">
+			<th width="30%" tal:content="default_value"></th>
+			<td tal:content="python:here.getValueById(default_value)"></td>
+		</tr>
+	</table>
+	<br />
+	</fieldset>
+	<br />
 
 	<!--	Content groups info	-->
-	<tal:block condition="python:list_type=='3'">
-		<p> Content groups used into <strong>ALiSS Centers</strong>.</p>
-		<fieldset class="cg_default"><legend>Content groups used in ALiSS Centers</legend>
-		<table cellspacing="0" cellpadding="2" border="0" width="100%" style="margin:10px 3px 3px 3px;">
-			<tr>
-				<th width="80%" valign="top">Name</th>
-				<th width="20%" valign="top">Used</th>
-			</tr>
-			<tal:block define="groups_list python:here.getGroupsUsed()">
-			<tr tal:repeat="group_id python:groups_list.keys()"
-				tal:attributes="class python:test(path('repeat/group_id/odd'), 'row-hilite', 'row-normal')">
-				<td tal:content="python:groups_list[group_id]" />
-				<td>
-					<span tal:condition="python:here.testGroupsIfUsed(group_id)" class="green" tal:content="string:used"/>
-					<span tal:condition="python:not here.testGroupsIfUsed(group_id)" class="red" tal:content="string:not used"/>
-				</td>
-			</tr>
-			</tal:block>
-		</table>
-		</fieldset>
-	</tal:block>
+	<p id="page3"><span style="background-color:f0f0f0">[<a href="#page0">back</a>]</span> Content groups used into <strong>ALiSS Centers</strong>.</p>
+	<fieldset class="cg_default"><legend>Content groups used in ALiSS Centers</legend>
+	<table cellspacing="0" cellpadding="2" border="0" width="100%" style="margin:10px 3px 3px 3px;">
+		<tr>
+			<th width="80%" valign="top">Name</th>
+			<th width="20%" valign="top">Used</th>
+		</tr>
+		<tal:block define="groups_list python:here.getGroupsUsed()">
+		<tr tal:repeat="group_id python:groups_list.keys()"
+			tal:attributes="class python:test(path('repeat/group_id/odd'), 'row-hilite', 'row-normal')">
+			<td tal:content="python:groups_list[group_id]" />
+			<td>
+				<span tal:condition="python:here.testGroupsIfUsed(group_id)" class="green" tal:content="string:used"/>
+				<span tal:condition="python:not here.testGroupsIfUsed(group_id)" class="red" tal:content="string:not used"/>
+			</td>
+		</tr>
+		</tal:block>
+	</table>
+	</fieldset>
 
 </tal:block>
 <span tal:replace="structure here/manage_page_footer"/>

@@ -10,7 +10,7 @@
 	<!-- Page header -->
 	<h2>A-Z Index of terms</h2>
 
-	<!-- Alphabet listing -->
+	<!-- Alphabet listing and navigation -->
 	<ul class="alphabet_list" tal:condition="dtype">
 		<li	tal:define="has_content python:here.hasDigits(menuData);
 						param_letter python:test(dtype, 'num', '1');
