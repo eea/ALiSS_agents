@@ -189,9 +189,11 @@ def utUrlEncode(p_string, qtype=0):
     if qtype: return p_string
     else:     return url_quote(utToUTF8(p_string))
 
-def compareLetter(letter1, letter2):
+def compareLetter(word, letter2):
     """ comapare two letters """
-    return string.lower(letter1) == string.lower(letter2)
+    word = utToUTF8(word)
+    let2 = utToUTF8(letter2)
+    return word.startswith(let2)
 
 def formatString(p_string):
     l_tmp = utToUTF8(p_string)
