@@ -7,11 +7,11 @@
 
 	<tal:block condition="python:len(term_name)>2"
 				define="exactterm python:here.getElementsByNames(term_name,False, lang);
-						terms_list python:context.fullagent.getTermSuggestionsBrains(term_name,True,lang)">
+						terms_list python:context.terminology.getTermSuggestionsBrains(term_name,True,lang)">
 		<ul class="concept_list">
 			<tal:block condition="exactterm">
 				<li tal:define="term python:exactterm.getTranslation(lang)"><a href="" style="font-weight:bold;"
-						tal:attributes="href python:'fullagent/concept_html?term='+term;
+						tal:attributes="href python:'terminology/concept_html?term='+term;
 										title term; name term"
 						tal:content="term"></a></li>
 			</tal:block>
@@ -23,7 +23,7 @@
 		<h3>See also:</h3>
 		<ul class="concept_list">
 			<tal:block condition="terms_list" repeat="term terms_list">
-				<li tal:define="term_name python:term.getTranslation(lang)"><a href="" tal:attributes="href python:'fullagent/concept_html?term='+term_name;title term_name; name term_name"
+				<li tal:define="term_name python:term.getTranslation(lang)"><a href="" tal:attributes="href python:'terminology/concept_html?term='+term_name;title term_name; name term_name"
 								tal:content="term_name"></a></li>
 			</tal:block>
 			<tal:block condition="python:len(terms_list)<1">

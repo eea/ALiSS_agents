@@ -133,6 +133,21 @@ class ALiSS(Folder):
     #################
     def getAlissRoot(self):  return self
 
+    def getLanguagesIndexed(self):
+        """ """
+        res = {'en':0}
+        langs = []
+        for center in self.getAllCenters():
+            for brain in center.getAllElements():
+                elem_path = self.catalog.getpath(brain.data_record_id_)
+                elem_ob = self.catalog.get_aliss_object(elem_path)
+                for lang in elem_ob.getTranslations().keys():
+                    res[lang] = res.get(lang, 0) + 1
+                    res['en'] = res.get('en') + 1
+        langs = res.keys()
+        langs.sort()
+        return (langs, res)
+
     def getAllAgents(self):
         """ return all Server Agents """
         return utils.utSortObjsListByAttr(self.objectValues(METATYPE_ALISSAGENT),'title')

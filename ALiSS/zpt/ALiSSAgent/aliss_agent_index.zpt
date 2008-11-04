@@ -4,7 +4,7 @@
 <!-- Page header -->
 <h2>A-Z Index of terms</h2>
 
-<!-- Alphabet listing -->
+<!-- Alphabet listing and navigation -->
 <tal:block define="dtype here/getDisplayType;
 				   data here/generateMenu;
 				   totalConcepts python:data[0];
