@@ -3,10 +3,8 @@
 
 <tal:block	define="utils			modules/Products.ALiSS.utils;
 					term_name		python:utils.utToUnicode(request.get('term', ''));
-					aliss_concept	python:here.getConceptDetails(term_name);
-					lang			python:request.get('SELECTED_LANGUAGE', 'en')">
-
-<p tal:content="lang" />
+					lang			python:request.get('SELECTED_LANGUAGE', 'en');
+					aliss_concept	python:here.getConceptDetails(term_name, lang)">
 
 	<!-- Alphabet listing and navigation -->
 	<tal:block define="dtype here/getDisplayType;
@@ -68,7 +66,6 @@
 		</div>
 	</div>
 
-
 	<!-- Case of TERM found -->
 	<tal:block	condition="aliss_concept">
 		<tal:block	define="concept_name		python:aliss_concept['term_name'];
@@ -77,10 +74,7 @@
 							translations		python:aliss_concept['translations'];
 							terms_list			python:aliss_concept['terms_list']">
 			<div id="concept_area">
-			<tal:comment replace="nothing">
-				<h1 tal:content="concept_name" />
-			</tal:comment>
-			<h1 tal:content="term_name" />
+			<h1 tal:content="concept_name" />
 
 			<!-- MediaWiki images -->
 			<div metal:define-macro="wikimedia-images" id="wikimedia-area" tal:condition="here/getWikiState">
@@ -133,12 +127,11 @@
 			<ul tal:condition="python:len(translations.keys())>0"
 				tal:define="trans python:translations.keys();
 							transcodes python:trans.sort()">
-				<li tal:condition="python:concept_name!=term_name">
-					<span class="langcode">en</span> <a tal:attributes="href python:'sitesearch?term='+concept_name"><span tal:content="concept_name" /></a>
-				</li>
-				<li tal:repeat="langcode trans">
+				<tal:block repeat="langcode trans">
+				<li tal:condition="python:langcode != lang">
 					<span class="langcode" tal:content="langcode" /> <a tal:attributes="href python:'sitesearch?term='+' '.join(translations[langcode])"><span tal:content="python:'; '.join(translations[langcode])" /></a>
 				</li>
+				</tal:block>
 			</ul>
 			<p tal:condition="python:len(translations.keys())<1">No translations are available for this term.</p>
 			</div>
@@ -170,15 +163,15 @@
 				</tal:block>
 			</tal:block>
 
-			<tal:block metal:define-macro="suggestions" define="related_terms python:here.getTermSuggestionsBrains(concept_name,True)">
+			<tal:block metal:define-macro="suggestions" define="related_terms python:here.getTermSuggestionsBrains(concept_name,True,lang)">
 			<div id="see-also" tal:condition="python:len(related_terms)>0">
 				<h2>Related terms</h2>
 				<ul class="concept_list">
 					<tal:block tal:repeat="term_sugg related_terms" tal:on-error="nothing">
-						<li>
-							<a	tal:attributes="href string:${here/absolute_url}/concept_html?term=${term_sugg/name};
-												title term_sugg/name"
-								tal:content="term_sugg/name">term related</a>
+						<li tal:define="term python:term_sugg.getTranslation(lang)">
+							<a	tal:attributes="href string:${here/absolute_url}/concept_html?term=${term};
+												title term"
+								tal:content="term">term related</a>
 						</li>
 					</tal:block>
 				</ul>

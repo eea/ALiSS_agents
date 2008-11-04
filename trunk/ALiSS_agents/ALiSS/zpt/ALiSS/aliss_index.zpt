@@ -14,7 +14,7 @@
 			</div>
 
 			<div class="formControls">
-				<input type="hidden" name="lang" tal:attributes="value request/SELECTED_LANGUAGE" />
+				<input type="hidden" name="lang" tal:attributes="value python:request.get('SELECTED_LANGUAGE', 'en')" />
 				<input type="submit" value="Search term" name="form.button.Send" class="context"/>
 			</div>
 
