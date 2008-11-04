@@ -1,13 +1,13 @@
 <tal:block tal:replace="structure here/standard_html_header"/>
 <span tal:replace="python:request.RESPONSE.setHeader('content-type', 'text/html;charset=UTF-8')"/>
-<tal:block define="term_name request/term_name; lang request/lang">
+<tal:block define="term_name request/term_name; lang python:request.get('SELECTED_LANGUAGE', 'en')">
 
 	<p class="documentDescription"><dtml-var description></p>
 	<h2>Term search results for <em tal:content="term_name" /></h2>
 
 	<tal:block condition="python:len(term_name)>2"
 				define="exactterm python:here.getElementsByNames(term_name,False, lang);
-						terms_list python:context.fullagent.getTermSuggestionsBrains(term_name+'*',True,lang)">
+						terms_list python:context.fullagent.getTermSuggestionsBrains(term_name,True,lang)">
 		<ul class="concept_list">
 			<tal:block condition="exactterm">
 				<li tal:define="term python:exactterm.getTranslation(lang)"><a href="" style="font-weight:bold;"

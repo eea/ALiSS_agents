@@ -395,7 +395,7 @@ class ALiSSAgent(Folder,
                     elem_data = self.getBrainData(elem, lang)
                     elem_ob = elem_data[0]
                     elem_trans = elem_data[1]
-                    if elem_trans not in terms and elem_trans!=orig_query.lower():
+                    if elem_trans not in terms and elem_trans.lower()!=orig_query.lower():
                         terms.append(elem_trans)
                         results.append(elem_ob)
         else:
@@ -495,10 +495,10 @@ class ALiSSAgent(Folder,
         """This is the xml-rpc call for getConceptDetails. it doesn not return the list of objects.
          It returns an aggregated info about the concept with label 'term_name'. 
         The data contains term name, all definitions with sources(URLs) """
-        return self.getConceptDetails(term_name,False)
+        return self.getConceptDetails(term_name,'en',False)
 
     security.declarePublic('getConceptDetails')
-    def getConceptDetails(self, term_name, return_objects=True):
+    def getConceptDetails(self, term_name, lang='en', return_objects=True):
         """ return an aggregated info about the concept with label 'term_name'. 
         The data contains term name, all definitions with sources(URLs) 
         and source terms elements objects list. None object is returned if term not found. 
@@ -520,24 +520,21 @@ class ALiSSAgent(Folder,
 
         #search all terms associated with this ALiSS Agent
         for aliss_center in self.getAlissCenters():
-            [terms_list.append(aliss_term) for aliss_term in aliss_center.getElementsByNamesUTF8(term_name.lower()) if aliss_term]
+            [terms_list.append(aliss_term) for aliss_term in aliss_center.getElementsByNames(term_name.lower(), lang=lang) if aliss_term]
 
-        #find exact match
+        #TODO: fix this to use data from brains
         tmp_terms_list = []
-        for term in terms_list:
-            aliss_path_list = self.getCatalog().getpath(term.data_record_id_).split('/')
-            gloss_center = self.getCenterByUID(aliss_path_list[0])
-            aliss_term = gloss_center.element_manager.get_element_item(aliss_path_list[1])
-
-            if term_name in aliss_term.getTranslationsList():
-                tmp_terms_list.append(aliss_term)
+        for elem in terms_list:
+            elem_data = self.getBrainData(elem, lang)
+            elem_ob = elem_data[0]
+            tmp_terms_list.append(elem_ob)
 
         #case of no terms found
-        if not terms_list:  return None
+        if len(terms_list) == 0:  return None
 
         #set terms name
-        results['term_name'] = terms_list[0].name
-        results['term_url'] = utils.utUrlEncode(terms_list[0].name)
+        results['term_name'] = tmp_terms_list[0].getTranslation(lang)
+        results['term_url'] = utils.utUrlEncode(tmp_terms_list[0].getTranslation(lang))
 
         l_terms_list = []
         for aliss_term in tmp_terms_list:
@@ -561,6 +558,7 @@ class ALiSSAgent(Folder,
                                 translations[langcode].append('%s) %s' % (trans_count+1, term_trans))
                         else:
                             translations[langcode] = [term_trans]
+            translations['en'] = [aliss_term.name]
 
             l_terms_list.append(aliss_term)
 

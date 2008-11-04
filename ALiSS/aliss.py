@@ -155,32 +155,6 @@ class ALiSS(Folder):
         #return the default google values
         return ALISS_DEFAULT_GOOGLE[name]
 
-    def getElementsByNamesUTF8(self, names, suggest=False):
-        """ Search term across all centers in this aliss instance.
-        Return all cataloged elements with names=names available
-        or if suggest=True suggest which terms matches the names """
-        names = utils.utToUnicode(names)
-        query = {'meta_type': {'query':METATYPE_ALISSELEMENT, 'operator':'and '},}
-        if suggest:
-            query['objecttrans_en'] = names
-        else:
-            query['translations_suggest'] = {'query':names, 'operator':'and '}
-        cat_res = self.catalog(query)
-
-        res = []
-        for term in cat_res:
-
-            #get object
-            aliss_path_list = self.getCatalog().getpath(term.data_record_id_).split('/')
-            gloss_center = self.getCenterByUID(aliss_path_list[0])
-            aliss_term = gloss_center.element_manager.get_element_item(aliss_path_list[1])
-
-            if names in aliss_term.getTranslationsList():
-                res.append(term)
-                break
-
-        return res
-
     def getElementsByNames(self, names, suggest=False, lang='en'):
         """ Search term across all centers in this aliss instance.
         Return all cataloged elements with names=names available
