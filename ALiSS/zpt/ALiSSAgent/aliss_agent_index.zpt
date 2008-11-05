@@ -14,30 +14,16 @@
 	<ul class="alphabet_list">
 		<li	tal:condition="dtype"
 			tal:define="has_content python:here.hasDigits(menuData);
-						param_letter python:test(dtype, 'num', '1')">
+						param_letter python:test(dtype, 'num', '1')"
+			style="padding-left: 0.4em">
 			<a	tal:condition="has_content" title="0-9" class="menu_link"
 				tal:attributes="href string:${here/absolute_url}/list_html?letter=${param_letter}">0-9</a>
 			<span	tal:condition="not:has_content" class="menu_empty">0-9</span>
 		</li>
 
 		<li tal:repeat="data_letter python:here.unicode_map(lang)" tal:condition="dtype">
-			<tal:menu define="letter python:data_letter[0];
-								cap_letter python:letter.upper().encode('utf8');
-								has_content python:menuData.has_key(cap_letter)">
-				<tal:block condition="has_content">
-					<a	class="menu_link"
-						tal:define="conceptsNumber python:menuData[cap_letter]"
-						tal:attributes="href string:${here/absolute_url}/list_html?letter=${letter};
-										title string:${conceptsNumber} terms"
-						tal:content="cap_letter" />
-				</tal:block>
-				<span	tal:condition="not:has_content"
-						tal:content="cap_letter" class="menu_empty" />
-			</tal:menu>
-		</li>
-
-		<!-- li tal:repeat="letter python:here.getLettersUpper(lang)" tal:condition="dtype">
-			<tal:menu define="has_content python:menuData.has_key(letter)">
+			<tal:menu define="letter python:data_letter[1].encode('utf8');
+								has_content python:menuData.has_key(letter)">
 				<tal:block condition="has_content">
 					<a	class="menu_link"
 						tal:define="conceptsNumber python:menuData[letter]"
@@ -48,9 +34,10 @@
 				<span	tal:condition="not:has_content"
 						tal:content="letter" class="menu_empty" />
 			</tal:menu>
-		</li -->
+		</li>
 
-		<li tal:define="has_content python:here.hasOther(menuData, lang)">
+		<li tal:define="has_content python:here.hasOther(menuData, lang)"
+			style="padding-right: 0.4em">
 			<tal:block condition="has_content">
 				<a	tal:condition="has_content" title="Other" class="menu_link"
 					tal:attributes="href string:${here/absolute_url}/list_html?letter=other">Other</a>
