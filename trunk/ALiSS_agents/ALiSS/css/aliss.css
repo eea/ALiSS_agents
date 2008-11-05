@@ -3,6 +3,7 @@ ul.alphabet_list li {
  display:inline;
  background-color: #e9efcd;
  font-size:1.4em;
+ padding: 0.2em 0;
 }
 
 ul.subalphabet_list li {

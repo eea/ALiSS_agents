@@ -560,7 +560,7 @@ class ALiSSAgent(Folder,
                                 translations[langcode].append('%s) %s' % (trans_count+1, term_trans))
                         else:
                             translations[langcode] = [term_trans]
-            translations['en'] = [aliss_term.name]
+            translations['en'] = [aliss_term.getTranslation('en')]
 
             l_terms_list.append(aliss_term)
 
@@ -657,13 +657,23 @@ class ALiSSAgent(Folder,
             terms_list.extend(aliss_center.getElementsByLetter(letter, lang))
 
         #filter terms by first letter
+        alphabet = self.unicode_map(lang)
+        for letters in alphabet:
+            if utils.ut_to_unicode(letter) in letters:
+                letters_list = letters
+                break
+
         for term in utils.utElimintateDuplicates(terms_list, 'name'):
             trans = term.getTranslation(lang)
-            if self.testFirstLetter(trans, letter, dtype):
-                term.url =      utils.utUrlEncode(term.url)
-                term.page_url = utils.utUrlEncode(trans)
-                term.name =     trans
-                res.append(term)
+
+            for let in letters_list:
+                if trans.startswith(let):
+                    term.url =      utils.utUrlEncode(term.url)
+                    term.page_url = utils.utUrlEncode(trans)
+                    term.name =     trans
+                    res.append(term)
+                    break
+
         return res
 
     security.declarePublic('hasContent')
@@ -688,6 +698,7 @@ class ALiSSAgent(Folder,
             paging_informations = batch_obj.butGetPagingInformations()
         else:
             paging_informations = (-1, 0, 0, -1, -1, 0, self.getResPerPage(), [0])
+
         return (paging_informations, results[paging_informations[0]:paging_informations[1]])
 
     security.declarePublic('mergeTopResults')
@@ -757,16 +768,25 @@ class ALiSSAgent(Folder,
         for aliss_center in self.getAlissCenters():
             query = {'meta_type':     {'query':METATYPE_ALISSELEMENT, 'operator':'and '},
                      'center_parent': {'query':aliss_center.center_uid}}
-            for term in utils.utElimintateDuplicates(self.catalog(query), 'name'):
-                elem_path = self.catalog.getpath(term.data_record_id_)
-                elem_ob = self.catalog.get_aliss_object(elem_path)
-                trans = elem_ob.getTranslation(lang)
 
-                if len(trans)>0:
-                    conceptsNumber += 1
-                    first_letter = trans[0].upper().encode('utf8')
-                    if not menuData.has_key(first_letter): menuData[first_letter] = 1
-                    else: menuData[first_letter] += 1
+            for term in utils.utElimintateDuplicates(self.catalog(query), 'name'):
+                try:
+                    elem_path = self.catalog.getpath(term.data_record_id_)
+                    elem_ob = self.catalog.get_aliss_object(elem_path)
+                    trans = elem_ob.getTranslation(lang)
+
+                    if len(trans)>0:
+                        conceptsNumber += 1
+
+                        for letters in self.unicode_map(lang):
+                            for letter in letters:
+                                if trans.startswith(letter):
+                                    menuData[letters[1].encode('utf8')] = menuData.get(letters[1].encode('utf8'), 0) + 1
+                                    raise
+                        menuData[trans[0]] = menuData.get(trans[0], 0) + 1
+
+                except:
+                    pass
         return (conceptsNumber, menuData)
 
     def hasOther(self, data, lang):

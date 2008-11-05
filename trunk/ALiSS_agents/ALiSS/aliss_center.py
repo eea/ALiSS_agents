@@ -423,6 +423,7 @@ class ALiSSCenter(Folder,
                 elem_path = self.catalog.getpath(k.data_record_id_)
                 elem_ob = self.catalog.get_aliss_object(elem_path)
                 cat_res.append(elem_ob)
+
         return cat_res
 
 
