@@ -105,20 +105,22 @@
 			<p tal:condition="not:concept_definitions">Definition not available.</p>
 			<dl class="definitions_list" tal:condition="concept_definitions">
 				<dt tal:content="concept_name" />
-				<tal:block repeat="source_url python:concept_definitions.keys()">
-				<dd  tal:condition="python:concept_definitions[source_url]!='Definition not available.'">
-					<tal:block	condition="python:concept_definitions[source_url]!='Definition not available.'" 
-								define="terms_indef python:here.getTermsInText(concept_definitions[source_url],100)">
-					<div tal:content="structure terms_indef/marked_text" />
-					<div class="definition_source">
-						<p> <strong>Terminology source:</strong>
-							<a  tal:define="url_idx python:source_url.find('/',8)"
-								tal:attributes="href string:terminology_sources_html;title source_url;"
-								title="terminology tool source"
-								tal:content="python:source_url[:int(url_idx)]" /></p>
-					</div>
+				<tal:block repeat="src_url python:concept_definitions.keys()">
+					<tal:block define="source_url python:utils.utUrlDecode(src_url)">
+						<dd  tal:condition="python:concept_definitions[source_url]!='Definition not available.'">
+							<tal:block	condition="python:concept_definitions[source_url]!='Definition not available.'" 
+										define="terms_indef python:here.getTermsInText(concept_definitions[source_url],100)">
+							<div tal:content="structure terms_indef/marked_text" />
+							<div class="definition_source">
+								<p> <strong>Terminology source:</strong>
+									<a  tal:define="url_idx python:source_url.find('/',8)"
+										tal:attributes="href string:terminology_sources_html;title source_url;"
+										title="terminology tool source"
+										tal:content="python:source_url[:int(url_idx)]" /></p>
+							</div>
+							</tal:block>
+						</dd>
 					</tal:block>
-				</dd>
 				</tal:block>
 			</dl>
 			<p class="more_definitions"><a class="moreLink" tal:attributes="href string:http://www.google.com/search?q=define%3A${concept_url}&amp;start=0&amp;start=0&amp;ie=utf-8&amp;oe=utf-8">Find definitions (via Google)</a></p>
