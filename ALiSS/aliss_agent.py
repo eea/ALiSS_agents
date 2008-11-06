@@ -830,8 +830,8 @@ class ALiSSAgent(Folder,
             url = url.replace('.%s.' % current_lang, '.%s.' % target_lang)
         else:
             #EN case, e.g. http://glossary.eea.europa.eu
-            #url = url.replace('glossary.eea', 'glossary.%s.eea' % target_lang)
-            url = url.replace('alecw.eaudeweb', 'alecw.%s.eaudeweb' % target_lang)
+            url = url.replace('glossary.eea', 'glossary.%s.eea' % target_lang)
+            #url = url.replace('alecw.eaudeweb', 'alecw.%s.eaudeweb' % target_lang)
         return url
 
     def jsSelectedLanguage(self, lang):
