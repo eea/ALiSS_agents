@@ -124,7 +124,10 @@ searcher.setSiteRestriction(cseId,null,"http://www.google.com/cse?cx=01061708314
         //Change "Search" label
         var ob_search_container = form.input.parentNode.parentNode;
         var ob_search = ob_search_container.childNodes[1].childNodes[0]
-        ob_search.value = document.getElementById('gsearch').innerHTML;
+        var google_search = document.getElementById('gsearch');
+        if (google_search != null) {
+            ob_search.value = document.getElementById('gsearch').innerHTML;
+        }
 
       }
 
