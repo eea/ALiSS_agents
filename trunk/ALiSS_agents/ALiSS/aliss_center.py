@@ -34,6 +34,7 @@ from Products.ALiSS                                   import utils
 from Products.ALiSS.managers.skos_manager             import SkosImport
 from Products.ALiSS.managers.element_manager          import ElementManager
 from Products.ALiSS.managers.google_manager           import GoogleManager
+from Products.ALiSS.alphabet_charts                   import unicode_character_map
 
 manage_addAlissCenter_html = PageTemplateFile('zpt/ALiSSCenter/aliss_center_add', globals())
 
@@ -375,7 +376,6 @@ class ALiSSCenter(Folder,
 
     def getElementsByLetter(self, letter, lang):
         """ """
-        #query_letter = utils.utToUnicode(letter)
         query_letter = letter
         id_indexname = 'objecttrans_%s' % lang
         if len(letter) in [1, 2]:
@@ -406,13 +406,22 @@ class ALiSSCenter(Folder,
             tmp_cat_res = self.catalog(query)
             cat_res = []
             for k in tmp_cat_res:
-                elem_path = self.catalog.getpath(k.data_record_id_)
-                elem_ob = self.catalog.get_aliss_object(elem_path)
-                trans = elem_ob.getTranslation(lang)
+                try:
+                    elem_path = self.catalog.getpath(k.data_record_id_)
+                    elem_ob = self.catalog.get_aliss_object(elem_path)
+                    trans = elem_ob.getTranslation(lang)
 
-                if len(trans) > 0:
-                    if not (trans[0] in utils.getDigits() or trans[0].lower() in utils.unicode_character_map(lang)):
+                    if len(trans) > 0:
+                        for dig in utils.getDigits():
+                            if trans.startswith(dig):
+                                raise
+                        for charset in unicode_character_map(lang):
+                            for char in charset:
+                                if trans.startswidth(char):
+                                    raise
                         cat_res.append(elem_ob)
+                except:
+                    pass
         else:
             query = {'meta_type':     {'query':''}}
 

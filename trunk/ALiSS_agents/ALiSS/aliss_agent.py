@@ -658,14 +658,20 @@ class ALiSSAgent(Folder,
 
         #filter terms by first letter
         alphabet = self.unicode_map(lang)
+        letters_list = []
         for letters in alphabet:
             if utils.ut_to_unicode(letter) in letters:
                 letters_list = letters
                 break
+        if len(letters_list) == 0: letters_list = [letter]
 
         for term in utils.utElimintateDuplicates(terms_list, 'name'):
             trans = term.getTranslation(lang)
 
+            if len(letters_list) == 1:
+                #TODO: fix 'other' and 'num'
+                res.append(term)
+                break
             for let in letters_list:
                 if trans.startswith(let):
                     term.url =      utils.utUrlEncode(term.url)
