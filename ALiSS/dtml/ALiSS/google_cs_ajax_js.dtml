@@ -106,6 +106,7 @@ searcher.setSiteRestriction(cseId,null,"http://www.google.com/cse?cx=01061708314
         var ob_form = form.input.parentNode.parentNode.parentNode.parentNode.parentNode;
         var q = form.input.value
 
+        //Display query
         if (ob_form.childNodes.length < 3) {
           var ob_query = document.createElement("em");
           ob_query.innerHTML = q;
@@ -119,6 +120,12 @@ searcher.setSiteRestriction(cseId,null,"http://www.google.com/cse?cx=01061708314
             ob_form.childNodes[2].appendChild(ob_txt);
           }
         }
+
+        //Change "Search" label
+        var ob_search_container = form.input.parentNode.parentNode;
+        var ob_search = ob_search_container.childNodes[1].childNodes[0]
+        ob_search.value = document.getElementById('gsearch').innerHTML;
+
       }
 
       function OnLoad() {

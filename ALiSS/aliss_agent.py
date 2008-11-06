@@ -560,7 +560,7 @@ class ALiSSAgent(Folder,
                                 translations[langcode].append('%s) %s' % (trans_count+1, term_trans))
                         else:
                             translations[langcode] = [term_trans]
-            translations['en'] = [aliss_term.getTranslation('en')]
+            translations['en'] = [aliss_term.name]
 
             l_terms_list.append(aliss_term)
 
@@ -824,8 +824,16 @@ class ALiSSAgent(Folder,
             url = url.replace('.%s.' % current_lang, '.%s.' % target_lang)
         else:
             #EN case, e.g. http://glossary.eea.europa.eu
-            url = url.replace('glossary.eea', 'glossary.%s.eea' % target_lang)
+            #url = url.replace('glossary.eea', 'glossary.%s.eea' % target_lang)
+            url = url.replace('alecw.eaudeweb', 'alecw.%s.eaudeweb' % target_lang)
         return url
 
+    def jsSelectedLanguage(self, lang):
+        """ """
+        return """<script  type="text/javascript">
+    // <![CDATA[
+        var selected_language = '%s';
+    // ]]>
+</script>""" % lang
 
 InitializeClass(ALiSSAgent)
