@@ -392,6 +392,40 @@ class AlissCatalog(ZCatalog):
                 self.__createObjectnameIndex(index_id)
 
 
+    ################
+    #   UPDATES    #
+    ################
+
+    security.declareProtected(view_management_screens, 'updateCatalogMultilingual')
+    def updateCatalogMultilingual(self):
+        """ """
+        #cleanup
+        old_indexes = ['translations_suggest', 'id_suggest', 'getName', 'name_suggest']
+        remove_indexes = []
+        remove_schemas = []
+        for index in old_indexes:
+            if index in self.indexes():
+                remove_indexes.append(index)
+            if index in self.schema():
+                remove_schemas.append(index)
+        self.manage_delIndex(ids=remove_indexes)
+        self.manage_delColumn(names=remove_schemas)
+
+        #update
+        info = []
+        for lang in self.getLanguagesIndexed()[0]:
+            objectname_index = 'objectname_%s' % lang.lower()
+            objecttrans_index = 'objecttrans_%s' % lang.lower()
+            if not objecttrans_index in self.indexes():
+                self.__createObjecttransIndex(objecttrans_index)
+                info.append(objecttrans_index)
+            if not objectname_index in self.indexes():
+                self.__createObjectnameIndex(objectname_index)
+                info.append(objectname_index)
+        self.manage_reindexIndex(ids=info)
+        return info
+
+
     #################
     #   ZMI PAGES   #
     #################

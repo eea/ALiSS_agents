@@ -812,4 +812,20 @@ class ALiSSAgent(Folder,
         """ return unicode set of characters for a given language """
         return unicode_character_map[lang]
 
+
+    #####################
+    #   Translations    #
+    #####################
+
+    def generateTransLink(self, current_lang, target_lang, REQUEST=None):
+        """ """
+        url = self.absolute_url()
+        if '.%s.' % current_lang in url:
+            url = url.replace('.%s.' % current_lang, '.%s.' % target_lang)
+        else:
+            #EN case, e.g. http://glossary.eea.europa.eu
+            url = url.replace('glossary.eea', 'glossary.%s.eea' % target_lang)
+        return url
+
+
 InitializeClass(ALiSSAgent)
