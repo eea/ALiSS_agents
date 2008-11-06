@@ -189,6 +189,10 @@ def utUrlEncode(p_string, qtype=0):
     if qtype: return p_string
     else:     return url_quote(utToUTF8(p_string))
 
+def utUrlDecode(p_string):
+    """ Replace "%xx" escapes by their single-character equivalent. """
+    return urllib.unquote(p_string)
+
 def compareLetter(word, letter2):
     """ comapare two letters """
     word = utToUTF8(word)

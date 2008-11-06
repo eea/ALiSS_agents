@@ -92,6 +92,7 @@ misc_ = {
 ModuleSecurityInfo('Products.ALiSS.utils').declarePublic('joinToList')
 ModuleSecurityInfo('Products.ALiSS.utils').declarePublic('utShowDateTime')
 ModuleSecurityInfo('Products.ALiSS.utils').declarePublic('utUrlEncode')
+ModuleSecurityInfo('Products.ALiSS.utils').declarePublic('utUrlDecode')
 ModuleSecurityInfo('Products.ALiSS.utils').declarePublic('utToUnicode')
 ModuleSecurityInfo('Products.ALiSS.utils').apply(globals())
 
