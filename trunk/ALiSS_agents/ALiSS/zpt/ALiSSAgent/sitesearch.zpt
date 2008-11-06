@@ -1,13 +1,15 @@
 <tal:block tal:replace="structure here/standard_html_header"/>
 <span tal:replace="python:request.RESPONSE.setHeader('content-type', 'text/html;charset=UTF-8')"/>
 
-
 <tal:block	define="utils			modules/Products.ALiSS.utils;
 					term_name		python:utils.utToUnicode(request.get('term', ''));
 					lang			python:request.get('SELECTED_LANGUAGE', 'en');
 					aliss_concept	python:here.getConceptDetails(term_name, lang);">
 
+	<tal:block content="structure python:here.jsSelectedLanguage(lang)" />
 	<h1 tal:content="python:context.messages('Search')">Search</h1>
+	<span id="gsearch" style="display:none" tal:content="python:context.messages('Search')">Search</span>
+
 	<div id="search-results-area" tal:attributes="style python:test(aliss_concept, 'width:47%', 'width:100%')">
 		<div metal:use-macro="here/concept_html/macros/googlecse-result" />
 	</div>
