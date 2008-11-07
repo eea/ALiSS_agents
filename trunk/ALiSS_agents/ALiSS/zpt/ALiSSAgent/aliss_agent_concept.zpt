@@ -105,8 +105,8 @@
 			<p tal:condition="not:concept_definitions">Definition not available.</p>
 			<dl class="definitions_list" tal:condition="concept_definitions">
 				<dt tal:content="concept_name" />
-				<tal:block repeat="src_url python:concept_definitions.keys()">
-					<tal:block define="source_url python:utils.utUrlDecode(src_url)">
+				<tal:block repeat="source_url python:concept_definitions.keys()">
+					<tal:block define="source_text python:utils.utUrlDecode(source_url)">
 						<dd  tal:condition="python:concept_definitions[source_url]!='Definition not available.'">
 							<tal:block	condition="python:concept_definitions[source_url]!='Definition not available.'" 
 										define="terms_indef python:here.getTermsInText(concept_definitions[source_url],100)">
@@ -116,7 +116,7 @@
 									<a  tal:define="url_idx python:source_url.find('/',8)"
 										tal:attributes="href string:terminology_sources_html;title source_url;"
 										title="terminology tool source"
-										tal:content="python:source_url[:int(url_idx)]" /></p>
+										tal:content="python:source_text[:int(url_idx)]" /></p>
 							</div>
 							</tal:block>
 						</dd>
