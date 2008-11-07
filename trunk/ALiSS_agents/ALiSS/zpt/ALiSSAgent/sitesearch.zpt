@@ -33,5 +33,4 @@
 
 </tal:block>
 
-
 <tal:block tal:replace="structure here/standard_html_footer"/>
