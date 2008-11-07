@@ -136,7 +136,8 @@ concept_definitions[concept_definitions.keys()[0]]=='Definition not available.' 
 							transcodes python:trans.sort()">
 				<tal:block repeat="langcode trans">
 				<li tal:condition="python:langcode != lang">
-					<span class="langcode" tal:content="langcode" /> <a tal:attributes="href python:here.generateTransLink(lang, langcode)+'/sitesearch?term='+' '.join(translations[langcode])"><span tal:content="python:'; '.join(translations[langcode])" /></a>
+					<span class="langcode" tal:content="langcode" /> <a tal:attributes="href python:here.generateTransLink(lang, langcode)+'/concept_html?term='+' '.join(translations[langcode])"><span 
+tal:content="python:'; '.join(translations[langcode])" /></a>
 				</li>
 				</tal:block>
 			</ul>
