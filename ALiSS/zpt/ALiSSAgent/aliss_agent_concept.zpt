@@ -40,8 +40,8 @@
 			style="padding-right: 0.4em">
 			<tal:block condition="has_content">
 				<a	tal:condition="has_content" title="Other" class="menu_link"
-					tal:attributes="href string:${here/absolute_url}/list_html?letter=other">Other</a>
-				<span class="menu_selected" tal:condition="not:has_content">Other</span>
+					tal:attributes="href string:${here/absolute_url}/list_html?letter=other;title python:context.messages('Other')" tal:content="python:context.messages('Other')">Other</a>
+				<span class="menu_selected" tal:condition="not:has_content" tal:content="python:context.messages('Other')">Other</span>
 			</tal:block>
 		</li>
 
@@ -54,8 +54,9 @@
 
 	<!-- Case of NO TERM found -->
 	<div tal:condition="not:aliss_concept" id="no_concept_area">
-			<h1>Terminology results for <em tal:content="term_name" /></h1>
-			<p>No term found matching exactly the name <strong><span tal:replace="term_name" /></strong>.</p>
+			<h1><em tal:content="term_name" /></h1>
+			<p><span tal:replace="python:context.messages('There are no items to display at the moment')">Definition not 
+available</span>.</p>
 	</div>
 
 	<!-- Google custom search area -->
@@ -101,8 +102,9 @@
 
 			<!-- Definitions and translations -->
 			<div metal:define-macro="definitions" id="definitions-area">
-			<h2>Definitions</h2>
-			<p tal:condition="not:concept_definitions">Definition not available.</p>
+			<h2><span tal:replace="python:context.messages('Definitions')">Definitions</span> (<span tal:replace="python:context.messages('English')">English</span>)</h2>
+			<p tal:condition="python:len(concept_definitions.keys())<2 and 
+concept_definitions[concept_definitions.keys()[0]]=='Definition not available.' "><span tal:replace="python:context.messages('There are no items to display at the moment')">Definition not available</span>.</p>
 			<dl class="definitions_list" tal:condition="concept_definitions">
 				<dt tal:content="concept_name" />
 				<tal:block repeat="source_url python:concept_definitions.keys()">
@@ -128,7 +130,7 @@
 			</div>
 
 			<div metal:define-macro="translations" id="translations-area">
-			<h2>Translations</h2>
+			<h2 tal:content="python:context.messages('Translations')">Translations</h2>
 			<ul tal:condition="python:len(translations.keys())>0"
 				tal:define="trans python:translations.keys();
 							transcodes python:trans.sort()">
@@ -138,7 +140,7 @@
 				</li>
 				</tal:block>
 			</ul>
-			<p tal:condition="python:len(translations.keys())<1">No translations are available for this term.</p>
+			<p tal:condition="python:len(translations.keys())<1"><span tal:replace="python:context.messages('There are no items to display at the moment')" />.</p>
 			</div>
 
 			<tal:block	define="statistics python:here.getContentGroups()">
@@ -170,7 +172,7 @@
 
 			<tal:block metal:define-macro="suggestions" define="related_terms python:here.getTermSuggestionsBrains(concept_name,True,lang)">
 			<div id="see-also" tal:condition="python:len(related_terms)>0">
-				<h2>Related terms</h2>
+				<h2 tal:content="python:context.messages('Related themes')">Related themes</h2>
 				<ul class="concept_list">
 					<tal:block tal:repeat="term_sugg related_terms" tal:on-error="nothing">
 						<li tal:define="term python:term_sugg.getTranslation(lang)">

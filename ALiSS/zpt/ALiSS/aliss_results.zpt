@@ -1,5 +1,6 @@
 <tal:block tal:replace="structure here/standard_html_header"/>
 <span tal:replace="python:request.RESPONSE.setHeader('content-type', 'text/html;charset=UTF-8')"/>
+
 <tal:block define="term_name request/term_name; lang python:request.get('SELECTED_LANGUAGE', 'en')">
 
 	<p class="documentDescription"><dtml-var description></p>
@@ -37,4 +38,5 @@
 	</tal:block>
 
 </tal:block>
+
 <tal:block tal:replace="structure here/standard_html_footer"/>

@@ -1,5 +1,6 @@
 <tal:block tal:replace="structure here/standard_html_header"/>
 <span tal:replace="python:request.RESPONSE.setHeader('content-type', 'text/html;charset=UTF-8')" />
+
 <tal:block define="	currentLetter python:request.get('letter', 'A');
 					lang python:request.get('SELECTED_LANGUAGE', 'en');
 					dtype here/getDisplayType;
@@ -145,4 +146,5 @@ currentLetter)">A</strong>-folder.<br/>
 	</tal:block>
 
 </tal:block>
+
 <tal:block tal:replace="structure here/standard_html_footer"/>

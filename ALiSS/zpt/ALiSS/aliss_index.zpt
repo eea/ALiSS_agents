@@ -1,5 +1,6 @@
 <tal:block tal:replace="structure here/standard_html_header"/>
 <span tal:replace="python:request.RESPONSE.setHeader('content-type', 'text/html;charset=UTF-8')"/>
+
 <p class="documentDescription"><dtml-var description></p>
 
 <div id="standard-term-search">
