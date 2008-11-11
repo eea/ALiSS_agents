@@ -10,7 +10,7 @@
 					menuData python:data[1]">
 
 	<!-- Page header -->
-	<h2>A-Z Index of terms</h2>
+	<h2 tal:content="python:context.messages('Alphabetically')">Alphabetically</h2>
 
 	<!-- Alphabet listing and navigation -->
 	<ul class="alphabet_list" tal:condition="dtype">
@@ -56,11 +56,6 @@
 
 	<!-- Terms listing -->
 	<h2 tal:content="python:test(here.isNumeric(currentLetter), '0-9', currentLetter)" />
-	<div class="note">
-		<p>Here you see the list of terms found in <strong tal:content="python:test(here.isNumeric(currentLetter), '0-9', 
-currentLetter)">A</strong>-folder.<br/>
-		Click on the term to see the details like definition, translations etc..</p>
-	</div>
 	<tal:block	define="terms_list python:here.getTerms(currentLetter, dtype, p_start, lang);
 						results python:terms_list[1];
 						page_search_querystring string:letter=${currentLetter};
