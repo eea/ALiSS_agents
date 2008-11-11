@@ -2,7 +2,7 @@
 <span tal:replace="python:request.RESPONSE.setHeader('content-type', 'text/html;charset=UTF-8')" />
 
 <!-- Page header -->
-<h2>A-Z Index of terms</h2>
+<h2 tal:content="python:context.messages('Alphabetically')">Alphabetically</h2>
 
 <!-- Alphabet listing and navigation -->
 <tal:block define="dtype here/getDisplayType;
@@ -52,7 +52,6 @@
 	</ul>
 
 	<br /><br />
-	<div style="margin: 1.5em; font-weight:bold;" tal:content="string:${totalConcepts} terms are available." tal:condition="dtype" />
 </tal:block>
 <br clear="all" />
 
