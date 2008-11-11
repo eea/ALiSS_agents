@@ -135,8 +135,9 @@ tal:replace="python:context.messages('More')">More</span>... (Google)</a></p>
 				tal:define="trans python:translations.keys();
 							transcodes python:trans.sort()">
 				<tal:block repeat="langcode trans">
-				<li tal:condition="python:langcode != lang">
-					<span class="langcode" tal:content="langcode" /> <a tal:attributes="href python:here.generateTransLink(lang, langcode)+'/concept_html?term='+' '.join(translations[langcode])"><span 
+				<li tal:condition="python:langcode != lang"
+					tal:define="trans_url python:test(len(translations[langcode])==1,translations[langcode][0],translations[langcode][0][3:])">
+					<span class="langcode" tal:content="langcode" /> <a tal:attributes="href python:here.generateTransLink(lang, langcode)+'/concept_html?term='+trans_url"><span 
 tal:content="python:'; '.join(translations[langcode])" /></a>
 				</li>
 				</tal:block>
