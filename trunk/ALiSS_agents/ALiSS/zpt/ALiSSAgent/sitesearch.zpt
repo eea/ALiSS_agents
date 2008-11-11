@@ -22,7 +22,6 @@
 							terms_list			python:aliss_concept['terms_list']">
 
 			<div style="float:right;width:47%;" tal:condition="concept_name">
-				<h1>Terminology: <em><span tal:replace="concept_name" /></em></h1>
 				<div metal:use-macro="here/concept_html/macros/definitions" />
 				<div metal:use-macro="here/concept_html/macros/translations" />
 				<div metal:use-macro="here/concept_html/macros/suggestions" />
