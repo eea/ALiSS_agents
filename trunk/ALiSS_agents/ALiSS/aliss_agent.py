@@ -666,19 +666,25 @@ class ALiSSAgent(Folder,
         if len(letters_list) == 0: letters_list = [letter]
 
         for term in utils.utElimintateDuplicates(terms_list, 'name'):
-            trans = term.getTranslation(lang)
+            try:
+                trans = term.getTranslation(lang)
 
-            if len(letters_list) == 1:
-                #TODO: fix 'other' and 'num'
-                res.append(term)
-                break
-            for let in letters_list:
-                if trans.startswith(let):
+                if len(letters_list) == 1:
                     term.url =      utils.utUrlEncode(term.url)
                     term.page_url = utils.utUrlEncode(trans)
                     term.name =     trans
                     res.append(term)
                     break
+                for let in letters_list:
+                    if trans.startswith(let):
+                        term.url =      utils.utUrlEncode(term.url)
+                        term.page_url = utils.utUrlEncode(trans)
+                        term.name =     trans
+                        res.append(term)
+                        raise
+
+            except:
+                pass
 
         return res
 
@@ -831,7 +837,6 @@ class ALiSSAgent(Folder,
         else:
             #EN case, e.g. http://glossary.eea.europa.eu
             url = url.replace('glossary.eea', 'glossary.%s.eea' % target_lang)
-            #url = url.replace('alecw.eaudeweb', 'alecw.%s.eaudeweb' % target_lang)
         return url
 
     def jsSelectedLanguage(self, lang):

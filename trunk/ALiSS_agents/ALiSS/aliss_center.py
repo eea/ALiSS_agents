@@ -415,9 +415,9 @@ class ALiSSCenter(Folder,
                         for dig in utils.getDigits():
                             if trans.startswith(dig):
                                 raise
-                        for charset in unicode_character_map(lang):
+                        for charset in unicode_character_map[lang]:
                             for char in charset:
-                                if trans.startswidth(char):
+                                if trans.startswith(char):
                                     raise
                         cat_res.append(elem_ob)
                 except:
