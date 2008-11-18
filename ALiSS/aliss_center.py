@@ -405,11 +405,9 @@ class ALiSSCenter(Folder,
                      'center_parent': {'query':self.center_uid}}
             tmp_cat_res = self.catalog(query)
             cat_res = []
-            for k in tmp_cat_res:
+            for brain in tmp_cat_res:
                 try:
-                    elem_path = self.catalog.getpath(k.data_record_id_)
-                    elem_ob = self.catalog.get_aliss_object(elem_path)
-                    trans = elem_ob.getTranslation(lang)
+                    trans = self.getTrans(brain, lang)
 
                     if len(trans) > 0:
                         for dig in utils.getDigits():
@@ -419,7 +417,7 @@ class ALiSSCenter(Folder,
                             for char in charset:
                                 if trans.startswith(char):
                                     raise
-                        cat_res.append(elem_ob)
+                        cat_res.append(trans)
                 except:
                     pass
         else:
@@ -428,10 +426,8 @@ class ALiSSCenter(Folder,
         if letter != 'other':
             cat_res = []
             res = self.catalog(query)
-            for k in res:
-                elem_path = self.catalog.getpath(k.data_record_id_)
-                elem_ob = self.catalog.get_aliss_object(elem_path)
-                cat_res.append(elem_ob)
+            for brain in res:
+                cat_res.append(self.getTrans(brain, lang))
 
         return cat_res
 

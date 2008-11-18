@@ -135,6 +135,7 @@ class ALiSS(Folder):
 
     def getLanguagesIndexed(self):
         """ """
+        #TODO: (low) use catalog to get translations info
         res = {'en':0}
         langs = []
         for center in self.getAllCenters():
@@ -184,9 +185,7 @@ class ALiSS(Folder):
             query[index_name] = {'query':names.lower(), 'operator':'and '}
         cat_res = self.catalog(query)
         if len(cat_res) > 0:
-            elem_path = self.catalog.getpath(cat_res[0].data_record_id_)
-            elem_ob = self.catalog.get_aliss_object(elem_path)
-            return elem_ob
+            return self.getTrans(cat_res[0], lang)
         return None
 
     def testGroupsIfUsed(self, group_id):
@@ -268,6 +267,12 @@ class ALiSS(Folder):
     def get_all_centers(self):
         #return all ALiSS Centers
         return self.objectValues(METATYPE_ALISSCENTER)
+
+    def getTrans(self, brain, lang):
+        #return translation
+        try:    return eval('brain.objectname_%s' % lang)
+        except: return ''
+
 
     ######################
     #   BASIC PROPERTIES #

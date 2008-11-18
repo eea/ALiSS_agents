@@ -94,16 +94,15 @@
 
 	<ul class="concept_list">
 		<tal:block condition="results" repeat="term results">
-			<li tal:define="term_label python:term.getTranslation(lang);
-							url_term_label term/page_url">
-				<a	tal:content="term_label"
+			<li tal:define="utils modules/Products.ALiSS.utils;
+							url_term_label python:utils.utUrlEncode(term)">
+				<a	tal:content="term"
 					tal:attributes="href string:${here/absolute_url}/concept_html?term=${url_term_label};
-									title term_label" />
-			<!-- #TODO: show related terms
-					<tal:block define="related_terms python:here.getTermSuggestionsBrains(term_label,True, lang)">
+									title term" />
+					<tal:block define="related_terms python:here.getTermSuggestionsBrains(term,True, lang)">
 					<ul class="concept_list" tal:condition="python:len(related_terms)>0">
-						<tal:block tal:repeat="term_sugg related_terms" tal:on-error="nothing">
-							<li tal:define="term_trans python:term_sugg.getTranslation(lang)">
+						<tal:block tal:repeat="term_trans related_terms" tal:on-error="nothing">
+							<li>
 								<a	tal:attributes="
 								href string:${here/absolute_url}/concept_html?term=${term_trans};
 								title term_trans"
@@ -112,7 +111,6 @@
 						</tal:block>
 					</ul>
 					</tal:block>
-			-->
 			</li>
 		</tal:block>
 		<li tal:condition="not:results">No elements were found for the selected letter.</li>

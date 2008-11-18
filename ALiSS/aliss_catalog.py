@@ -204,7 +204,7 @@ class AlissCatalog(ZCatalog):
         elif zope_obj == 2:  results = map(self.getgooglepages,map(getattr,results,('data_record_id_',)*len(results)))
 
         #eliminate duplicates
-        return utils.utElimintateDuplicates(results)
+        return utils.utElimintateDuplicates(results, 'id')
 
 
     ###################

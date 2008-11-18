@@ -370,14 +370,6 @@ class ALiSSAgent(Folder,
 
         return results[:size]
 
-    def getBrainData(self, brain, lang):
-        """ """
-        #TODO: fix this in order to get data from brain
-        elem_path = self.catalog.getpath(brain.data_record_id_)
-        elem_ob = self.catalog.get_aliss_object(elem_path)
-        elem_trans = elem_ob.getTranslation(lang)
-        return (elem_ob, elem_trans)
-
     def getTermSuggestionsBrains(self, query, extended=False, lang='en', size=100):
         """ Returns term suggetions (max by default size=100 terms) in all centers and returns a list of unique terms. """
         results = []
@@ -393,24 +385,22 @@ class ALiSSAgent(Folder,
         if extended:
             terms = []
             for aliss_center in self.getAlissCenters():
-                for elem in aliss_center.getElementsByNames(query, True, lang):
-                    elem_data = self.getBrainData(elem, lang)
-                    elem_ob = elem_data[0]
-                    elem_trans = elem_data[1]
+                for brain in aliss_center.getElementsByNames(query, True, lang):
+                    elem_trans = self.getTrans(brain, lang)
                     if elem_trans not in terms and elem_trans.lower()!=orig_query.lower():
                         terms.append(elem_trans)
-                        results.append(elem_ob)
+                        results.append(elem_trans)
         else:
             for aliss_center in self.getAlissCenters():
-                for elem in aliss_center.getElementsByNames(query, True, lang):
-                    elem_data = self.getBrainData(elem, lang)
-                    elem_ob = elem_data[0]
-                    elem_trans = elem_data[1]
+                for brain in aliss_center.getElementsByNames(query, True, lang):
+                    elem_trans = getTrans(brain, lang)
                     if elem_trans not in results:
                         terms.append(elem_trans)
-                results.extend(elem_ob)
+                results.extend(elem_trans)
 
-        return utils.utSortObjsListByAttr(results[:size], 'name')
+        #TODO: implement LOCALE sorting here
+        results.sort()
+        return results[:size]
 
     security.declarePublic('getTermsInText')
     def getTermsInText(self,text,search_depth=10):
@@ -524,33 +514,30 @@ class ALiSSAgent(Folder,
         for aliss_center in self.getAlissCenters():
             [terms_list.append(aliss_term) for aliss_term in aliss_center.getElementsByNames(term_name.lower(), lang=lang) if aliss_term]
 
-        #TODO: fix this to use data from brains
-        tmp_terms_list = []
-        for elem in terms_list:
-            elem_data = self.getBrainData(elem, lang)
-            elem_ob = elem_data[0]
-            tmp_terms_list.append(elem_ob)
-
         #case of no terms found
         if len(terms_list) == 0:  return None
 
         #set terms name
-        results['term_name'] = tmp_terms_list[0].getTranslation(lang)
-        results['term_url'] = utils.utUrlEncode(tmp_terms_list[0].getTranslation(lang))
+        trans = self.getTrans(terms_list[0], lang)
+        results['term_name'] = trans
+        results['term_url'] = utils.utUrlEncode(trans)
 
         l_terms_list = []
-        for aliss_term in tmp_terms_list:
+        for aliss_term in terms_list:
+            elem_path = self.catalog.getpath(aliss_term.data_record_id_)
+            elem_ob = self.catalog.get_aliss_object(elem_path)
+
             #set terms list
-            if utils.isEmptyString(aliss_term.definition):
-                definitions[aliss_term.url] = 'Definition not available.'
+            if utils.isEmptyString(elem_ob.definition):
+                definitions[elem_ob.url] = 'Definition not available.'
             else:
                 #set definitions and sources(URLs)
-                definitions[aliss_term.url] = aliss_term.getDefinition()
+                definitions[elem_ob.url] = elem_ob.getDefinition()
 
             #set translations
-            if aliss_term.hasTranslations():
-                for langcode in aliss_term.getTranslations().keys():
-                    term_trans = aliss_term.getTranslation(langcode)
+            if elem_ob.hasTranslations():
+                for langcode in elem_ob.getTranslations().keys():
+                    term_trans = elem_ob.getTranslation(langcode)
                     if len(term_trans.strip()) > 0:
                         if translations.has_key(langcode):
                             if term_trans not in translations[langcode]:
@@ -560,9 +547,9 @@ class ALiSSAgent(Folder,
                                 translations[langcode].append('%s) %s' % (trans_count+1, term_trans))
                         else:
                             translations[langcode] = [term_trans]
-            translations['en'] = [aliss_term.name]
+            translations['en'] = [self.getTrans(aliss_term, 'en')]
 
-            l_terms_list.append(aliss_term)
+            l_terms_list.append(elem_ob)
 
         results['definitions'] = definitions
         results['translations'] = translations
@@ -665,24 +652,15 @@ class ALiSSAgent(Folder,
                 break
         if len(letters_list) == 0: letters_list = [letter]
 
-        for term in utils.utElimintateDuplicates(terms_list, 'name'):
+        for trans in utils.utElimintateDuplicates(terms_list):
             try:
-                trans = term.getTranslation(lang)
-
                 if len(letters_list) == 1:
-                    term.url =      utils.utUrlEncode(term.url)
-                    term.page_url = utils.utUrlEncode(trans)
-                    term.name =     trans
-                    res.append(term)
+                    res.append(trans)
                     break
                 for let in letters_list:
                     if trans.startswith(let):
-                        term.url =      utils.utUrlEncode(term.url)
-                        term.page_url = utils.utUrlEncode(trans)
-                        term.name =     trans
-                        res.append(term)
+                        res.append(trans)
                         raise
-
             except:
                 pass
 
@@ -702,7 +680,10 @@ class ALiSSAgent(Folder,
         except: p_start = 0
 
         #get data
-        results.extend(utils.utSortObjsListByAttr(self.get_terms(letter, dtype, lang), 'name'))
+        #TODO: implement LOCALE sorting here
+        res = self.get_terms(letter, dtype, lang)
+        res.sort()
+        results.extend(res)
 
         #batch related
         batch_obj = batch_utils(self.getResPerPage(), len(results), p_start)
@@ -781,12 +762,9 @@ class ALiSSAgent(Folder,
             query = {'meta_type':     {'query':METATYPE_ALISSELEMENT, 'operator':'and '},
                      'center_parent': {'query':aliss_center.center_uid}}
 
-            for term in utils.utElimintateDuplicates(self.catalog(query), 'name'):
+            for term in utils.utElimintateDuplicates(self.catalog(query), 'objectname_%s' % lang):
                 try:
-                    elem_path = self.catalog.getpath(term.data_record_id_)
-                    elem_ob = self.catalog.get_aliss_object(elem_path)
-                    trans = elem_ob.getTranslation(lang)
-
+                    trans = self.getTrans(term, lang)
                     if len(trans)>0:
                         conceptsNumber += 1
 
@@ -796,9 +774,9 @@ class ALiSSAgent(Folder,
                                     menuData[letters[1].encode('utf8')] = menuData.get(letters[1].encode('utf8'), 0) + 1
                                     raise
                         menuData[trans[0]] = menuData.get(trans[0], 0) + 1
-
                 except:
                     pass
+
         return (conceptsNumber, menuData)
 
     def hasOther(self, data, lang):
