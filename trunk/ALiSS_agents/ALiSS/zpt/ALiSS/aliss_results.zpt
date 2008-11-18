@@ -11,10 +11,10 @@
 						terms_list python:context.terminology.getTermSuggestionsBrains(term_name,True,lang)">
 		<ul class="concept_list">
 			<tal:block condition="exactterm">
-				<li tal:define="term python:exactterm.getTranslation(lang)"><a href="" style="font-weight:bold;"
-						tal:attributes="href python:'terminology/concept_html?term='+term;
-										title term; name term"
-						tal:content="term"></a></li>
+				<li><a href="" style="font-weight:bold;"
+						tal:attributes="href python:'terminology/concept_html?term='+exactterm;
+										title exactterm; name exactterm"
+						tal:content="exactterm"></a></li>
 			</tal:block>
 			<tal:block condition="not:exactterm">
 				<p class="portalMessage">No exact term found.</p>
@@ -24,10 +24,10 @@
 		<h3>See also:</h3>
 		<ul class="concept_list">
 			<tal:block condition="terms_list" repeat="term terms_list">
-				<li tal:define="term_name python:term.getTranslation(lang)"><a href="" tal:attributes="href python:'terminology/concept_html?term='+term_name;title term_name; name term_name"
-								tal:content="term_name"></a></li>
+				<li><a href="" tal:attributes="href python:'terminology/concept_html?term='+term;title term; name term"
+								tal:content="term"></a></li>
 			</tal:block>
-			<tal:block condition="python:len(terms_list)<1">
+			<tal:block condition="not:terms_list">
 				<p class="portalMessage">No more terms found.</p>
 			</tal:block>
 		</ul>

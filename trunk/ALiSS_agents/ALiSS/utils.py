@@ -61,11 +61,15 @@ def utCleanupId(p_id=''):
     """ cleanup """
     return p_id.translate(TRANSMAP)
 
-def utElimintateDuplicates(p_objects, p_attr='id'):
-    """ eliminate duplicates from a list of objects (with ids) """
+def utElimintateDuplicates(p_objects, p_attr=''):
+    """ eliminate duplicates from a list of objects """
     dict = {}
-    for l_object in p_objects:
-        dict[getattr(l_object, p_attr).lower()] = l_object
+    if p_attr == '':
+        for l_object in p_objects:
+            dict[l_object.lower()] = l_object
+    else:
+        for l_object in p_objects:
+            dict[getattr(l_object, p_attr).lower()] = l_object
     return dict.values()
 
 def utInsensitiveSort(inlist, minisort=True):
