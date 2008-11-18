@@ -354,11 +354,12 @@ class ALiSSAgent(Folder,
                 for elem in aliss_center.getElementsByNames(query, True):
                     if elem.name not in terms:
                         terms.append(elem.name)
+                        #TODO: when definitions will be multilingual concept_url should be dynamic based on lang
                         term = {'id':          elem.id,
                                 'label':       elem.name,
                                 'label_orig':  elem.name,
                                 'url':         elem.url,
-                                'concept_url': self.absolute_url() + '/concept_html?term=' + utils.utUrlEncode(elem.name),
+                                'concept_url': 'http://glossary.eea.europa.eu/' + self.id + '/concept_html?term=' + utils.utUrlEncode(elem.name),
                                 'preview_img': self.absolute_url() + '/misc_/ALiSS/ALiSSConcept.gif'
                                }
                         results.append(term)
