@@ -135,18 +135,23 @@ class ALiSS(Folder):
 
     def getLanguagesIndexed(self):
         """ """
-        #TODO: (low) use catalog to get translations info
         res = {'en':0}
         langs = []
+        props = []
+
+        for index_name in self.catalog.indexes():
+            if index_name.startswith('objecttrans_'):
+                props.append(index_name)
+
         for center in self.getAllCenters():
             for brain in center.getAllElements():
-                elem_path = self.catalog.getpath(brain.data_record_id_)
-                elem_ob = self.catalog.get_aliss_object(elem_path)
-                for lang in elem_ob.getTranslations().keys():
-                    res[lang] = res.get(lang, 0) + 1
-                    res['en'] = res.get('en') + 1
+                for prop_name in props:
+                    if len(getattr(brain, prop_name, '')) > 0:
+                        lang = prop_name.split('_')[1]
+                        res[lang] = res.get(lang, 0) + 1
         langs = res.keys()
         langs.sort()
+
         return (langs, res)
 
     def getAllAgents(self):
