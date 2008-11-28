@@ -129,10 +129,9 @@ tal:replace="python:context.messages('More')">More</span>... (Google)</a></p>
 			<br clear="all" />
 			</div>
 
-			<div metal:define-macro="translations" id="translations-area">
+			<div metal:define-macro="translations" id="translations-area" tal:condition="python:len(translations.keys())>1">
 			<h2 tal:content="python:context.messages('Translations')">Translations</h2>
-			<ul tal:condition="python:len(translations.keys())>0"
-				tal:define="trans python:translations.keys();
+			<ul tal:define="trans python:translations.keys();
 							transcodes python:trans.sort()">
 				<tal:block repeat="langcode trans">
 				<li tal:condition="python:langcode != lang"
@@ -172,15 +171,18 @@ tal:content="python:'; '.join(translations[langcode])" /></a>
 				</tal:block>
 			</tal:block>
 
-			<tal:block metal:define-macro="suggestions" define="related_terms python:here.getTermSuggestionsBrains(concept_name,True,lang)">
-			<div id="see-also" tal:condition="python:len(related_terms)>0">
+
+			<tal:block metal:define-macro="suggestions"
+						define="related_terms python:here.getTermSuggestionsBrains(concept_name,True,lang)"
+						condition="python:len(related_terms)>0">
+			<div id="see-also">
 				<h2 tal:content="python:context.messages('Related themes')">Related themes</h2>
 				<ul class="concept_list">
 					<tal:block tal:repeat="term_sugg related_terms" tal:on-error="nothing">
-						<li tal:define="term python:term_sugg.getTranslation(lang)">
-							<a	tal:attributes="href string:${here/absolute_url}/concept_html?term=${term};
-												title term"
-								tal:content="term">term related</a>
+						<li>
+							<a	tal:attributes="href string:${here/absolute_url}/concept_html?term=${term_sugg};
+												title term_sugg"
+								tal:content="term_sugg">term related</a>
 						</li>
 					</tal:block>
 				</ul>
