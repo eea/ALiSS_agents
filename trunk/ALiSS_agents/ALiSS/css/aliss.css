@@ -195,3 +195,12 @@ div#qTip {
  position: absolute;
  z-index: 1000;
 }
+
+#report-bad-image {
+ background: #f0f0f0 url(broken.png) no-repeat scroll 0px 1px;
+ float: right;
+ border: 1px solid #ccc;
+ padding: 1px;
+ padding-left: 18px;
+/* display: none; */
+}
