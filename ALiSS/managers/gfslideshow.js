@@ -457,6 +457,29 @@ GFslideShow.prototype.processThumbs = function(opt_chunk, opt_timeout) {
  */
 
 GFslideShow.prototype.processEntries = function(entries) {
+
+  // Hide slideshow if no entries
+  var wiki_loading = document.getElementById('wiki-loading');
+  if (entries.length > 1) {
+    var slide_container = document.getElementById('body');
+    var slide_container_br = document.getElementById('body-br');
+    var report_image = document.getElementById('report-bad-image');
+    var image_info = document.getElementById('image-info');
+    var image_info_br = document.getElementById('image-info-br');
+    wiki_loading.style.display = 'none';
+    report_image.style.display = '';
+    slide_container.style.display = '';
+    slide_container_br.style.display = '';
+    image_info.style.display = '';
+    image_info_br.style.display = '';
+  }
+  else {
+    var slide_info = document.getElementById('body-empty');
+    wiki_loading.style.display = 'none';
+    slide_info.style.display = '';
+  }
+
+  // Process and setup the entries
   for (var i = 0; i < entries.length; i++) {
     var thumbUrl = null;
     if (this.options.thumbnailUrlResolver) {

@@ -87,6 +87,7 @@ misc_ = {
     'gfslideshow.js':           ImageFile('managers/gfslideshow.js', globals()),
     'qTip.js':                  ImageFile('managers/qTip.js', globals()),
     'RSSFeedRecipe_icon.png':   ImageFile('images/RSSFeedRecipe_icon.png', globals()),
+    'broken.png':               ImageFile('images/broken_16x16.png', globals()),
     }
 
 ModuleSecurityInfo('Products.ALiSS.utils').declarePublic('joinToList')
