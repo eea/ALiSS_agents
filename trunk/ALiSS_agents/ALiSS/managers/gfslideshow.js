@@ -125,8 +125,10 @@ GFslideShow.prototype.parseOptions = function(options) {
     imageClickCallback : null,
     centerBias : { topBias : 0, leftBias : 0 },
     pauseCenterBias : { topBias : 0, leftBias : 0 },
-    fullControlPanel : false,
-    fullControlPanelCursor : false,
+    //fullControlPanel : false,
+    fullControlPanel : true,
+    //fullControlPanelCursor : false,
+    fullControlPanelCursor : true,
     fullControlPanelFadeOutTime : GFslideShow.DEFAULT_FC_FADEOUT_TIME,
     fullControlPanelPlayCallback : null,
     fullControlPanelSmallIcons : false,
@@ -458,9 +460,10 @@ GFslideShow.prototype.processThumbs = function(opt_chunk, opt_timeout) {
 
 GFslideShow.prototype.processEntries = function(entries) {
 
-  // Hide slideshow if no entries
+  // Hide or show slideshow
   var wiki_loading = document.getElementById('wiki-loading');
   if (entries.length > 1) {
+    // Show slideshow
     var slide_container = document.getElementById('body');
     var slide_container_br = document.getElementById('body-br');
     var report_image = document.getElementById('report-bad-image');
@@ -474,6 +477,7 @@ GFslideShow.prototype.processEntries = function(entries) {
     image_info_br.style.display = '';
   }
   else {
+    // Keep slideshow hiden
     var slide_info = document.getElementById('body-empty');
     wiki_loading.style.display = 'none';
     slide_info.style.display = '';
@@ -522,7 +526,6 @@ GFslideShow.prototype.processEntries = function(entries) {
       this.entries.push(entries[i]);
     }
   }
-
 };
 
 /**
@@ -552,6 +555,8 @@ GFslideShow.prototype.feedLoaded = function(result) {
   }
 
   this.createSubContainer();
+  this.width = '0';
+  this.height = '0';
   if (this.container.offsetWidth) {
     // snapshot.
     this.width = this.container.offsetWidth;
@@ -852,6 +857,7 @@ GFslideShow.prototype.createFullControlPanel = function() {
   div.style.direction = 'ltr';
   div.style.paddingTop = padTop + 'px';
   div.style.paddingBottom = padBottom + 'px';
+  div.style.marginTop = '217px';
 
   var iconSize = this.options.fullControlPanelSmallIcons?'small':'big';
   var handCursor = this.ie?'hand':'pointer';
