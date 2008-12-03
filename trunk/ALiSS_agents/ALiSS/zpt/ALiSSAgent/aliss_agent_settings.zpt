@@ -11,6 +11,9 @@
 <fieldset><legend class="standard_legend"><strong>ALiSS Agent Settings</strong></legend>
 	<p>Select from the list below the desired type of view for the terms list.</p>
 	<form name="frmEdit" method="post" action="manageDisplayType" enctype="multipart/form-data">
+		<strong><label for="allow_in_navigation">Allow in navigation</label></strong>
+		<input style="margin:0; padding:0" type="checkbox" name="allow_in_navigation" value="0" 
+				tal:attributes="checked python:test(here.getAllowInNavigation(), 'checked', '')"/><br /><br />
 		<table border="0" cellspacing="0" cellpadding="2" width="100%">
 			<tr class="list-header">
 				<td width="1%"></td>
@@ -135,6 +138,11 @@
 	<p class="list-header">Setup <strong>MediaWiki</strong> settings on the form below.</p>
 	<form name="frmEdit" method="post" action="manageMediaWiki" enctype="multipart/form-data">
 		<table border="0" cellspacing="0" cellpadding="2">
+			<tr>
+				<th>Use google cache</th>
+				<td><input type="checkbox" name="use_google_cache" value="1" 
+							tal:attributes="checked python:test(here.getUseGoogleCache(), 'checked', '')"/></td>
+			</tr>
 			<tr>
 				<th>Activate/Deactivate service</th>
 				<td><input type="checkbox" name="wiki_service" value="1" 

@@ -33,6 +33,7 @@ function GFslideShow(photoFeed, container, options) {
   }
   this.container = container;
   this.parseOptions(options);
+  this.btn_display_paused = false;
   this.setup();
 }
 
@@ -103,7 +104,8 @@ GFslideShow.prototype.parseOptions = function(options) {
 
   // Default Options
   this.options = {
-    numResults : maxEntries,
+    //numResults : maxEntries,
+    numResults : 100,
     scaleImages : false,
     thumbnailTag : GFslideShow.DEFAULT_THUMBNAIL_TAG,
     thumbnailNamespace : GFslideShow.DEFAULT_THUMBNAIL_NS,
@@ -266,7 +268,9 @@ GFslideShow.prototype.mouseOut = function(e) {
     this.fadeOutFullControl();
     this.container.onmousemove = null;
     if (this.options.pauseOnHover && this.display_paused) {
-      this.pauseOrPlayFullControl();
+      if (this.btn_display_paused == false) {
+        this.pauseOrPlayFullControl();
+      }
     }
   } else {
     this.display_paused = false;
@@ -1019,6 +1023,9 @@ GFslideShow.prototype.gotoIndex = function(index) {
  */
 GFslideShow.prototype.pauseOrPlayClick = function() {
   // Trap a play click if we have a callout registered.
+  var tmp = 1;
+  this.btn_display_paused = !this.display_paused;
+
   if (this.options.fullControlPanelPlayCallback && this.display_paused) {
     // for some reason a mouseout happens
     // when we click and swap divs...
