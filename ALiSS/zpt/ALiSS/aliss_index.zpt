@@ -1,5 +1,6 @@
 <tal:block tal:replace="structure here/standard_html_header"/>
 <span tal:replace="python:request.RESPONSE.setHeader('content-type', 'text/html;charset=UTF-8')"/>
+<tal:block define="lang python:request.get('SELECTED_LANGUAGE', 'en')">
 
 <p class="documentDescription"><dtml-var description></p>
 
@@ -14,7 +15,7 @@
 			</div>
 
 			<div class="formControls">
-				<input type="hidden" name="lang" tal:attributes="value python:request.get('SELECTED_LANGUAGE', 'en')" />
+				<input type="hidden" name="lang" tal:attributes="value lang" />
 				<input type="submit" value="Search term" name="form.button.Send" class="context"/>
 			</div>
 
@@ -26,6 +27,12 @@
 <br class="visualClear" />
 
 <h1 tal:content="python:context.messages('Alphabetically')">Alphabetically</h1>
+
+<tal:block define="agent python:here.getAllowedAgents()[0]">
+	<div tal:content="structure agent/alphabetic_html" />
+</tal:block>
+
+<tal:comm replace="nothing">
 <ul>
 	<tal:block repeat="agent here/getAllAgents">
 	<li tal:condition="python:agent.id == 'terminology'">
@@ -36,5 +43,7 @@
 	</li>
 	</tal:block>
 </ul>
+</tal:comm>
 
+</tal:block>
 <tal:block tal:replace="structure here/standard_html_footer"/>

@@ -158,6 +158,10 @@ class ALiSS(Folder):
         """ return all Server Agents """
         return utils.utSortObjsListByAttr(self.objectValues(METATYPE_ALISSAGENT),'title')
 
+    def getAllowedAgents(self):
+        """ """
+        return [agent for agent in self.getAllAgents() if agent.allow_in_navigation]
+
     def getDefaultGoogleList(self):
         return ALISS_DEFAULT_GOOGLE.keys()
 

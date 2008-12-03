@@ -13,6 +13,9 @@
 	<h2 tal:content="python:context.messages('Alphabetically')">Alphabetically</h2>
 
 	<!-- Alphabet listing and navigation -->
+	<div tal:content="structure here/alphabetic_html" />
+
+	<tal:comm replace="nothing">
 	<ul class="alphabet_list" tal:condition="dtype">
 		<li	tal:define="has_content python:here.hasDigits(menuData);
 						param_letter python:test(dtype, 'num', '1');
@@ -53,6 +56,7 @@
 			</tal:block>
 		</li>
 	</ul>
+	</tal:comm>
 
 	<!-- Terms listing -->
 	<h2 tal:content="python:test(here.isNumeric(currentLetter), '0-9', currentLetter)" />

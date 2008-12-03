@@ -89,6 +89,12 @@ class ALiSSAgent(Folder,
         self.wiki_width =   200
         self.wiki_host =    'http://en.wikipedia.org' #deprecated
 
+        #navigation
+        self.allow_in_navigation = 0
+
+        #google feeds
+        self.use_google_cache = 1
+
     def __setstate__(self,state):
         """ """
         ALiSSAgent.inheritedAttribute('__setstate__')(self, state)
@@ -111,6 +117,13 @@ class ALiSSAgent(Folder,
         if not hasattr(self, 'wiki_host'):
             self.wiki_host = 'http://en.wikipedia.org'
 
+        #navigation
+        if not hasattr(self, 'allow_in_navigation'):
+            self.allow_in_navigation = 0
+
+        #google feeds
+        if not hasattr(self, 'use_google_cache'):
+            self.use_google_cache = 1
 
     #########################
     #   PROPERTIES ACTIONS  #
@@ -196,20 +209,23 @@ class ALiSSAgent(Folder,
     #   MEDIAWIKI SETTINGS  #
     #########################
     security.declareProtected(view_management_screens, 'manageMediaWiki')
-    def manageMediaWiki(self, wiki_service=0, wiki_images=1, wiki_height=200, wiki_width=200, REQUEST=None):
+    def manageMediaWiki(self, wiki_service=0, wiki_images=1, wiki_height=200, wiki_width=200, use_google_cache=0, REQUEST=None):
         """ manage mediawiki settings """
-        self.wiki_service = wiki_service
-        self.wiki_images =  wiki_images
-        self.wiki_height =  wiki_height
-        self.wiki_width =   wiki_width
+        self.wiki_service =     wiki_service
+        self.wiki_images =      wiki_images
+        self.wiki_height =      wiki_height
+        self.wiki_width =       wiki_width
+        self.use_google_cache = use_google_cache
         self._p_changed = 1
         if REQUEST: REQUEST.RESPONSE.redirect('manage_settings_html?save=ok')
 
-    def getWikiState(self):  return self.wiki_service
-    def getWikiHost(self):   return self.wiki_host
-    def getWikiHeight(self): return self.wiki_height
-    def getWikiWidth(self):  return self.wiki_width
-    def getWikiNumber(self): return self.wiki_images
+    def getWikiState(self):         return self.wiki_service
+    def getWikiHost(self):          return self.wiki_host
+    def getWikiHeight(self):        return self.wiki_height
+    def getWikiWidth(self):         return self.wiki_width
+    def getWikiNumber(self):        return self.wiki_images
+    def getAllowInNavigation(self): return self.allow_in_navigation
+    def getUseGoogleCache(self):    return self.use_google_cache
 
     security.declarePublic('getWikiImages')
     def getWikiImages(self, query, type='single'):
@@ -232,12 +248,17 @@ class ALiSSAgent(Folder,
 
     def getWikiFeddJS(self, query):
         """ """
+        google_invalidate = '&invalidate="+Math.random();'
+        if self.getUseGoogleCache():
+            google_invalidate = ""
         return """
   <script type="text/javascript">
     //<![CDATA[
-    samples = "%(context)s/getWikiFeed?query=%(query)s&invalidate="+Math.random();
-    function load() {
 
+    // Google cache
+    samples = "%(context)s/getWikiFeed?query=%(query)s%(invalidate)s";
+
+    function load() {
       var options = {
         linkTarget : google.feeds.LINK_TARGET_BLANK,
         fullControlPanel : true,
@@ -250,18 +271,19 @@ class ALiSSAgent(Folder,
     google.load("feeds", "1");
     google.setOnLoadCallback(load);
     // ]]>
-  </script>""" % {'context': self.absolute_url(), 'query': query}
+  </script>""" % {'context': self.absolute_url(), 'query': query, 'invalidate': google_invalidate}
 
 
     #########################
     #   DISPLAY TYPE        #
     #########################
     security.declareProtected(view_management_screens, 'manageDisplayType')
-    def manageDisplayType(self, display_type, res_per_page, REQUEST=None):
+    def manageDisplayType(self, display_type, res_per_page, allow_in_navigation=0, REQUEST=None):
         """ manage display types """
-        if not res_per_page:  res_per_page = 1
-        self.display_type =   display_type
-        self.res_per_page =   res_per_page
+        if not res_per_page:        res_per_page = 1
+        self.display_type =         display_type
+        self.res_per_page =         res_per_page
+        self.allow_in_navigation = allow_in_navigation
         self._p_changed =     1
         if REQUEST: REQUEST.RESPONSE.redirect('manage_settings_html?save=ok')
 
@@ -593,8 +615,10 @@ class ALiSSAgent(Folder,
     flash_search =    PageTemplateFile('zpt/ALiSSAgent/aliss_flash_search', globals())
 
     security.declarePublic('sitesearch')
-    sitesearch =  PageTemplateFile('zpt/ALiSSAgent/sitesearch', globals()) 
+    sitesearch =  PageTemplateFile('zpt/ALiSSAgent/sitesearch', globals())
 
+    security.declarePublic('alphabetic_html')
+    alphabetic_html =    PageTemplateFile('zpt/ALiSSAgent/aliss_alphabetic_nav', globals())
 
     #####################
     #   FLASH CLIENT    #
