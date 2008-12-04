@@ -1,85 +1,37 @@
 <tal:block tal:replace="structure here/standard_html_header"/>
 <span tal:replace="python:request.RESPONSE.setHeader('content-type', 'text/html;charset=UTF-8')" />
 
-<tal:block define="	currentLetter python:request.get('letter', 'A');
-					lang python:request.get('SELECTED_LANGUAGE', 'en');
+<!-- Page header -->
+<h2 tal:content="python:context.messages('Alphabetically')">Alphabetically</h2>
+
+<div tal:content="structure here/alphabetic_html" />
+
+<!-- Terms listing -->
+<tal:block	define="currentLetter python:request.get('letter', ' ');
 					dtype here/getDisplayType;
+					lang python:request.get('SELECTED_LANGUAGE', 'en');
 					p_start python:request.get('start', 0);
-					data python:here.generateMenu(lang);
-					totalConcepts python:data[0];
-					menuData python:data[1]">
+					terms_list python:here.getTerms(currentLetter, dtype, p_start, lang);
+					results python:terms_list[1];
+					page_search_querystring string:letter=${currentLetter};
+					list_paging python:terms_list[0];
+					paging_start python:list_paging[0]+1;
+					paging_upper python:list_paging[1];
+					paging_total python:list_paging[2];
+					paging_prev python:list_paging[3];
+					paging_next python:list_paging[4];
+					paging_current_page python:list_paging[5];
+					paging_records_page python:list_paging[6];
+					paging_pages python:list_paging[7];">
 
-	<!-- Page header -->
-	<h2 tal:content="python:context.messages('Alphabetically')">Alphabetically</h2>
-
-	<!-- Alphabet listing and navigation -->
-	<div tal:content="structure here/alphabetic_html" />
-
-	<tal:comm replace="nothing">
-	<ul class="alphabet_list" tal:condition="dtype">
-		<li	tal:define="has_content python:here.hasDigits(menuData);
-						param_letter python:test(dtype, 'num', '1');
-						selected_letter python:here.isNumeric(currentLetter)"
-			style="padding-left: 0.4em">
-			<tal:block condition="has_content">
-				<a	tal:condition="not:selected_letter" title="0-9" class="menu_link"
-					tal:attributes="href string:${here/absolute_url}/list_html?letter=${param_letter}">0-9</a>
-				<span class="menu_selected" tal:condition="selected_letter">0-9</span>
-			</tal:block>
-			<span class="menu_empty" tal:condition="not:has_content">0-9</span>
-		</li>
-
-		<li tal:repeat="data_letter python:here.unicode_map(lang)" tal:condition="dtype">
-			<tal:menu define="letter python:data_letter[1].encode('utf8');
-								has_content python:menuData.has_key(letter);
-								selected_letter python:here.compareLetter(letter, currentLetter)">
-				<tal:block condition="has_content">
-					<a	tal:condition="not:selected_letter" class="menu_link"
-						tal:define="conceptsNumber python:menuData[letter]"
-						tal:attributes="href string:${here/absolute_url}/list_html?letter=${letter};
-										title string:${conceptsNumber} terms"
-						tal:content="letter" />
-					<span tal:condition="selected_letter" tal:content="letter" class="menu_selected" />
-				</tal:block>
-				<span	tal:condition="not:has_content"
-						tal:content="letter" class="menu_empty" />
-			</tal:menu>
-		</li>
-
-		<li tal:define="has_content python:here.hasOther(menuData, lang);
-						selected_letter python:test(currentLetter.lower()=='other', 1, 0)"
-			style="padding-right: 0.4em">
-			<tal:block condition="has_content">
-				<a	tal:condition="not:selected_letter" title="Other" class="menu_link"
-					tal:attributes="href string:${here/absolute_url}/list_html?letter=other">Other</a>
-				<span class="menu_selected" tal:condition="selected_letter">Other</span>
-			</tal:block>
-		</li>
-	</ul>
-	</tal:comm>
-
-	<!-- Terms listing -->
 	<h2 tal:content="python:test(here.isNumeric(currentLetter), '0-9', currentLetter)" />
-	<tal:block	define="terms_list python:here.getTerms(currentLetter, dtype, p_start, lang);
-						results python:terms_list[1];
-						page_search_querystring string:letter=${currentLetter};
-
-						list_paging python:terms_list[0];
-						paging_start python:list_paging[0]+1;
-						paging_upper python:list_paging[1];
-						paging_total python:list_paging[2];
-						paging_prev python:list_paging[3];
-						paging_next python:list_paging[4];
-						paging_current_page python:list_paging[5];
-						paging_records_page python:list_paging[6];
-						paging_pages python:list_paging[7];">
 
 	<div class="listingBar">
 		<span class="previous" tal:condition="python:paging_prev!=-1">&nbsp;&nbsp;
-			<a tal:define="url string:${here/absolute_url}; start_batch python:(paging_current_page-1)*paging_records_page"
+			<a tal:define="url string:http://${request/HTTP_X_FORWARDED_HOST}; start_batch python:(paging_current_page-1)*paging_records_page"
 				tal:attributes="href string:${url}/list_html?start=${start_batch}&${page_search_querystring}">&lt;&lt; Previous</a></span>
 		<span class="next" tal:condition="python:paging_next!=-1">&nbsp;&nbsp;
-			<a tal:define="url string:${here/absolute_url}; start_batch python:(paging_current_page+1)*paging_records_page"
+			<a tal:define="url string:http://${request/HTTP_X_FORWARDED_HOST}; start_batch python:(paging_current_page+1)*paging_records_page"
 				tal:attributes="href string:${url}/list_html?start=${start_batch}&${page_search_querystring}">Next &gt;&gt;</a>
 		</span>
 		<tal:block tal:repeat="page paging_pages">
@@ -88,7 +40,7 @@
 						tal:content="python:page+1" />]
 			</tal:block>
 			<a tal:condition="python:paging_current_page!=page"
-				tal:define="url string:${here/absolute_url}; start_batch python:paging_records_page*page"
+				tal:define="url string:http://${request/HTTP_X_FORWARDED_HOST}; start_batch python:paging_records_page*page"
 				tal:attributes="href string:${url}/list_html?start=${start_batch}&${page_search_querystring}"
 				tal:content="python:page+1" />
 		</tal:block>
@@ -101,14 +53,14 @@
 			<li tal:define="utils modules/Products.ALiSS.utils;
 							url_term_label python:utils.utUrlEncode(term)">
 				<a	tal:content="term"
-					tal:attributes="href string:${here/absolute_url}/concept_html?term=${url_term_label};
+					tal:attributes="href string:http://${request/HTTP_X_FORWARDED_HOST}/concept_html?term=${url_term_label};
 									title term" />
 					<tal:block define="related_terms python:here.getTermSuggestionsBrains(term,True, lang)">
 					<ul class="concept_list" tal:condition="python:len(related_terms)>0">
 						<tal:block tal:repeat="term_trans related_terms" tal:on-error="nothing">
 							<li>
 								<a	tal:attributes="
-								href string:${here/absolute_url}/concept_html?term=${term_trans};
+								href string:http://${request/HTTP_X_FORWARDED_HOST}/concept_html?term=${term_trans};
 								title term_trans"
 									tal:content="term_trans">term related</a>
 							</li>
@@ -122,10 +74,10 @@
 
 	<div class="listingBar">
 		<span class="previous" tal:condition="python:paging_prev!=-1">&nbsp;&nbsp;
-			<a tal:define="url string:${here/absolute_url}; start_batch python:(paging_current_page-1)*paging_records_page"
+			<a tal:define="url string:http://${request/HTTP_X_FORWARDED_HOST}; start_batch python:(paging_current_page-1)*paging_records_page"
 				tal:attributes="href string:${url}/list_html?start=${start_batch}&${page_search_querystring}">&lt;&lt; Previous</a></span>
 		<span class="next" tal:condition="python:paging_next!=-1">&nbsp;&nbsp;
-			<a tal:define="url string:${here/absolute_url}; start_batch python:(paging_current_page+1)*paging_records_page"
+			<a tal:define="url string:http://${request/HTTP_X_FORWARDED_HOST}; start_batch python:(paging_current_page+1)*paging_records_page"
 				tal:attributes="href string:${url}/list_html?start=${start_batch}&${page_search_querystring}">Next &gt;&gt;</a>
 		</span>
 		<tal:block   tal:repeat="page paging_pages">
@@ -134,13 +86,11 @@
 						tal:content="python:page+1" />]
 			</tal:block>
 			<a tal:condition="python:paging_current_page!=page"
-				tal:define="url string:${here/absolute_url}; start_batch python:paging_records_page*page"
+				tal:define="url string:http://${request/HTTP_X_FORWARDED_HOST}; start_batch python:paging_records_page*page"
 				tal:attributes="href string:${url}/list_html?start=${start_batch}&${page_search_querystring}"
 				tal:content="python:page+1" />
 		</tal:block>
 	</div>
-
-	</tal:block>
 
 </tal:block>
 

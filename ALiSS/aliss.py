@@ -70,6 +70,7 @@ class ALiSS(Folder):
             {'label':'Google Update'    , 'action':'manage_google_update_html'},
             {'label':'Content Groups'   , 'action':'manage_content_groups_html'},
             {'label':'ALiSS Info'       , 'action':'manage_info_html'},
+            {'label':'Alphabets'        , 'action':'manage_alphabets_html'},
             Folder.manage_options[3],
             Folder.manage_options[4],
             Folder.manage_options[5],
@@ -528,6 +529,8 @@ class ALiSS(Folder):
     security.declareProtected(view_management_screens, 'manage_info_html')
     manage_info_html =              PageTemplateFile('zpt/ALiSS/aliss_info', globals())
 
+    security.declareProtected(view_management_screens, 'manage_alphabets_html')
+    manage_alphabets_html =              PageTemplateFile('zpt/ALiSS/aliss_alphabets', globals())
 
     #####################
     #   PUBLIC PAGES    #

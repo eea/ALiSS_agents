@@ -1,0 +1,22 @@
+<span tal:replace="structure here/manage_page_header"/>
+<span tal:replace="structure here/manage_tabs"/>
+<link rel="stylesheet" type="text/css" href="manage_options_style"/>
+
+
+<h2>Alphabets</h2>
+
+<tal:block define="agent python:here.getAllowedAgents()[0];
+					langs python:agent.unicode_langs();
+					xxx python:langs.sort()">
+	<tal:block repeat="lang langs">
+		<h3 tal:content="lang" />
+		<ul>
+		<tal:block repeat="letter_set python:agent.unicode_map(lang)">
+			<li tal:content="python:' '.join(letter_set).encode('utf8')" />
+		</tal:block>
+		</ul>
+	</tal:block>
+</tal:block>
+
+
+<span tal:replace="structure here/manage_page_footer"/>

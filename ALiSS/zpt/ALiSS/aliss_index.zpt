@@ -33,6 +33,7 @@
 </tal:block>
 
 <tal:comm replace="nothing">
+<!-- DEPRECATED: Old index view -->
 <ul>
 	<tal:block repeat="agent here/getAllAgents">
 	<li tal:condition="python:agent.id == 'terminology'">

@@ -544,7 +544,6 @@ unicode_character_map = {
     (u"\u0077", u"\u0057"),
     (u"\u0078", u"\u0058"),
     (u"\u0079", u"\u0059"),
-    (u"\u0133", u"\u0132"),
     (u"\u007A", u"\u005A") ],
                          'no':[
     (u'a', u'A'),
@@ -812,7 +811,6 @@ unicode_character_map = {
     (u'x', u'X'),
     (u'ż', u'Ż'),
     (u'z', u'Z'),
-    (u'ʼ',),
 ],
 # ga:
 #a á b c d e é f g h i í l m n o ó p r s t u ú
