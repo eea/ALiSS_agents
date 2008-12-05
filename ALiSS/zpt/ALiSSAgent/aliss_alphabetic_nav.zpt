@@ -13,7 +13,7 @@
 				style="padding-left: 0.4em">
 				<tal:block condition="has_content">
 					<a tal:condition="not:selected_letter" title="0-9" class="menu_link"
-						tal:attributes="href string:http://${request/HTTP_X_FORWARDED_HOST}/list_html?letter=${param_letter}">0-9</a>
+						tal:attributes="href string:${here/absolute_url}/list_html?letter=${param_letter}">0-9</a>
 					<span class="menu_selected" tal:condition="selected_letter">0-9</span>
 				</tal:block>
 				<span class="menu_empty" tal:condition="not:has_content">0-9</span>
@@ -26,7 +26,7 @@
 					<tal:block condition="has_content">
 						<a tal:condition="not:selected_letter" class="menu_link"
 							tal:define="conceptsNumber python:menuData[letter]"
-							tal:attributes="href string:http://${request/HTTP_X_FORWARDED_HOST}/list_html?letter=${letter};
+							tal:attributes="href string:${here/absolute_url}/list_html?letter=${letter};
 											title string:${conceptsNumber} terms"
 							tal:content="letter" />
 						<span tal:condition="selected_letter" tal:content="letter" class="menu_selected" />
@@ -40,7 +40,7 @@
 				style="padding-right: 0.4em">
 				<tal:block condition="has_content">
 					<a	tal:condition="not:selected_letter" title="Other" class="menu_link"
-						tal:attributes="href string:http://${request/HTTP_X_FORWARDED_HOST}/list_html?letter=other">Other</a>
+						tal:attributes="href string:${here/absolute_url}/list_html?letter=other">Other</a>
 					<span class="menu_selected" tal:condition="selected_letter">Other</span>
 				</tal:block>
 				<span class="menu_empty" tal:condition="not:has_content">Other</span>
@@ -48,7 +48,7 @@
 		</tal:block>
 
 		<li tal:condition="not:dtype">
-			<a	tal:attributes="href string:http://${request/HTTP_X_FORWARDED_HOST}/list_html?letter=all" title="Terms list">
+			<a	tal:attributes="href string:${here/absolute_url}/list_html?letter=all" title="Terms list">
 			View terms list</a>
 		</li>
 	</ul>

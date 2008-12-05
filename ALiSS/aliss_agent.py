@@ -248,7 +248,7 @@ class ALiSSAgent(Folder,
 
     def getWikiFeddJS(self, query):
         """ """
-        google_invalidate = '&invalidate="+Math.random();'
+        google_invalidate = '&invalidate=+Math.random()'
         if self.getUseGoogleCache():
             google_invalidate = ""
         return """
