@@ -31,18 +31,19 @@
 							concept_url			python:aliss_concept['term_url'];
 							concept_definitions	python:aliss_concept['definitions'];
 							translations		python:aliss_concept['translations'];
-							terms_list			python:aliss_concept['terms_list']">
+							terms_list			python:aliss_concept['terms_list'];
+							wiki_query			python:test(len(translations.keys())>1, translations['en'][0], concept_name)">
 			<div id="concept_area">
 			<h1 tal:content="concept_name" />
 
 			<!-- MediaWiki images -->
 			<div metal:define-macro="wikimedia-images" id="wikimedia-area" tal:condition="here/getWikiState">
-                                <a style="float: right" title="" class="link-rss" tal:attributes="title python:'Media feed for '+term_name;href string:${here/absolute_url}/getWikiFeed?query=${term_name}">Media RSS</a>
+                                <a style="float: right" title="" class="link-rss" tal:attributes="title python:'Media feed for '+term_name;href string:${here/absolute_url}/getWikiFeed?query=${wiki_query}">Media RSS</a>
                                 <h2>Sample images</h2>
 				<br id="body-br" style="display:none" clear="all" />
 				<script tal:attributes="src string:${here/absolute_url}/misc_/ALiSS/qTip.js" type="text/javascript"></script>
 				<script tal:attributes="src string:${here/absolute_url}/misc_/ALiSS/gfslideshow.js" type="text/javascript"></script>
-				<tal:block content="structure python:here.getWikiFeddJS(term_name)" />
+				<tal:block content="structure python:here.getWikiFeedJS(wiki_query)" />
 				<div id="body" style="display:none">
 					<div id="slideshow" class="gss figure-container">Loading...</div>
 				</div>
