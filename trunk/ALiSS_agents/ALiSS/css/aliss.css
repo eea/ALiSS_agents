@@ -197,10 +197,12 @@ div#qTip {
 }
 
 #report-bad-image {
- background: #f0f0f0 url(broken.png) no-repeat scroll 0px 1px;
- float: right;
+ background: #f0f0f0 url(broken.png) no-repeat scroll 0px 5px;
  border: 1px solid #ccc;
- padding: 1px;
+ padding: 5px;
  padding-left: 18px;
-/* display: none; */
 }
+#report-bad-image-area {
+ margin-top:1em;
+}
+
