@@ -148,7 +148,7 @@ class ALiSS(Folder):
             for brain in center.getAllElements():
                 for prop_name in props:
                     if len(getattr(brain, prop_name, '')) > 0:
-                        lang = prop_name.split('_')[1]
+                        lang = prop_name.split('_')[1].lower()
                         res[lang] = res.get(lang, 0) + 1
         langs = res.keys()
         langs.sort()

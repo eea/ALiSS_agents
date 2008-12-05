@@ -33,6 +33,7 @@ from DateTime       import DateTime
 
 #Product imports
 from Products.ALiSS.utils import utUrlEncode
+from Products.ALiSS.managers.wikipedia_logos import WIKI_LOGOS
 
 ############
 #   Info:
@@ -47,14 +48,6 @@ from Products.ALiSS.utils import utUrlEncode
 
 # Mime Types we use
 MIME_TYPES = ['image/jpeg', 'image/jpg', 'image/jpe', 'image/svg', 'image/svg+xml', 'image/png']
-# Image IDs to be ignored. Remeber to replace any '_' with ' ' in the image ID.
-WIKI_LOGOS = ['Image:Commons-logo.svg', 'Image:Disambig gray.svg', 'Image:Wiktionary-logo-en.png',
-              'Image:Wikisource-logo.svg', 'Image:Ambox content.png', 'Image:Wikibooks-logo.svg',
-              'Image:Wikinews-logo.svg', 'Image:Wikiquote-logo.svg', 'Image:Wikiversity-logo-Snorky.svg',
-              'Image:Wikiquote-logo-en.svg', 'Image:Wiki_letter_w.svg', 'Image:Wikispecies-logo.svg',
-              'Image:Wiktionary-logo-en.svg', 'Image:Wikipedia-logo.png', 'Image:Disambig.svg',
-              'Image:Globe_important.svg', 'Image:Padlock-silver-medium.svg',
-              'Image:Wiki letter w.svg', 'Image:Nuvola_filesystems_folder_locked.png']
 
 #Get MediaWiki data in XML format
 class WikiImage:
@@ -185,6 +178,10 @@ class WikipediaImages:
     def getDescription(self, desc):
         """ """
         res = ''
+
+        #clean up
+        if 'OLYMPUS DIGITAL CAMERA' in desc: return ''
+
         start = desc.find('|Description')
         if start > -1: start += 12
         end =   desc.find('|Source')
