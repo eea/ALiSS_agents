@@ -51,7 +51,7 @@
 					<span>Author: <span id="wiki-author"></span></span><br />
 					Credits: <a id="photo_credit" href="#">Wikimedia Commons</a><br />
                        			<div id="report-bad-image-area"><a id="report-bad-image" style="display: none;" target="_blank" tal:attributes="href 
-string:http://www.eea.europa.eu/help/contact-info?message=${template/absolute_url}?term=${term_name}">report bad image</a></div>
+string:http://www.eea.europa.eu/help/contact-info?subject=bad+image+on+glossary&amp;message=${template/absolute_url}?term=${term_name}">report bad image</a></div>
 				</div>
 				<br clear="all" />
 				<div id="body-empty" style="display:none">No images available.</div>
