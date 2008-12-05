@@ -727,6 +727,8 @@ GFslideShow.prototype.createLink = function(href) {
 GFslideShow.prototype.createImage = function(src) {
   var image = document.createElement("img");
   image.style.position = "absolute";
+  image.style.height = "100%";
+  image.style.width = "100%";
   image.setAttribute("src", src);
   this.setOpacity(image, 0);
   return image;
@@ -1023,7 +1025,6 @@ GFslideShow.prototype.gotoIndex = function(index) {
  */
 GFslideShow.prototype.pauseOrPlayClick = function() {
   // Trap a play click if we have a callout registered.
-  var tmp = 1;
   this.btn_display_paused = !this.display_paused;
 
   if (this.options.fullControlPanelPlayCallback && this.display_paused) {
