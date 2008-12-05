@@ -246,17 +246,17 @@ class ALiSSAgent(Folder,
                               self.getWikiNumber(),
                               self.getWikiHost())
 
-    def getWikiFeddJS(self, query):
+    def getWikiFeedJS(self, query):
         """ """
-        google_invalidate = '&invalidate=+Math.random()'
+        google_invalidate = '"&invalidate="+Math.random()'
         if self.getUseGoogleCache():
-            google_invalidate = ""
+            google_invalidate = '""'
         return """
   <script type="text/javascript">
     //<![CDATA[
 
     // Google cache
-    samples = "%(context)s/getWikiFeed?query=%(query)s%(invalidate)s";
+    samples = "%(context)s/getWikiFeed?query=%(query)s"+%(invalidate)s;
 
     function load() {
       var options = {
