@@ -10,15 +10,11 @@
 			<legend tal:content="python:context.messages('Glossary')">Glossary</legend>
 			<div class="field">
 				<label for="sender_fullname">Term name</label>
-				<div class="formHelp">Please enter part of the term name. At least 3 characters.</div>
 				<input type="text" tabindex="0" size="30" name="term_name:utf8:ustring" id="term_name"/>
-			</div>
-
-			<div class="formControls">
+                                <input type="submit"  value="Search" tal:attributes="value python:context.messages('Search')" 
+name="form.button.Send" class="context"/>
 				<input type="hidden" name="lang" tal:attributes="value lang" />
-				<input type="submit" value="Search term" name="form.button.Send" class="context"/>
 			</div>
-
 		</fieldset>
 	</form>
 </div>
