@@ -33,7 +33,6 @@ from DateTime       import DateTime
 
 #Product imports
 from Products.ALiSS.utils import utUrlEncode
-from Products.ALiSS.managers.wikipedia_logos import WIKI_LOGOS
 
 ############
 #   Info:
@@ -82,8 +81,9 @@ InitializeClass(WikiImage)
 class mediawiki_handler(ContentHandler):
     """ """
 
-    def __init__(self):
+    def __init__(self, logos):
         """ constructor """
+        self.logos = logos
         self.__images = []
         self.__ids = []
         self.__wikiimg = None
@@ -93,7 +93,7 @@ class mediawiki_handler(ContentHandler):
         return self.__ids
 
     def set_ids(self, url):
-        if url not in WIKI_LOGOS and url not in self.__ids:
+        if url not in self.logos and url not in self.__ids:
              self.__ids.append(url)
 
     def get_images(self):
@@ -131,13 +131,13 @@ class mediawiki_handler(ContentHandler):
 class mediawiki_parser:
     """ """
 
-    def __init__(self):
+    def __init__(self, logos):
         """ """
-        pass
+        self.logos = logos
 
     def parseContent(self, xml_string):
         """ """
-        chandler = mediawiki_handler()
+        chandler = mediawiki_handler(self.logos)
         parser = make_parser()
         parser.setContentHandler(chandler)
         parser.setFeature(handler.feature_external_ges, 0)
@@ -151,7 +151,7 @@ class mediawiki_parser:
 
     def parseHeader(self, file):
         parser = make_parser()
-        chandler = mediawiki_handler()
+        chandler = mediawiki_handler(self.logos)
         parser.setContentHandler(chandler)
         try:    parser.setFeature(handler.feature_external_ges, 0)
         except: pass
@@ -171,9 +171,10 @@ class mediawiki_parser:
 class WikipediaImages:
     """ """
 
-    def __init__(self, titles):
+    def __init__(self, titles, logos):
         """ """
         self.titles = titles
+        self.logos = logos
 
     def getDescription(self, desc):
         """ """
@@ -205,7 +206,7 @@ class WikipediaImages:
         except:
             pass
 
-        parser = mediawiki_parser()
+        parser = mediawiki_parser(self.logos)
         images_info = parser.parseHeader(s)
         images_list = images_info.get_ids()
         return images_list
@@ -228,7 +229,7 @@ class WikipediaImages:
             except:
                 pass
 
-        parser = mediawiki_parser()
+        parser = mediawiki_parser(self.logos)
         urls_info = parser.parseHeader(s)
 
         if urls_info: res = urls_info.get_images()

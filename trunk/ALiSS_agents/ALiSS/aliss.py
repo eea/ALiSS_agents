@@ -65,6 +65,7 @@ class ALiSS(Folder):
         (
             Folder.manage_options[0],
             {'label':'Properties'       , 'action':'manage_properties_html'},
+            {'label':'Exceptions'       , 'action':'manage_logos_html'},
             {'label':'View'             , 'action':'index_html'},
             {'label':'Google Licenses'  , 'action':'manage_google_licenses_html'},
             {'label':'Google Update'    , 'action':'manage_google_update_html'},
@@ -87,6 +88,13 @@ class ALiSS(Folder):
         self.gbox =                     ''
         self.content_group_manager =    ContentGroupManager()
         self.glicense_manager =         GoogleLicenseManager()
+        self.logos =                    ''
+
+    def __setstate__(self,state):
+        """ """
+        ALiSS.inheritedAttribute('__setstate__')(self, state)
+        if not hasattr(self, 'logos'):
+            self.logos = []
 
     def all_meta_types(self):
         """ What can you put inside me? """
@@ -133,6 +141,9 @@ class ALiSS(Folder):
     #   GETTERS     #
     #################
     def getAlissRoot(self):  return self
+
+    def getLogos(self):
+        return utils.utConvertLinesToList(self.logos)
 
     def getLanguagesIndexed(self):
         """ """
@@ -295,6 +306,13 @@ class ALiSS(Folder):
         self.gbox =         gbox
         self._p_changed =   1
         if REQUEST: REQUEST.RESPONSE.redirect('manage_properties_html?save=ok')
+
+    security.declareProtected(view_management_screens, 'manageProperties')
+    def manageLogos(self, logos='', REQUEST=None):
+        """ manage logos """
+        self.logos = logos
+        self._p_changed =   1
+        if REQUEST: REQUEST.RESPONSE.redirect('manage_logos_html?save=ok')
 
 
     ######################
@@ -513,6 +531,9 @@ class ALiSS(Folder):
     #################
     security.declareProtected(view_management_screens, 'manage_properties_html')
     manage_properties_html =        PageTemplateFile('zpt/ALiSS/aliss_edit', globals())
+
+    security.declareProtected(view_management_screens, 'manage_logos_html')
+    manage_logos_html =        PageTemplateFile('zpt/ALiSS/aliss_logos', globals())
 
     security.declareProtected(view_management_screens, 'manage_google_licenses_html')
     manage_google_licenses_html =   PageTemplateFile('zpt/ALiSS/aliss_google_licenses', globals())

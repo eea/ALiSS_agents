@@ -1,0 +1,32 @@
+<span tal:replace="structure here/manage_page_header"/>
+<span tal:replace="structure here/manage_tabs"/>
+<link rel="stylesheet" type="text/css" href="manage_options_style"/>
+
+
+<p>Change the properties in the form below and click <strong>Save changes</strong>.</p>
+
+<div class="system-msg" tal:condition="python:request.has_key('save')">
+	Saved changes. (<span tal:replace="here/ZopeTime"/>)<br>
+</div>
+
+<form name="frmLogos" method="post" action="manageLogos">
+	<table border="0" cellspacing="0" cellpadding="2">
+
+		<tr>
+			<td>Remeber to replace any '_' with ' ' in the image ID</td>
+		</tr>
+
+		<tr>
+			<td>
+				<textarea name="logos" rows="20" style="width:500px" tal:content="here/logos"></textarea>
+			</td>
+		</tr>
+
+		<tr>
+			<td><input type="submit" value="Save changes" /></td>
+		</tr>
+
+	</table>
+</form>
+
+<span tal:replace="structure here/manage_page_footer"/>
