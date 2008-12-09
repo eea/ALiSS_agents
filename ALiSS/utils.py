@@ -265,6 +265,15 @@ def utXmlEncode(p_string):
     l_tmp = l_tmp.replace('>', '&gt;')
     return l_tmp
 
+def utConvertLinesToList(value):
+    """Takes a value from a textarea control and returns a list of values"""
+    if type(value) == type([]): return value
+    elif value == '': return []
+    else:
+        values = []
+        for v in value.split('\n'):
+            if v != '': values.append(v.replace('\r', ''))
+    return values
 
 class batch_utils:
     """ batch related class """

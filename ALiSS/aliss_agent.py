@@ -230,7 +230,8 @@ class ALiSSAgent(Folder,
     security.declarePublic('getWikiImages')
     def getWikiImages(self, query, type='single'):
         """ """
-        wiki = WikipediaImages(query)
+        logos = self.getLogos()
+        wiki = WikipediaImages(query, logos)
         return wiki.getImages(self.getWikiHeight(),
                               self.getWikiWidth(),
                               self.getWikiNumber(),
@@ -239,7 +240,8 @@ class ALiSSAgent(Folder,
     security.declarePublic('getWikiImages')
     def getWikiFeed(self, query, type='single', REQUEST=None):
         """ """
-        wiki = WikipediaImages(query)
+        logos = self.getLogos()
+        wiki = WikipediaImages(query, logos)
         REQUEST.RESPONSE.setHeader('content-type', 'text/xml')
         return wiki.getFeed(self.getWikiHeight(),
                               self.getWikiWidth(),
@@ -256,7 +258,7 @@ class ALiSSAgent(Folder,
     //<![CDATA[
 
     // Google cache
-    samples = "%(context)s/getWikiFeed?query=%(query)s"+%(invalidate)s;
+    samples = "%(context)s/getWikiFeed?query=%(query)s&cache=%(cache)s"+%(invalidate)s;
 
     function load() {
       var options = {
@@ -271,7 +273,8 @@ class ALiSSAgent(Folder,
     google.load("feeds", "1");
     google.setOnLoadCallback(load);
     // ]]>
-  </script>""" % {'context': self.absolute_url(), 'query': query, 'invalidate': google_invalidate}
+  </script>""" % {'context': self.absolute_url(), 'query': query,
+                  'invalidate': google_invalidate, 'cache': len(self.getLogos())}
 
 
     #########################
