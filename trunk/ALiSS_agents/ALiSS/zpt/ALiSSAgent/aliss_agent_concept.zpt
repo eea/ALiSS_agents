@@ -54,9 +54,8 @@
                        			<div id="report-bad-image-area"><a id="report-bad-image" style="display: none;" target="_blank" tal:attributes="href 
 string:http://www.eea.europa.eu/help/contact-info?subject=bad+image+on+glossary&amp;message=${template/absolute_url}?term=${term_name}">report bad image</a></div>
 				</div>
-				<br clear="all" />
 				<div id="body-empty" style="display:none">No images available.</div>
-				<div id="wiki-loading">Loading ...</div>
+				<div id="wiki-loading">Loading...</div>
 			</div>
 
 			<!-- Definitions and translations -->

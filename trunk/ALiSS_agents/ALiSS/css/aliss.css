@@ -3,7 +3,11 @@ ul.alphabet_list li {
  display:inline;
  background-color: #e9efcd;
  font-size:1.4em;
- padding: 0.2em 0;
+ padding: 0.2em;
+}
+
+ul.alphabet_list {
+margin: 0.1em 0 0.1em 0;
 }
 
 ul.subalphabet_list li {
@@ -37,6 +41,16 @@ ul.subalphabet_list li {
 #definitions-area #wikimedia-area {
  float:left;
 }
+
+#wikimedia-area #body {
+ margin-top:-1em;
+}
+
+#wikimedia-area .link-rss {
+ float:right;
+ margin-top:0.5em;
+}
+
 
 #google-custom-search-area {
  float:right;
@@ -204,5 +218,11 @@ div#qTip {
 }
 #report-bad-image-area {
  margin-top:1em;
+}
+
+#wiki-loading  {
+ background: #ffffff url(ajax-loader.gif) no-repeat scroll 0px 5px;
+ padding: 5px;
+ padding-left: 18px;
 }
 
