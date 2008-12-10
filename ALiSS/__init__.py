@@ -88,6 +88,7 @@ misc_ = {
     'qTip.js':                  ImageFile('managers/qTip.js', globals()),
     'RSSFeedRecipe_icon.png':   ImageFile('images/RSSFeedRecipe_icon.png', globals()),
     'broken.png':               ImageFile('images/broken_16x16.png', globals()),
+    'ajax-loader.gif':               ImageFile('images/ajax-loader.gif', globals()),
     }
 
 ModuleSecurityInfo('Products.ALiSS.utils').declarePublic('joinToList')
