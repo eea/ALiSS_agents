@@ -310,8 +310,8 @@ class ALiSS(Folder):
     security.declareProtected(view_management_screens, 'manageProperties')
     def manageLogos(self, logos='', REQUEST=None):
         """ manage logos """
-        self.logos = logos
-        self._p_changed =   1
+        self.logos = logos.replace('_', ' ')
+        self._p_changed = 1
         if REQUEST: REQUEST.RESPONSE.redirect('manage_logos_html?save=ok')
 
 

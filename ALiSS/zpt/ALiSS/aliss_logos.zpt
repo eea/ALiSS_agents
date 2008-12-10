@@ -13,10 +13,6 @@
 	<table border="0" cellspacing="0" cellpadding="2">
 
 		<tr>
-			<td>Remeber to replace any '_' with ' ' in the image ID</td>
-		</tr>
-
-		<tr>
 			<td>
 				<textarea name="logos" rows="20" style="width:500px" tal:content="here/logos"></textarea>
 			</td>
