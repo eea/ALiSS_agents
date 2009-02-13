@@ -226,3 +226,147 @@ div#qTip {
  padding-left: 18px;
 }
 
+/* Aliss main style for customsearch  */
+
+#translations-area {
+ clear: left;
+}
+
+#translations-area ul, #translations-area ul li {
+ display: inline;
+ list-style: none;
+}
+
+#translations-area ul li {
+ margin-left: -15px;
+ padding: 3px 25px 3px 0px;
+}
+
+ul.alphabet_list li {
+ display:inline;
+ background-color: #e9efcd;
+ font-size:1.4em;
+}
+
+ul.subalphabet_list li {
+ display:inline;
+ font-size: 0.8em;
+ padding: 0px 1px;
+}
+
+.langcode {
+ background:#95B229 none repeat scroll 0%;
+ border:1px solid #95B229;
+ color:white;
+ line-height:2em;
+ padding:0.2em;
+}
+
+.more_definitions {
+ float:right;
+}
+
+#concept_area {
+ float: left;
+ width: 47%
+}
+
+#no_concept_area {
+ float: left;
+ width: 47%
+}
+
+#definitions-area {
+ float:left;
+}
+
+#google-custom-search-area {
+ float:right;
+ width:47%;
+}
+
+#translations-area {
+ clear: left;
+}
+
+.definitions_list dt {
+ display:none;
+}
+
+.definitions_list dd {
+ background:#ECF3D0 url(open_quote.gif) no-repeat scroll 0.5em 0.75em;
+ color:#000000;
+ margin:1em auto;
+ padding:1.5em 1em 1em 3em;
+ width:70%;
+}
+
+.definition_source {
+ background:transparent none repeat scroll 0%;
+ font-size:x-small;
+ font-style:normal;
+ font-weight:normal;
+ padding:0em 1em 0em 0em;
+ text-align:right;
+}
+
+.menu_link {
+ color:white;
+}
+
+.menu_selected {
+ font-weight: bold;
+}
+
+.menu_empty {
+}
+
+.batch_container {
+}
+
+/* aliss overwrites */
+.AlissLeftContainer {
+ width: 70%;
+}
+
+.AlissRightContainer {
+ width: 28%;
+}
+
+.gsc-query {
+ color: green;
+ font-weight: bold;
+}
+
+/* Google Custom search CSS */
+.search-control {
+ width : 100%;
+}
+
+.search-control .gsc-control {
+ width : 100%;
+}
+
+/* Disable built in search forms */
+.gsc-control form.gsc-search-box {
+ display : none;
+}
+
+/* restrict global search form width */
+#GCSSearchForm {
+ width : 100%;
+}
+
+/* no ads: we are a governmental agency. This is ok by the terms */
+.gsc-ad-box {
+ display : none;
+}
+
+/* long form visible urls should be on */
+.gsc-webResult div.gs-visibleUrl-long {
+ display : block;
+}
+
+.gsc-webResult div.gs-visibleUrl-short {
+ display : none;
+}
