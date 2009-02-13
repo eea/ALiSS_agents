@@ -597,10 +597,10 @@ input.gsc-input {
   background-position: 0px 2px;
 }
 .gsc-resultsHeader td.gsc-twiddle-closed div.gsc-twiddle{
-  background-image: url('/uds/css/arrow_close.gif');
+  background-image: url('http://www.google.com/uds/css/arrow_close.gif');
 }
 .gsc-resultsHeader td.gsc-twiddle-opened div.gsc-twiddle{
-  background-image: url('/uds/css/arrow_open.gif');
+  background-image: url('http://www.google.com/uds/css/arrow_open.gif');
 }
 
 .gsc-resultsHeader .gsc-title{
@@ -647,29 +647,29 @@ input.gsc-input {
 
 /* default mode is dark */
 .gsc-one-result {
-  background-image: url('/uds/css/one-complex-dark.gif');
+  background-image: url('http://www.google.com/uds/css/one-complex-dark.gif');
 }
 
 .gsc-more-results {
-  background-image: url('/uds/css/more-complex-dark.gif');
+  background-image: url('http://www.google.com/uds/css/more-complex-dark.gif');
 }
 
 .gsc-all-results {
-  background-image: url('/uds/css/all-complex-dark.gif');
+  background-image: url('http://www.google.com/uds/css/all-complex-dark.gif');
   padding-right : 1px;
 }
 
 /* active mode is light */
 .gsc-one-result-active .gsc-one-result {
-  background-image: url('/uds/css/one-complex-light-blue.gif');
+  background-image: url('http://www.google.com/uds/css/one-complex-light-blue.gif');
 }
 
 .gsc-more-results-active .gsc-more-results {
-  background-image: url('/uds/css/more-complex-light-blue.gif');
+  background-image: url('http://www.google.com/uds/css/more-complex-light-blue.gif');
 }
 
 .gsc-all-results-active .gsc-all-results {
-  background-image: url('/uds/css/all-complex-light-blue.gif');
+  background-image: url('http://www.google.com/uds/css/all-complex-light-blue.gif');
 }
 
 .gsc-resultsHeader .gsc-configLabel{
@@ -683,7 +683,7 @@ input.gsc-input {
   padding-right: 12px;
   background-repeat: no-repeat;
   background-position: center center;
-  background-image: url('/uds/css/settings.gif');
+  background-image: url('http://www.google.com/uds/css/settings.gif');
 }
 
 
