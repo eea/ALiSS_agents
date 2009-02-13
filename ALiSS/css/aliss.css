@@ -522,7 +522,7 @@ div.gsc-clear-button {
   padding-left : 10px;
   background-repeat: no-repeat;
   background-position: center center;
-  background-image: url('/uds/css/clear.gif');
+  background-image: url('http://www.google.com/uds/css/clear.gif');
   cursor : pointer;
 }
 
@@ -549,7 +549,7 @@ input.gsc-input {
   padding-left: 16px;
   background-repeat: no-repeat;
   background-position: 1px 3px;
-  background-image: url('/uds/css/blue_check.gif');
+  background-image: url('http://www.google.com/uds/css/blue_check.gif');
 }
 
 /* each section of results has a results header table
