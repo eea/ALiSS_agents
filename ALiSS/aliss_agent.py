@@ -178,7 +178,7 @@ class ALiSSAgent(Folder,
         """ return any AlissCenter object based of its UID """
         my_catalog = self.getCatalog()
         return my_catalog.getCenterByUID(center_uid)
-        
+
     security.declareProtected(view_management_screens, 'getAlissCenters')
     def getAlissCenters(self):
         """ return associated AlissCenters objects"""
@@ -259,16 +259,20 @@ class ALiSSAgent(Folder,
 
     // Google cache
     samples = "%(context)s/getWikiFeed?query=%(query)s&cache=%(cache)s"+%(invalidate)s;
+    var load_state = true;
 
     function load() {
-      var options = {
-        linkTarget : google.feeds.LINK_TARGET_BLANK,
-        fullControlPanel : true,
-        transistionTime: 600,
-        displayTime: 4000
-      };
+      if (load_state) {
+        load_state = false;
+        var options = {
+          linkTarget : google.feeds.LINK_TARGET_BLANK,
+          fullControlPanel : true,
+          transistionTime: 600,
+          displayTime: 4000
+        };
 
-      new GFslideShow(samples, "slideshow", options);
+        new GFslideShow(samples, "slideshow", options);
+      };
     }
     google.load("feeds", "1");
     google.setOnLoadCallback(load);
@@ -338,7 +342,7 @@ class ALiSSAgent(Folder,
 
     security.declarePublic('getRelatedPagesForPage')
     def getRelatedPagesForPage(self, pageURL, relation_types='all', REQUEST=None):
-        """ Return related pages for a specific pageURL. 
+        """ Return related pages for a specific pageURL.
         It works by getting first all the terms for the pageURL then collecting all the toppages for each term found.
         Each TopPage contains [title, url, snippet] """
         results = []
@@ -390,7 +394,7 @@ class ALiSSAgent(Folder,
                         results.append(term)
         else:
             for aliss_center in self.getAlissCenters():
-                terms = [ elem.name for elem in aliss_center.getElementsByNames(query, True) 
+                terms = [ elem.name for elem in aliss_center.getElementsByNames(query, True)
                              if elem.name not in results ]
                 results.extend(terms)
 
@@ -433,14 +437,14 @@ class ALiSSAgent(Folder,
         """ Returns a dictionary with following keys:
         'foundterms': list of terms found in text.
         'linkedterms': list of terms linked in marked_text.
-        'marked_text': html snippet with terms hyperlinked 
+        'marked_text': html snippet with terms hyperlinked
         to concept page.
-        
-        'search_depth' defines how deep the search should go. 
+
+        'search_depth' defines how deep the search should go.
         The smallest the fastest search.
-        The highest the most terms are likely to be found. 
-        Test according to the application real-time needs. 
-        
+        The highest the most terms are likely to be found.
+        Test according to the application real-time needs.
+
         If you experience slow performance for this method
         decrease the search_depth."""
         words = self.filterStopWords(text)
@@ -511,16 +515,16 @@ class ALiSSAgent(Folder,
     security.declarePublic('getConceptInfo')
     def getConceptInfo(self, term_name, returnobj='return objects'):
         """This is the xml-rpc call for getConceptDetails. it doesn not return the list of objects.
-         It returns an aggregated info about the concept with label 'term_name'. 
+         It returns an aggregated info about the concept with label 'term_name'.
         The data contains term name, all definitions with sources(URLs) """
         return self.getConceptDetails(term_name,'en',False)
 
     security.declarePublic('getConceptDetails')
     def getConceptDetails(self, term_name, lang='en', return_objects=True):
-        """ return an aggregated info about the concept with label 'term_name'. 
-        The data contains term name, all definitions with sources(URLs) 
-        and source terms elements objects list. None object is returned if term not found. 
-        'return_objects' is default True and means that the list of python terms object is returned. 
+        """ return an aggregated info about the concept with label 'term_name'.
+        The data contains term name, all definitions with sources(URLs)
+        and source terms elements objects list. None object is returned if term not found.
+        'return_objects' is default True and means that the list of python terms object is returned.
         When calling this method via xml-rpc you need to set this argument to False. """
         terms_list = []
         definitions = {}
@@ -582,7 +586,7 @@ class ALiSSAgent(Folder,
         if return_objects:
             results['terms_list'] = l_terms_list
         else:
-            # if we do not want to pass objects then the list of objects is set to empty. 
+            # if we do not want to pass objects then the list of objects is set to empty.
             # Needed when calling this method via xml-rpc, cannot marshall objects
             results['terms_list'] = []
 
