@@ -51,7 +51,7 @@
 				<div id="image-info" class="discreet" style="display:none">
 					<span>Author: <span id="wiki-author"></span></span><br />
 					Credits: <a id="photo_credit" href="#">Wikimedia Commons</a><br />
-                       			<div id="report-bad-image-area"><a id="report-bad-image" style="display: none;" target="_blank" tal:attributes="href 
+                       			<div id="report-bad-image-area"><a id="report-bad-image" style="display: none;" target="_blank" tal:attributes="href
 string:http://www.eea.europa.eu/help/contact-info?subject=bad+image+on+glossary&amp;message=${template/absolute_url}?term=${term_name}">report bad image</a></div>
 				</div>
 				<div id="body-empty" style="display:none">No images available.</div>
@@ -61,16 +61,17 @@ string:http://www.eea.europa.eu/help/contact-info?subject=bad+image+on+glossary&
 			<!-- Definitions and translations -->
 			<div metal:define-macro="definitions" id="definitions-area">
 			<h2><span tal:replace="python:context.messages('Definitions')">Definitions</span> (<span tal:replace="python:context.messages('English')">English</span>)</h2>
-			<p tal:condition="python:len(concept_definitions.keys())<2 and 
+			<p tal:condition="python:len(concept_definitions.keys())<2 and
 concept_definitions[concept_definitions.keys()[0]]=='Definition not available.' "><span tal:replace="python:context.messages('There are no items to display at the moment')">Definition not available</span>.</p>
 			<dl class="definitions_list" tal:condition="concept_definitions">
 				<dt tal:content="concept_name" />
 				<tal:block repeat="source_url python:concept_definitions.keys()">
 					<tal:block define="source_text python:utils.utUrlDecode(source_url)">
-						<dd  tal:condition="python:concept_definitions[source_url]!='Definition not available.'">
-							<tal:block	condition="python:concept_definitions[source_url]!='Definition not available.'" 
+						<dd tal:condition="python:concept_definitions[source_url]!='Definition not available.'">
+							<tal:block	condition="python:concept_definitions[source_url]!='Definition not available.'"
 										define="terms_indef python:here.getTermsInText(concept_definitions[source_url],100)">
-							<div tal:content="structure terms_indef/marked_text" />
+							<!-- div tal:content="structure terms_indef/marked_text" / -->
+							<div tal:content="structure python:concept_definitions[source_url]" />
 							<div class="definition_source">
 								<p> <strong>Terminology source:</strong>
 									<a  tal:define="url_idx python:source_url.find('/',8)"
@@ -83,7 +84,7 @@ concept_definitions[concept_definitions.keys()[0]]=='Definition not available.' 
 					</tal:block>
 				</tal:block>
 			</dl>
-			<p class="more_definitions"><a class="moreLink" tal:attributes="href string:http://www.google.com/search?q=define%3A${concept_url}&amp;start=0&amp;start=0&amp;ie=utf-8&amp;oe=utf-8&amp;defl=all"><span 
+			<p class="more_definitions"><a class="moreLink" tal:attributes="href string:http://www.google.com/search?q=define%3A${concept_url}&amp;start=0&amp;start=0&amp;ie=utf-8&amp;oe=utf-8&amp;defl=all"><span
 tal:replace="python:context.messages('More')">More</span>... (Google)</a></p>
 			<br clear="all" />
 			</div>
@@ -95,13 +96,14 @@ tal:replace="python:context.messages('More')">More</span>... (Google)</a></p>
 				<tal:block repeat="langcode trans">
 				<li tal:condition="python:langcode != lang"
 					tal:define="trans_url python:test(len(translations[langcode])==1,translations[langcode][0],translations[langcode][0][3:])">
-					<span class="langcode" tal:content="langcode" /> <a tal:attributes="href python:here.generateTransLink(lang, langcode)+'/concept_html?term='+trans_url"><span 
+					<span class="langcode" tal:content="langcode" /> <a tal:attributes="href python:here.generateTransLink(lang, langcode)+'/concept_html?term='+trans_url"><span
 tal:content="python:'; '.join(translations[langcode])" /></a>
 				</li>
 				</tal:block>
 			</ul>
 			<p tal:condition="python:len(translations.keys())<1"><span tal:replace="python:context.messages('There are no items to display at the moment')" />.</p>
 			</div>
+			<br clear="all" />
 
 			<tal:block	define="statistics python:here.getContentGroups()">
 				<tal:block	condition="python:len(statistics)>0"
@@ -115,7 +117,7 @@ tal:content="python:'; '.join(translations[langcode])" /></a>
 							<h5 tal:content="cg_name" />
 							<p>No pages were indexed.</p>
 						</tal:block>
-						
+
 						<tal:block	condition="google_pages"
 									repeat="content_group python:google_list.keys()">
 							<h5 tal:content="cg_name" />
