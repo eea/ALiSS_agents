@@ -105,6 +105,7 @@ tal:content="python:'; '.join(translations[langcode])" /></a>
 			</div>
 			<br clear="all" />
 
+			<tal:comm replace="nothing">
 			<tal:block	define="statistics python:here.getContentGroups()">
 				<tal:block	condition="python:len(statistics)>0"
 								repeat="group_id statistics">
@@ -131,6 +132,7 @@ tal:content="python:'; '.join(translations[langcode])" /></a>
 					</tal:block>
 				</tal:block>
 			</tal:block>
+			</tal:comm>
 
 
 			<tal:block metal:define-macro="suggestions"
