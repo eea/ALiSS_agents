@@ -24,6 +24,7 @@
 			<div style="float:right;width:47%;" tal:condition="concept_name">
 				<div metal:use-macro="here/concept_html/macros/definitions" />
 				<div metal:use-macro="here/concept_html/macros/translations" />
+				<br clear="all" />
 				<div metal:use-macro="here/concept_html/macros/suggestions" />
 			</div>
 
