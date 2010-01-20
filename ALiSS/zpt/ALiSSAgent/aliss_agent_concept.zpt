@@ -1,32 +1,38 @@
 <tal:block tal:replace="structure here/standard_html_header"/>
 <span tal:replace="python:request.RESPONSE.setHeader('content-type', 'text/html;charset=UTF-8')"/>
 
-<div tal:content="structure here/alphabetic_html" />
-
 <tal:block	define="utils			modules/Products.ALiSS.utils;
 					term_name		python:utils.utToUnicode(request.get('term', ''));
 					lang			python:request.get('SELECTED_LANGUAGE', 'en');
 					aliss_concept	python:here.getConceptDetails(term_name, lang)">
 
+    <div id="standard-term-search" style="width:100%">
+        <form id="glossary-search-form" action="results" method="post" name="frmSearch" style="float:left">
+            <div class="field">
+                <input type="text" tabindex="0" size="30" name="term_name:utf8:ustring" id="term_name" tal:attributes="value term_name"/>
+                <input type="submit"  value="" title="Search" tal:attributes="title python:context.messages('Search')" name="form.button.Send" class="context search-button"/>
+                <input type="hidden" name="lang" tal:attributes="value lang" />
+            </div>
+        </form>
+        <div id="glossary-navigation">
+            <a href="/terminology/" tal:content="python:context.messages('Alphabetically')">Alphabetically</a>
+            <br/>
+            <a href="/terminology/terminology_sources_html">Terminology Sources</a>
+        </div>
+    </div>
+
 	<!-- Case of NO TERM found -->
 	<div tal:condition="not:aliss_concept" id="no_concept_area">
-			<h1><em tal:content="term_name" /></h1>
 			<p><span tal:replace="python:context.messages('There are no items to display at the moment')">Definition not available</span>.</p>
 	</div>
 
 	<!-- Google custom search area -->
 	<div metal:define-macro="googlecse" id="google-custom-search-area" tal:attributes="style python:test(aliss_concept, 'width:57%', 'width:100%')">
-		<h1 tal:content="python:context.messages('More details')">More details</h1>
 		<div id="googlecse-result" metal:define-macro="googlecse-result">
 			<span tal:replace="structure here/google_cs_ajax_js" />
 			<div id="GCSSearchForm">Loading...</div>
-                        <div id="glossary-navigation">
-				<a href="/terminology/" tal:content="python:context.messages('Alphabetically')">Alphabetically</a>
-                                <br/>
-                                <a href="/terminology/terminology_sources_html">Terminology Sources</a>
-			</div>
-			<div id="rightSearchControl" class="search-control">Loading...</div>
-			<p class="discreet">powered by <a href="http://code.google.com/apis/ajaxsearch/index.html"><span class="tagline">The Google AJAX Search API</span></a> and <a href="http://www.google.com/coop/cse"><span class="tagline">Google Custom Search Engines</span></a></p>
+            <div id="rightSearchControl" class="search-control">Loading...</div>
+            <p class="discreet">powered by <a href="http://code.google.com/apis/ajaxsearch/index.html"><span class="tagline">The Google AJAX Search API</span></a> and <a href="http://www.google.com/coop/cse"><span class="tagline">Google Custom Search Engines</span></a></p>
 		</div>
 	</div>
 
@@ -39,7 +45,6 @@
 							terms_list			python:aliss_concept['terms_list'];
 							wiki_query			python:test(len(translations.keys())>1, translations['en'][0], concept_name)">
 			<div id="concept_area">
-			<h1 tal:content="concept_name" />
 
 			<div id="concept-accordion" class="eea-accordion" tal:condition="concept_name">
 
