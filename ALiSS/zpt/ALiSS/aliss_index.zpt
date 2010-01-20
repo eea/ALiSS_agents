@@ -3,22 +3,20 @@
 <tal:block define="lang python:request.get('SELECTED_LANGUAGE', 'en')">
 
 <p class="documentDescription"><dtml-var description></p>
-
 <div id="standard-term-search">
-	<form action="results" method="post" name="frmSearch">
-		<fieldset>
-			<legend tal:content="python:context.messages('Glossary')">Glossary</legend>
-			<div class="field">
-				<label for="sender_fullname">Term name</label>
-				<input type="text" tabindex="0" size="30" name="term_name:utf8:ustring" id="term_name"/>
-                                <input type="submit"  value="Search" tal:attributes="value python:context.messages('Search')" 
-name="form.button.Send" class="context"/>
-				<input type="hidden" name="lang" tal:attributes="value lang" />
-			</div>
-		</fieldset>
+	<form id="glossary-search-form" action="results" method="post" name="frmSearch">
+		<div class="field">
+			<input type="text" tabindex="0" size="30" name="term_name:utf8:ustring" id="term_name"/>
+			<input type="submit"  value="" title="Search" tal:attributes="title python:context.messages('Search')" name="form.button.Send" class="context search-button"/>
+			<input type="hidden" name="lang" tal:attributes="value lang" />
+		</div>
 	</form>
 </div>
-
+<div id="glossary-navigation">
+    <a href="/terminology/" tal:content="python:context.messages('Alphabetically')">Alphabetically</a>
+    <br/>
+    <a href="/terminology/terminology_sources_html">Terminology Sources</a>
+</div>
 
 <br class="visualClear" />
 

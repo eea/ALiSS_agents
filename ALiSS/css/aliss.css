@@ -1,4 +1,35 @@
 /* Aliss main style for public browsable views */
+
+#googlecse-result #glossary-navigation {
+ float: left;
+ left: 450px;
+ bottom: 55px;
+ position: relative;
+}
+
+input.search-button,
+input.gsc-search-button {
+ background: transparent url(/etds/search_btn.png) no-repeat;
+ color: transparent;
+ width: 41px;
+ height: 26px;
+ border: none;
+ cursor: pointer;
+}
+
+#standard-term-search,
+#glossary-navigation {
+ float: left;
+}
+
+#term_name,
+input.gsc-input {
+ background: transparent url(/etds/search_bg_white.png) no-repeat scroll 50% 50%;
+ padding: 9px 0 9px 30px;
+ width: 366px;
+ border: none;
+}
+
 ul.alphabet_list li {
  display:inline;
  background-color: #e9efcd;
@@ -131,6 +162,7 @@ ul.subalphabet_list li {
 .gsc-query {
  color: green;
  font-weight: bold;
+ display: none;
 }
 
 /* Google Custom search CSS */
@@ -169,6 +201,7 @@ ul.subalphabet_list li {
 .gsc-tabHeader {
 font-size:1.2em;
 font-weight:bold;
+border-radius: 5px 5px 0 0; -moz-border-radius: 5px 5px 0 0; -webkit-border-radius: 5px 5px 0 0;
 }
 
 .gsc-resultsbox-visible {
@@ -415,14 +448,16 @@ table.gsc-search-box td {
 
 table.gsc-search-box td.gsc-input {
   padding-right : 2px;
+  width: 1%;
 }
 
 td.gsc-search-button {
-  width : 1%;
+  width: auto;
 }
 
 td.gsc-clear-button {
   width : 14px;
+  display: none;
 }
 
 /**
@@ -440,7 +475,6 @@ table.gsc-branding {
   border-style : none;
   border-width : 0px;
   border-spacing : 0px 0px;
-  width : 100%;
 }
 
 .gsc-branding-text {
@@ -524,19 +558,6 @@ div.gsc-clear-button {
   background-position: center center;
   background-image: url('http://www.google.com/uds/css/clear.gif');
   cursor : pointer;
-}
-
-/*
- * Given that this is sitting in a variable width tabel cell, the idea is
- * for it to consume the entire cell. The adjacent cell contains the search
- * button and that is a fixed width cell.
- */
-input.gsc-input {
-  padding-left : 2px;
-  border-style : solid;
-  border-width : 1px;
-  border-color : #BCCDF0;
-  width : 99%;
 }
 
 .gsc-keeper {
@@ -725,18 +746,18 @@ input.gsc-input {
   }
 
 .gsc-tabHeader.gsc-tabhActive {
-  border-left: 1px solid #e9e9e9;
-  border-right: 1px solid #e9e9e9;
-  border-top: 2px solid #ff9900;
+  border-left:2px solid #FF9900;
+  border-right:2px solid #FF9900;
+  border-top:2px solid #FF9900;
   color: black;
   }
 
 .gsc-tabHeader.gsc-tabhInactive {
-  border-left: 1px solid #e9e9e9;
-  border-right: 1px solid #e9e9e9;
-  border-top: 2px solid #e9e9e9;
+  border-left:1px solid #E9E9E9;
+  border-right:1px solid #E9E9E9;
+  border-top:2px solid #E9E9E9;
   background: #e9e9e9;
-  color: #676767;
+  color:#333333;
   }
 
 .gsc-tabData.gsc-tabdActive {
