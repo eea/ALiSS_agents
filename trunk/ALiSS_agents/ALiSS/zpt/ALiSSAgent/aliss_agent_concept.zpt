@@ -15,7 +15,7 @@
 	</div>
 
 	<!-- Google custom search area -->
-	<div metal:define-macro="googlecse" id="google-custom-search-area" tal:attributes="style python:test(aliss_concept, 'width:47%', 'width:100%')">
+	<div metal:define-macro="googlecse" id="google-custom-search-area" tal:attributes="style python:test(aliss_concept, 'width:57%', 'width:100%')">
 		<h1 tal:content="python:context.messages('More details')">More details</h1>
 		<div id="googlecse-result" metal:define-macro="googlecse-result">
 			<span tal:replace="structure here/google_cs_ajax_js" />
@@ -41,121 +41,123 @@
 			<div id="concept_area">
 			<h1 tal:content="concept_name" />
 
-			<!-- MediaWiki images -->
-			<div metal:define-macro="wikimedia-images" id="wikimedia-area" tal:condition="here/getWikiState">
-                                <a style="float: right" title="" class="link-rss" tal:attributes="title python:'Media feed for '+term_name;href string:${here/absolute_url}/getWikiFeed?query=${wiki_query}">Media RSS</a>
-                                <h2>Sample images</h2>
-				<br id="body-br" style="display:none" clear="all" />
-				<script tal:attributes="src string:${here/absolute_url}/misc_/ALiSS/qTip.js" type="text/javascript"></script>
-				<script tal:attributes="src string:${here/absolute_url}/misc_/ALiSS/gfslideshow.js" type="text/javascript"></script>
-				<tal:block content="structure python:here.getWikiFeedJS(wiki_query)" />
-				<div id="body" style="display:none">
-					<div id="slideshow" class="gss figure-container">Loading...</div>
-				</div>
-				<br id="image-info-br" style="display:none" clear="all" />
-				<div id="image-info" class="discreet" style="display:none">
-					<span>Author: <span id="wiki-author"></span></span><br />
-					Credits: <a id="photo_credit" href="#">Wikimedia Commons</a><br />
-                       			<div id="report-bad-image-area"><a id="report-bad-image" style="display: none;" target="_blank" tal:attributes="href
-string:http://www.eea.europa.eu/help/contact-info?subject=bad+image+on+glossary&amp;message=${template/absolute_url}?term=${term_name}">report bad image</a></div>
-				</div>
-				<div id="body-empty" style="display:none">No images available.</div>
-				<div id="wiki-loading">Loading...</div>
-			</div>
+			<div id="concept-accordion" class="eea-accordion" tal:condition="concept_name">
 
-			<!-- Definitions and translations -->
-			<div metal:define-macro="definitions" id="definitions-area">
-			<h2><span tal:replace="python:context.messages('Definitions')">Definitions</span> (<span tal:replace="python:context.messages('English')">English</span>)</h2>
-			<p tal:condition="python:len(concept_definitions.keys())<2 and
-concept_definitions[concept_definitions.keys()[0]]=='Definition not available.' "><span tal:replace="python:context.messages('There are no items to display at the moment')">Definition not available</span>.</p>
-			<dl class="definitions_list" tal:condition="concept_definitions">
-				<dt tal:content="concept_name" />
-				<tal:block repeat="source_url python:concept_definitions.keys()">
-					<tal:block define="source_text python:utils.utUrlDecode(source_url)">
-						<dd tal:condition="python:concept_definitions[source_url]!='Definition not available.'">
-							<tal:block	condition="python:concept_definitions[source_url]!='Definition not available.'"
-										define="terms_indef python:here.getTermsInText(concept_definitions[source_url],100)">
-							<!-- div tal:content="structure terms_indef/marked_text" / -->
-							<div tal:content="structure python:concept_definitions[source_url]" />
-							<div class="definition_source">
-								<p> <strong>Terminology source:</strong>
-									<a  tal:define="url_idx python:source_url.find('/',8)"
-										tal:attributes="href string:terminology_sources_html;title source_url;"
-										title="terminology tool source"
-										tal:content="python:source_text[:int(url_idx)]" /></p>
-							</div>
-							</tal:block>
-						</dd>
-					</tal:block>
-				</tal:block>
-			</dl>
-			<p class="more_definitions"><a class="moreLink" tal:attributes="href string:http://www.google.com/search?q=define%3A${concept_url}&amp;start=0&amp;start=0&amp;ie=utf-8&amp;oe=utf-8&amp;defl=all"><span
-tal:replace="python:context.messages('More')">More</span>... (Google)</a></p>
-			<br clear="all" />
-			</div>
+                <!-- MediaWiki images -->
+                <h2><a href="#">Sample images</a></h2>
+                <div metal:define-macro="wikimedia-images" id="wikimedia-area" tal:condition="here/getWikiState">
+                                    <a style="float: right" title="" class="link-rss" tal:attributes="title python:'Media feed for '+term_name;href string:${here/absolute_url}/getWikiFeed?query=${wiki_query}">Media RSS</a>
+                    <br id="body-br" style="display:none" clear="all" />
+                    <script tal:attributes="src string:${here/absolute_url}/misc_/ALiSS/qTip.js" type="text/javascript"></script>
+                    <script tal:attributes="src string:${here/absolute_url}/misc_/ALiSS/gfslideshow.js" type="text/javascript"></script>
+                    <tal:block content="structure python:here.getWikiFeedJS(wiki_query)" />
+                    <div id="body" style="display:none">
+                        <div id="slideshow" class="gss figure-container">Loading...</div>
+                    </div>
+                    <br id="image-info-br" style="display:none" clear="all" />
+                    <div id="image-info" class="discreet" style="display:none">
+                        <span>Author: <span id="wiki-author"></span></span><br />
+                        Credits: <a id="photo_credit" href="#">Wikimedia Commons</a><br />
+                                    <div id="report-bad-image-area"><a id="report-bad-image" style="display: none;" target="_blank" tal:attributes="href
+    string:http://www.eea.europa.eu/help/contact-info?subject=bad+image+on+glossary&amp;message=${template/absolute_url}?term=${term_name}">report bad image</a></div>
+                    </div>
+                    <div id="body-empty" style="display:none">No images available.</div>
+                    <div id="wiki-loading">Loading...</div>
+                </div>
 
-			<div metal:define-macro="translations" id="translations-area" tal:condition="python:len(translations.keys())>1">
-			<h2 tal:content="python:context.messages('Translations')">Translations</h2>
-			<ul tal:define="trans python:translations.keys();
-							transcodes python:trans.sort()">
-				<tal:block repeat="langcode trans">
-				<li tal:condition="python:langcode != lang"
-					tal:define="trans_url python:test(len(translations[langcode])==1,translations[langcode][0],translations[langcode][0][3:])">
-					<span class="langcode" tal:content="langcode" /> <a tal:attributes="href python:here.generateTransLink(lang, langcode)+'/concept_html?term='+trans_url"><span
-tal:content="python:'; '.join(translations[langcode])" /></a>
-				</li>
-				</tal:block>
-			</ul>
-			<p tal:condition="python:len(translations.keys())<1"><span tal:replace="python:context.messages('There are no items to display at the moment')" />.</p>
-			</div>
-			<br clear="all" />
+                <!-- Definitions and translations -->
+				<h2><a href="#"><span tal:replace="python:context.messages('Definitions')">Definitions</span> (<span tal:replace="python:context.messages('English')">English</span>)</a></h2>
+                <div metal:define-macro="definitions" id="definitions-area">
+                <p tal:condition="python:len(concept_definitions.keys())<2 and
+    concept_definitions[concept_definitions.keys()[0]]=='Definition not available.' "><span tal:replace="python:context.messages('There are no items to display at the moment')">Definition not available</span>.</p>
+                <dl class="definitions_list" tal:condition="concept_definitions">
+                    <dt tal:content="concept_name" />
+                    <tal:block repeat="source_url python:concept_definitions.keys()">
+                        <tal:block define="source_text python:utils.utUrlDecode(source_url)">
+                            <dd tal:condition="python:concept_definitions[source_url]!='Definition not available.'">
+                                <tal:block	condition="python:concept_definitions[source_url]!='Definition not available.'"
+                                            define="terms_indef python:here.getTermsInText(concept_definitions[source_url],100)">
+                                <!-- div tal:content="structure terms_indef/marked_text" / -->
+                                <div tal:content="structure python:concept_definitions[source_url]" />
+                                <div class="definition_source">
+                                    <p> <strong>Terminology source:</strong>
+                                        <a  tal:define="url_idx python:source_url.find('/',8)"
+                                            tal:attributes="href string:terminology_sources_html;title source_url;"
+                                            title="terminology tool source"
+                                            tal:content="python:source_text[:int(url_idx)]" /></p>
+                                </div>
+                                </tal:block>
+                            </dd>
+                        </tal:block>
+                    </tal:block>
+                </dl>
+                <p class="more_definitions"><a class="moreLink" tal:attributes="href string:http://www.google.com/search?q=define%3A${concept_url}&amp;start=0&amp;start=0&amp;ie=utf-8&amp;oe=utf-8&amp;defl=all"><span
+    tal:replace="python:context.messages('More')">More</span>... (Google)</a></p>
+                <br clear="all" />
+                </div>
 
-			<tal:comm replace="nothing">
-			<tal:block	define="statistics python:here.getContentGroups()">
-				<tal:block	condition="python:len(statistics)>0"
-								repeat="group_id statistics">
-					<tal:block	define="google_list		python:here.mergeTopResults(group_id, terms_list, 10);
-										cg_name			python:google_list[group_id]['cg_name'];
-										cg_updated		python:google_list[group_id]['cg_updated'];
-										google_pages	python:google_list[group_id]['google_pages']">
+				<h2><a href="#" tal:content="python:context.messages('Translations')">Translations</a></h2>
+                <div metal:define-macro="translations" id="translations-area" tal:condition="python:len(translations.keys())>1">
+                <ul tal:define="trans python:translations.keys();
+                                transcodes python:trans.sort()">
+                    <tal:block repeat="langcode trans">
+                    <li tal:condition="python:langcode != lang"
+                        tal:define="trans_url python:test(len(translations[langcode])==1,translations[langcode][0],translations[langcode][0][3:])">
+                        <span class="langcode" tal:content="langcode" /> <a tal:attributes="href python:here.generateTransLink(lang, langcode)+'/concept_html?term='+trans_url"><span
+    tal:content="python:'; '.join(translations[langcode])" /></a>
+                    </li>
+                    </tal:block>
+                </ul>
+                <p tal:condition="python:len(translations.keys())<1"><span tal:replace="python:context.messages('There are no items to display at the moment')" />.</p>
+                </div>
 
-						<tal:block condition="not:google_pages">
-							<h5 tal:content="cg_name" />
-							<p>No pages were indexed.</p>
-						</tal:block>
+                <tal:comm replace="nothing">
+                <tal:block	define="statistics python:here.getContentGroups()">
+                    <tal:block	condition="python:len(statistics)>0"
+                                    repeat="group_id statistics">
+                        <tal:block	define="google_list		python:here.mergeTopResults(group_id, terms_list, 10);
+                                            cg_name			python:google_list[group_id]['cg_name'];
+                                            cg_updated		python:google_list[group_id]['cg_updated'];
+                                            google_pages	python:google_list[group_id]['google_pages']">
 
-						<tal:block	condition="google_pages"
-									repeat="content_group python:google_list.keys()">
-							<h5 tal:content="cg_name" />
-							<ol>
-								<li class="AlissRow" tal:repeat="page google_pages">
-									<a tal:attributes="href python:page.page_url"><img class="preview" tal:attributes="src python:test(len(page.getPreviewImageUrl())>0, page.getPreviewImageUrl(), '/misc_/ALiSS/standardicon.gif')" alt="Thumbnail preview" /><span tal:replace="structure python:test(len(page.page_title)!=0, page.page_title, 'Title N/A')"/></a>
-									<br/><span tal:replace="structure python:page.page_snippet"/>
-								<br clear="all" /></li>
-							</ol>
-						</tal:block>
-					</tal:block>
-				</tal:block>
-			</tal:block>
-			</tal:comm>
+                            <tal:block condition="not:google_pages">
+                                <h5 tal:content="cg_name" />
+                                <p>No pages were indexed.</p>
+                            </tal:block>
+
+                            <tal:block	condition="google_pages"
+                                        repeat="content_group python:google_list.keys()">
+                                <h5 tal:content="cg_name" />
+                                <ol>
+                                    <li class="AlissRow" tal:repeat="page google_pages">
+                                        <a tal:attributes="href python:page.page_url"><img class="preview" tal:attributes="src python:test(len(page.getPreviewImageUrl())>0, page.getPreviewImageUrl(), '/misc_/ALiSS/standardicon.gif')" alt="Thumbnail preview" /><span tal:replace="structure python:test(len(page.page_title)!=0, page.page_title, 'Title N/A')"/></a>
+                                        <br/><span tal:replace="structure python:page.page_snippet"/>
+                                    <br clear="all" /></li>
+                                </ol>
+                            </tal:block>
+                        </tal:block>
+                    </tal:block>
+                </tal:block>
+                </tal:comm>
 
 
-			<tal:block metal:define-macro="suggestions"
-						define="related_terms python:here.getTermSuggestionsBrains(concept_name,True,lang)"
-						condition="python:len(related_terms)>0">
-			<div id="see-also">
-				<h2 tal:content="python:context.messages('Related themes')">Related themes</h2>
-				<ul class="concept_list">
-					<tal:block tal:repeat="term_sugg related_terms" tal:on-error="nothing">
-						<li>
-							<a	tal:attributes="href string:${here/absolute_url}/concept_html?term=${term_sugg};
-												title term_sugg"
-								tal:content="term_sugg">term related</a>
-						</li>
-					</tal:block>
-				</ul>
-			</div>
-			</tal:block>
+				<h2><a href="#" tal:content="python:context.messages('Related themes')">Related themes</a></h2>
+                <tal:block metal:define-macro="suggestions"
+                            define="related_terms python:here.getTermSuggestionsBrains(concept_name,True,lang)"
+                            condition="python:len(related_terms)>0">
+                <div id="see-also">
+                    <ul class="concept_list">
+                        <tal:block tal:repeat="term_sugg related_terms" tal:on-error="nothing">
+                            <li>
+                                <a	tal:attributes="href string:${here/absolute_url}/concept_html?term=${term_sugg};
+                                                    title term_sugg"
+                                    tal:content="term_sugg">term related</a>
+                            </li>
+                        </tal:block>
+                    </ul>
+                </div>
+                </tal:block>
+            </div> <!-- End accordion -->
 
 			</div>
 
