@@ -20,6 +20,11 @@
 		<div id="googlecse-result" metal:define-macro="googlecse-result">
 			<span tal:replace="structure here/google_cs_ajax_js" />
 			<div id="GCSSearchForm">Loading...</div>
+                        <div id="glossary-navigation">
+				<a href="/terminology/" tal:content="python:context.messages('Alphabetically')">Alphabetically</a>
+                                <br/>
+                                <a href="/terminology/terminology_sources_html">Terminology Sources</a>
+			</div>
 			<div id="rightSearchControl" class="search-control">Loading...</div>
 			<p class="discreet">powered by <a href="http://code.google.com/apis/ajaxsearch/index.html"><span class="tagline">The Google AJAX Search API</span></a> and <a href="http://www.google.com/coop/cse"><span class="tagline">Google Custom Search Engines</span></a></p>
 		</div>
