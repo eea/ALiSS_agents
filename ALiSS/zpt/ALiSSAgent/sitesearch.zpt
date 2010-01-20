@@ -9,7 +9,7 @@
 	<tal:block content="structure python:here.jsSelectedLanguage(lang)" />
 	<span id="gsearch" style="display:none" tal:content="python:context.messages('Search')">Search</span>
 
-	<div id="search-results-area" tal:attributes="style python:test(aliss_concept, 'width:47%', 'width:100%')">
+	<div id="search-results-area" tal:attributes="style python:test(aliss_concept, 'width:57%', 'width:100%')">
 		<div metal:use-macro="here/concept_html/macros/googlecse-result" />
 	</div>
 
@@ -20,10 +20,12 @@
 							translations		python:aliss_concept['translations'];
 							terms_list			python:aliss_concept['terms_list']">
 
-			<div style="float:right;width:47%;" tal:condition="concept_name">
+			<div id="concept-accordion" class="eea-accordion" style="float:right;width:37%;" tal:condition="concept_name">
+				<h2><a href="#"><span tal:replace="python:context.messages('Definitions')">Definitions</span> (<span tal:replace="python:context.messages('English')">English</span>)</a></h2>
 				<div metal:use-macro="here/concept_html/macros/definitions" />
+				<h2><a href="#" tal:content="python:context.messages('Translations')">Translations</a></h2>
 				<div metal:use-macro="here/concept_html/macros/translations" />
-				<br clear="all" />
+				<h2><a href="#" tal:content="python:context.messages('Related themes')">Related themes</a></h2>
 				<div metal:use-macro="here/concept_html/macros/suggestions" />
 			</div>
 
