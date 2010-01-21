@@ -38,12 +38,13 @@
 
 input.search-button,
 input.gsc-search-button {
- background: transparent url(/etds/search_btn.png) no-repeat;
- color: transparent;
+ /* Hide the submit button text, color: transparent verified not to work in IE8  */
+ padding: 26px 0 0 0;
+ height: 0px !important;
  width: 41px;
- height: 26px;
  border: none;
  cursor: pointer;
+ background: transparent url(/etds/search_btn.png) no-repeat;
 }
 
 #standard-term-search,
