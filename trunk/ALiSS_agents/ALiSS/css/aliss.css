@@ -1,7 +1,7 @@
 /* Aliss main style for public browsable views */
 
 #wiki-loading {
-    background: #ecf3d0;
+    background: #ffffff;
 }
 
 #concept-accordion h2 a {
@@ -22,7 +22,7 @@
 
 .eea-accordion .ui-accordion-content,
 .eea-accordion .ui-state-active {
- background: #ecf3d0;
+ background: #ffffff;
 }
 
 .eea-accordion .ui-accordion-content {
@@ -140,11 +140,9 @@ ul.subalphabet_list li {
 }
 
 .definitions_list dd {
- background:#ECF3D0 url(open_quote.gif) no-repeat scroll 0.5em 0.75em;
+ background:#ffffff url(open_quote.gif) no-repeat scroll 0.5em 0.75em;
  color:#000000;
- margin:1em auto;
  padding:1.5em 1em 1em 3em;
- width:70%;
 }
 
 .definition_source {
@@ -274,7 +272,7 @@ div#qTip {
 }
 
 #wiki-loading  {
- background: #ecf3d0 url(ajax-loader.gif) no-repeat scroll 0px 5px;
+ background: #ffffff url(ajax-loader.gif) no-repeat scroll 0px 5px;
  padding: 5px;
  padding-left: 18px;
 }
@@ -344,14 +342,6 @@ ul.subalphabet_list li {
 
 .definitions_list dt {
  display:none;
-}
-
-.definitions_list dd {
- background:#ECF3D0 url(open_quote.gif) no-repeat scroll 0.5em 0.75em;
- color:#000000;
- margin:1em auto;
- padding:1.5em 1em 1em 3em;
- width:70%;
 }
 
 .definition_source {
@@ -760,7 +750,7 @@ div.gsc-clear-button {
 .gsc-tabHeader {
   display: inline;
   cursor: pointer;
-  padding-left: 6px;
+  padding-left: 0.5em;
   padding-right: 0.5em;
   margin-right: 2px;
   }
