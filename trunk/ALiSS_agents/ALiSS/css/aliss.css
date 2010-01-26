@@ -750,8 +750,7 @@ div.gsc-clear-button {
 .gsc-tabHeader {
   display: inline;
   cursor: pointer;
-  padding-left: 0.5em;
-  padding-right: 0.5em;
+  padding: 0.3em 0.3em 0 0.3em;
   margin-right: 2px;
   }
 
@@ -1087,7 +1086,7 @@ input.gsc-configSettingSubmit {
 }
 
 .gsc-results .gsc-cursor-box .gsc-cursor-current-page {
-  color : #A90A08;
+  color : #FF9900;
   font-weight : bold;
   text-decoration: none;
 }
