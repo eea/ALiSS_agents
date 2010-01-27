@@ -93,6 +93,7 @@ ul.subalphabet_list li {
 
 #definitions-area #wikimedia-area {
  float:left;
+ margin-left: 3em;
 }
 
 #wikimedia-area #body {
