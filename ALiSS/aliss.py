@@ -559,8 +559,8 @@ class ALiSS(Folder):
     security.declarePublic('index_html')
     index_html =    PageTemplateFile('zpt/ALiSS/aliss_index', globals())
 
-    security.declarePublic('results')
-    results =    PageTemplateFile('zpt/ALiSS/aliss_results', globals())
+#    security.declarePublic('results')
+#    results =    PageTemplateFile('zpt/ALiSS/aliss_results', globals())
 
     #google ajax search
     security.declarePublic('google_cs_ajax_js')

@@ -609,11 +609,11 @@ class ALiSSAgent(Folder,
     security.declarePublic('index_html')
     index_html =    PageTemplateFile('zpt/ALiSSAgent/aliss_agent_index', globals())
 
-    security.declarePublic('list_html')
-    list_html =    PageTemplateFile('zpt/ALiSSAgent/aliss_agent_list', globals())
+#    security.declarePublic('list_html')
+#    list_html =    PageTemplateFile('zpt/ALiSSAgent/aliss_agent_list', globals())
 
-    security.declarePublic('concept_html')
-    concept_html =    PageTemplateFile('zpt/ALiSSAgent/aliss_agent_concept', globals())
+#    security.declarePublic('concept_html')
+#    concept_html =    PageTemplateFile('zpt/ALiSSAgent/aliss_agent_concept', globals())
 
     security.declarePublic('terminology_sources_html')
     terminology_sources_html =    PageTemplateFile('zpt/ALiSSAgent/aliss_agent_list_sources', globals())
@@ -621,11 +621,11 @@ class ALiSSAgent(Folder,
     security.declarePublic('flash_search')
     flash_search =    PageTemplateFile('zpt/ALiSSAgent/aliss_flash_search', globals())
 
-    security.declarePublic('sitesearch')
-    sitesearch =  PageTemplateFile('zpt/ALiSSAgent/sitesearch', globals())
+#    security.declarePublic('sitesearch')
+#    sitesearch =  PageTemplateFile('zpt/ALiSSAgent/sitesearch', globals())
 
-    security.declarePublic('alphabetic_html')
-    alphabetic_html =    PageTemplateFile('zpt/ALiSSAgent/aliss_alphabetic_nav', globals())
+#    security.declarePublic('alphabetic_html')
+#    alphabetic_html =    PageTemplateFile('zpt/ALiSSAgent/aliss_alphabetic_nav', globals())
 
     #####################
     #   FLASH CLIENT    #
