@@ -129,6 +129,9 @@ searcher.setSiteRestriction(cseId,null,"http://www.google.com/cse?cx=01061708314
             ob_search.value = document.getElementById('gsearch').innerHTML;
         }
 
+        // The submit button value text shouldn't come on top of the search
+        // button background.
+        $('input.gsc-search-button').attr('value', '');
       }
 
       function OnLoad() {

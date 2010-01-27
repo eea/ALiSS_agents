@@ -40,9 +40,8 @@
 
 input.search-button,
 input.gsc-search-button {
- /* Hide the submit button text, color: transparent verified not to work in IE8  */
- padding: 26px 0 0 0;
- height: 0px !important;
+ padding: 0 0 0 0;
+ height: 26px;
  width: 41px;
  border: none;
  cursor: pointer;
