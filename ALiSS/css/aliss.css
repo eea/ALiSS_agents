@@ -103,6 +103,9 @@ ul.subalphabet_list li {
 #wikimedia-area .link-rss {
  float:right;
  margin-top:0.5em;
+ font-size: 0.8em;
+ margin-bottom: 0.3em;
+ margin-right: 0.6em;
 }
 
 
