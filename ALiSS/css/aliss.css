@@ -6,6 +6,8 @@
 
 #concept-accordion h2 a {
  background: none;
+ font-weight: bold;
+ border-bottom:1px solid #ececec;
 }
 
 #concept-accordion #translations-area li,
