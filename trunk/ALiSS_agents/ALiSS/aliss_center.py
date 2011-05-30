@@ -371,7 +371,10 @@ class ALiSSCenter(Folder,
             query['objecttrans_%s' % lang.lower()] = names
         else:
             query['objectname_%s' % lang.lower()] = {'query':names.lower(), 'operator':'and '}
-        cat_res = self.catalog(query)
+        try:
+    	    cat_res = self.catalog(query)
+    	except:
+    	    cat_res = []
         return cat_res
 
     def getElementsByLetter(self, letter, lang):
