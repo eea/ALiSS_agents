@@ -40,10 +40,12 @@
 				style="padding-right: 0.4em">
 				<tal:block condition="has_content">
 					<a	tal:condition="not:selected_letter" title="Other" class="menu_link"
-						tal:attributes="href string:${here/absolute_url}/list_html?letter=other">Other</a>
-					<span class="menu_selected" tal:condition="selected_letter">Other</span>
+						tal:attributes="href string:${here/absolute_url}/list_html?letter=other">
+                                                       <span tal:replace="python:context.messages('Other')" />
+                                        </a>
+					<span class="menu_selected" tal:condition="selected_letter"><span tal:replace="python:context.messages('Other')" /></span>
 				</tal:block>
-				<span class="menu_empty" tal:condition="not:has_content">Other</span>
+				<span class="menu_empty" tal:condition="not:has_content"><span tal:replace="python:context.messages('Other')" /></span>
 			</li>
 		</tal:block>
 
