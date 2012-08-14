@@ -1,7 +1,7 @@
 <tal:block tal:replace="structure here/standard_html_header" />
 <span tal:replace="python:request.RESPONSE.setHeader('content-type', 'text/html;charset=UTF-8')" />
 
-<h1>List of terminology sources</h1>
+<h1 tal:content="python:context.messages('List of terminology sources')">List of terminology sources</h1>
 
 			<ul>
 			<tal:block repeat="aliss_center here/getAllCenters">
