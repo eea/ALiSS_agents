@@ -15,7 +15,7 @@
 <div id="glossary-navigation">
     <a href="/terminology/" tal:content="python:context.messages('Alphabetically')">Alphabetically</a>
     <br/>
-    <a href="/terminology/terminology_sources_html">Terminology Sources</a>
+    <a href="/terminology/terminology_sources_html" tal:content="python:context.messages('Terminology Sources')">Terminology Sources</a>
 </div>
 
 <br class="visualClear" />
