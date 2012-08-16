@@ -27,9 +27,16 @@
  background: #ffffff;
 }
 
+/*
 .eea-accordion .ui-accordion-content {
  height: 400px;
 }
+*/
+
+.eea-accordion {
+ height: 400px;
+}
+
 
 #googlecse-result #glossary-navigation {
  float: left;
