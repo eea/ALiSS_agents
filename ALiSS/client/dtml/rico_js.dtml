@@ -295,8 +295,7 @@ Rico.Accordion.Tab.prototype = {
       this.expanded = true;
       this.titleBar.style.backgroundColor = this.accordion.options.expandedBg;
       this.titleBar.style.color           = this.accordion.options.expandedTextColor;
-      this.content.style.overflow         = "visible";
-      this.content.style.height = "100%";
+      this.content.style.overflow         = "overflow";
    },
 
    titleBarClicked: function(e) {
