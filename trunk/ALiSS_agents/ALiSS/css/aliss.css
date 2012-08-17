@@ -27,16 +27,9 @@
  background: #ffffff;
 }
 
-/*
 .eea-accordion .ui-accordion-content {
  height: 400px;
 }
-*/
-
-.eea-accordion {
- height: 400px;
-}
-
 
 #googlecse-result #glossary-navigation {
  float: left;
@@ -139,7 +132,6 @@ ul.subalphabet_list li {
  list-style: none;
  display: inline;
 }
-
 
 
 #see-also ul li, #translations-area ul li {
