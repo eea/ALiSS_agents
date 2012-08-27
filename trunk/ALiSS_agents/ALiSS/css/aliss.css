@@ -43,9 +43,10 @@ input.gsc-search-button {
  padding: 0 0 0 0;
  height: 26px;
  width: 41px;
- border: none;
+ border: medium none !important;
  cursor: pointer;
- background: transparent url(/etds/search_btn.png) no-repeat;
+ background: transparent url(/etds/search_btn.png) no-repeat !important;
+ margin-right: 10px;
 }
 
 #standard-term-search,
@@ -144,9 +145,10 @@ ul.subalphabet_list li {
 }
 
 .definitions_list dd {
- background:#ffffff url(open_quote.gif) no-repeat scroll 0.5em 0.75em;
+ background: url(open_quote.gif) no-repeat scroll 0.1em 0.3em;
  color:#000000;
- padding:1.5em 1em 1em 3em;
+ padding:1.5em 1em 1em 1em;
+ margin: 0 !important;
 }
 
 .definition_source {
@@ -223,11 +225,12 @@ ul.subalphabet_list li {
 .gsc-tabHeader {
 font-size:1.2em;
 font-weight:bold;
-border-radius: 5px 5px 0 0; -moz-border-radius: 5px 5px 0 0; -webkit-border-radius: 5px 5px 0 0;
+border-radius: 5px 5px 5px 5px; 
+-moz-border-radius: 5px 5px 0 0; -webkit-border-radius: 5px 5px 0 0;
 }
 
 .gsc-resultsbox-visible {
-margin-top:1.5em;
+/* margin-top:1.5em; */
 }
 
 .gs-result .gs-title , .gs-result .gs-title * {
@@ -236,10 +239,9 @@ color:#2A6495 !important;
 
 .gs-result a {
 text-decoration:none !important;
-border-bottom:1px solid #A6BACD !important;
 }
 .gs-snippet, .gs-visibleUrl {
-padding-left:20px;
+padding-left:10px;
 }
 
 /* Slideshow related CSS */
@@ -332,6 +334,7 @@ ul.subalphabet_list li {
 }
 
 #definitions-area {
+ background-color: #F3F3F3;
  float:left;
 }
 
@@ -752,16 +755,25 @@ div.gsc-clear-button {
   }
 
 .gsc-tabHeader {
-  display: inline;
+  /* display: inline; */
+  float: left;
   cursor: pointer;
-  padding: 0.3em 0.3em 0 0.3em;
+  padding: 0.3em;
   margin-right: 2px;
+  margin-top: 1px;  
   }
+  
+.gsc-above-wrapper-area-container {
+    clear: both;
+}
+  
 
+.gsc-result-info {
+  margin-top: 10px;
+}
+  
 .gsc-tabHeader.gsc-tabhActive {
-  border-left:2px solid #FF9900;
-  border-right:2px solid #FF9900;
-  border-top:2px solid #FF9900;
+  border:2px solid #FF9900; 
   color: black;
   }
 
@@ -769,6 +781,7 @@ div.gsc-clear-button {
   border-left:1px solid #E9E9E9;
   border-right:1px solid #E9E9E9;
   border-top:2px solid #E9E9E9;
+  border-bottom:2px solid #E9E9E9;  
   background: white;
   color:#333333;
   }
@@ -1121,6 +1134,7 @@ input.gsc-configSettingSubmit {
 .gs-result .gs-title,
 .gs-result .gs-title * {
   color: #0000cc;
+  margin-bottom: 5px;
   text-decoration: underline;
 }
 
