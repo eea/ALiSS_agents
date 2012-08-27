@@ -300,9 +300,9 @@ div#qTip {
 }
 
 ul.alphabet_list li {
- display:inline;
+ display:inline !important;
  background-color: #e9efcd;
- font-size:1.4em;
+ font-size:1.3em;
 }
 
 ul.subalphabet_list li {
@@ -1148,6 +1148,18 @@ input.gsc-configSettingSubmit {
 .gs-result .gs-visibleUrl {
   color: #008000;
   text-decoration: none;
+}
+
+div.gsc-table-cell-thumbnail {
+  display: none;
+}
+
+.gsc-table-cell-thumbnail a.gs-title {
+    margin-left: 10px;
+}
+
+h2.share-title {
+    clear: both;
 }
 
 /* relative and absolute dates, note, news/books inlines these */

@@ -7,7 +7,7 @@
 	<form id="glossary-search-form" action="results" method="post" name="frmSearch">
 		<div class="field">
 			<input type="text" tabindex="0" size="30" name="term_name:utf8:ustring" id="term_name"/>
-			<input type="submit"  value="Search" title="Search" tal:attributes="title python:context.messages('Search'); value python:context.messages('Search')" name="form.button.Send" class="context search-button"/>
+			<input type="submit"  value="" title="Search" tal:attributes="title python:context.messages('Search')" name="form.button.Send" class="context search-button"/>
 			<input type="hidden" name="lang" tal:attributes="value lang" />
 		</div>
 	</form>
