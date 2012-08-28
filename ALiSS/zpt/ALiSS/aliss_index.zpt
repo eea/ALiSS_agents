@@ -20,11 +20,16 @@
 
 <br class="visualClear" />
 
+<tal:comment replace="nothing">
+<!-- Removed from main view, only in alphabetical one -->
+
 <h1 tal:content="python:context.messages('Alphabetically')">Alphabetically</h1>
 
 <tal:block define="agent python:here.getAllowedAgents()[0]">
 	<div tal:content="structure agent/alphabetic_html" />
 </tal:block>
+</tal:comment>
+
 
 <tal:comm replace="nothing">
 <!-- DEPRECATED: Old index view -->
