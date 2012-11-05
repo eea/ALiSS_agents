@@ -790,6 +790,9 @@ class ALiSSAgent(Folder,
         """ generate the alphabetic menu """
         menuData = {}
         conceptsNumber = 0
+
+        """
+        # Old code, results are wrong
         for aliss_center in self.getAlissCenters():
             query = {'meta_type':     {'query':METATYPE_ALISSELEMENT, 'operator':'and '},
                      'center_parent': {'query':aliss_center.center_uid}}
@@ -808,9 +811,25 @@ class ALiSSAgent(Folder,
                         menuData[trans[0]] = menuData.get(trans[0], 0) + 1
                 except:
                     pass
-
         return (conceptsNumber, menuData)
 
+        """
+        # Works but slow
+        alphabet = self.unicode_map(lang)
+        terms_list = []
+        for aliss_center in self.getAlissCenters():
+            for letters in alphabet:
+                terms_list.extend(aliss_center.getElementsByLetter(letters[1], lang))
+
+        for term in utils.utElimintateDuplicates(terms_list):
+            conceptsNumber += 1
+            for letters in alphabet:
+                for letter in letters:
+                   if term.startswith(letter):
+                        menuData[letters[1].encode('utf8')] = menuData.get(letters[1].encode('utf8'), 0) + 1
+
+        return (conceptsNumber, menuData)
+        
     def hasOther(self, data, lang):
         """ """
         digits = self.getDigits()
