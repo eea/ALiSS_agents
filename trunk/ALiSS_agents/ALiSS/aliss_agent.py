@@ -791,45 +791,19 @@ class ALiSSAgent(Folder,
         menuData = {}
         conceptsNumber = 0
 
-        """
-        # Old code, results are wrong
         for aliss_center in self.getAlissCenters():
             query = {'meta_type':     {'query':METATYPE_ALISSELEMENT, 'operator':'and '},
                      'center_parent': {'query':aliss_center.center_uid}}
 
             for term in utils.utElimintateDuplicates(self.catalog(query), 'objectname_%s' % lang):
-                try:
-                    trans = self.getTrans(term, lang)
-                    if len(trans)>0:
-                        conceptsNumber += 1
-
-                        for letters in self.unicode_map(lang):
-                            for letter in letters:
-                                if trans.startswith(letter):
-                                    menuData[letters[1].encode('utf8')] = menuData.get(letters[1].encode('utf8'), 0) + 1
-                                    raise
-                        menuData[trans[0]] = menuData.get(trans[0], 0) + 1
-                except:
-                    pass
+                trans = self.getTrans(term, lang)
+                if len(trans)>0:
+                    conceptsNumber += 1 
+                    if not menuData.has_key(trans[0].upper()):          
+                        menuData[trans[0].upper()] = 1
+                           
         return (conceptsNumber, menuData)
 
-        """
-        # Works but slow
-        alphabet = self.unicode_map(lang)
-        terms_list = []
-        for aliss_center in self.getAlissCenters():
-            for letters in alphabet:
-                terms_list.extend(aliss_center.getElementsByLetter(letters[1], lang))
-
-        for term in utils.utElimintateDuplicates(terms_list):
-            conceptsNumber += 1
-            for letters in alphabet:
-                for letter in letters:
-                   if term.startswith(letter):
-                        menuData[letters[1].encode('utf8')] = menuData.get(letters[1].encode('utf8'), 0) + 1
-
-        return (conceptsNumber, menuData)
-        
     def hasOther(self, data, lang):
         """ """
         digits = self.getDigits()
