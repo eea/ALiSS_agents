@@ -31,13 +31,19 @@
 							terms_list			python:aliss_concept['terms_list'];
 							wiki_query			python:test(len(translations.keys())>1, translations['en'][0], concept_name)">
 
-			<div id="concept-accordion" class="eea-accordion" style="float:right;width:37%;" tal:condition="concept_name">
-				<h2><a href="#"><span tal:replace="python:context.messages('Definitions and sample images')">Definitions and sample images</span></a></h2>
-                <div metal:use-macro="here/concept_html/macros/definitions" />
-				<h2><a href="#" tal:content="python:context.messages('Translations')">Translations</a></h2>
-				<div metal:use-macro="here/concept_html/macros/translations" />
-				<h2><a href="#" tal:content="python:context.messages('Related themes')">Related themes</a></h2>
-				<div metal:use-macro="here/concept_html/macros/suggestions" />
+			<div id="concept-accordion" class="eea-accordion-panels" style="float:right;width:37%;" tal:condition="concept_name">
+                <div class="eea-accordion-panel">
+                    <h2><a href="#"><span tal:replace="python:context.messages('Definitions and sample images')">Definitions and sample images</span></a></h2>
+                    <div metal:use-macro="here/concept_html/macros/definitions" />
+                </div>
+                <div class="eea-accordion-panel">
+                    <h2><a href="#" tal:content="python:context.messages('Translations')">Translations</a></h2>
+                    <div metal:use-macro="here/concept_html/macros/translations" />
+                </div>
+                <div class="eea-accordion-panel">
+                    <h2><a href="#" tal:content="python:context.messages('Related themes')">Related themes</a></h2>
+                    <div metal:use-macro="here/concept_html/macros/suggestions" />
+                </div>
 			</div>
 
 		</tal:block>
