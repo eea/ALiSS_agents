@@ -838,6 +838,10 @@ div.gsc-clear-button {
   overflow: hidden;
   }
 
+.gsc-per-result-labels span {
+  padding:0 10px;
+}
+
 /* specialized, result type specific, fine grained controls */
 .gsc-result div.gs-watermark {
   display: none;
