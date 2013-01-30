@@ -811,11 +811,6 @@ div.gsc-clear-button {
   display : none;
 }
 
-div.eea-accordion-panels .eea-accordion-title a, div.eea-accordion-panels h2 a {
-    color: #FFFFFF !important;
-}
-
-
 /* the results for each section
  * .gsc-resultsbox-{visible,invisible} : a complete-collection of results including headers
  * .gsc-results : the collection of results for a given searcher
