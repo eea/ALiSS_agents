@@ -31,6 +31,10 @@
  height: 400px;
 }
 
+.eea-accordion-panel h2 {
+ padding-left:10px;
+}
+
 #googlecse-result #glossary-navigation {
  float: left;
  left: 450px;
