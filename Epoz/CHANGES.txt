@@ -1,0 +1,213 @@
+Epoz - Changes
+
+ 0.9.0
+ 
+     - Reorganized directory layout into core, i18n, images & plone. Please
+       note: You need to "reinstall" Epoz with Quickinstaller / External Method
+       when using Epoz in CMF/Plone.
+     
+	 - Andy Dustman provided a patch for removing MS-Word-Garbage-tags.
+	   Thanks Andy!!!
+	   
+     - Documentation about Epoz for end-users is provided by Tom Purl (see 
+       "EpozBook":http://zopewiki.org/EpozBook). Thanks Tom!
+ 
+     - fixed bug: Plone-Toolbox didn't check permissions 'View' and 
+       'List folder contents' in breadcrumbs. Thanks to Cyrille Lebeaupin
+       from Ingeniweb for patch!
+       
+     - fixed bug: Image-Preview in Plone-Toolbox was broken in IE.
+     
+     - fixed bug: JavaScript in content-area could break Epoz...       
+       Thanks to Christian Zagrodnick from gocept.com for patch!
+       
+     - cleaned up line-endings. No more need to write complicated 
+       PERL/C++/ADA-Scripts to get rid of them...
+     
+     
+ 0.8.6
+
+     - fixed bug: Mozilla / Firefox leaves a single br-tag for
+       an empty form. Epoz will clean this mess now.
+
+     - added a wysiwyg_support-switch so Epoz can coexist with 
+       other wysiwyg-editors in Plone (esp. Kupu). Moved former
+       wysiwyg_support to epoz_wysiwyg_support. Thanks to
+       Duncan Booth for patch!!!
+
+     - little cleanup to epoz_script_widget: refactored img-string
+       for spacer, so the code becomes more readable.
+                
+     - fixed bug in epoz_toolbox: CMFPhotos were only shown for preview,
+       but not for inserting as image. Thanks to Bjorn van der Meer
+       for patch!!!
+       
+     - updated russian translation; thanks to Michael Krishtopa!
+	 
+     - added some new FAQs.
+
+ 	 
+ 0.8.5
+      
+     - added keyboard shortcuts for Mozilla / Firefox which are already
+       supported by IE: CTRL + b for bold, CTRL + i for italics, CTRL + u
+       for underlined, CTRL + k for create link.
+
+     - added a HowTo for easier setup of mxTidy to get valid XHTML from Epoz
+       (see mxTidyHowTo.txt).
+     
+     - fixed bug: made width/height-settings for Epoz working
+       with Archetypes. Thanks to Christian Theune from Gocept for patch!
+       
+	 - fixed bug: corrected the slashing of folders in Epoz-toolbox 
+	   for Plone (http://plone.org/collector/3479)
+	          
+       
+ 0.8.4
+
+     - fixed bug: toolbox didn't start from the correct location if the
+       portal_factory was activated.
+
+     - fixed bug: wysiwyg support in Plone could be broken, because
+       URL3 in wysiwyg_support isn't available under all circumstances.
+       I forgot that the damn test()-method evaluates all expressions
+       always, regardless of the condition... Thanks to Simon Pamies
+       for patch!
+       
+     - updated browser-detection-javascript to Browser Detect v2.1.6.
+              
+     - some whitespace-cleanups thanks to AnyEdit for Eclipse.      
+
+ 0.8.3
+
+     - added a FAQ. Pleae read it before asking questions...
+
+     - added label for html-source-switch, because many people asked for
+       it. Hope this helps clearing up the meaning of the little checkbox
+       below the wysiwyg-area...
+
+     - added translations for tidy-messages in the browser-status-bar to
+       en & de. Please note: Don't use any entities if you want to translate,
+       because the browser-status-bar doesn't support entities!
+
+     - Fixed bug: missing form_path in epoz_script_widget caused problems
+       when using portal_factory in Plone. Thanks to Danny Bloemendaal (for
+       detecting the problem) and Geoff Davis for patch! Added a check to
+       wysiwyg_support to detect document-creation via portal_factory.
+
+     - Fixed bug: the Epoz-Iframe in epoz_script_widget wasn't loaded via
+       an absolute url, so browsers could complain when running Epoz via https.
+
+ 0.8.2
+
+     - Updated license to Zope Public License 2.1.
+
+     - Danny Bloemendaal provided a cleaned up toolbox for use in Plone 2.
+       Thank you, Danny!
+
+     - Added "Photo" (CMFPhoto) as selectable image-type to the toolbox.
+       Thanks to Shane Graber for patch!
+
+     - set wordwrap for mxTidy/uTidy to 79 character to avoid some problems
+       with splitted a-href-tags.
+
+     - fixed bug: making relative urls for images was broken in EpozPostTidy
+       for people who have no mxTidy / uTidylib installed.
+
+     - fixed bug: removed .strip() from data-handler in Extensions/EpozPostTidy.py,
+       so required whitespace isn't killed; added a "useless-whitespace"-cleanup
+       to EpozPostTidy.
+
+ 0.8.1
+
+     - Now the setup for getting relative urls from Epoz is much more easier:
+       There's a default EpozPostTidy.py in Epoz/Extensions which can be
+       used out of the box.
+       Simply create an External-Method in the root of the ZMI or your Plone-Site with
+       id=EpozPostTidy, Module-Name=Epoz.EpozPostTidy, Function-Name=EpozPostTidy.
+
+     - added a customcss-parameter (esp. for use in Plone) to render customized
+       css-styles in difference to a global css correctly.
+
+     - fixed bug: the XMLRPC for tidying etc. is now independent of your
+       Zope-Server-Root, so the EpozPostTidy-Hook can be created in
+       your Plone-Instance without a VHM-Setup anymore.
+
+     - fixed bug: canceling "Add anchor" resulted in emtpy tag. Thanks to
+       Simon Pamies for patch!!!
+
+     - fixed bug: IE complained about security when Epoz was called via
+       https. Thanks to Sam Brauer and Andrew Athan for patches!
+
+     - fixed bug: <embed>-tag was replaced by <ibed> in Mozilla. Thanks
+       to Christian Ledermann.
+
+     - fixed bug in epoz_script_main.js.dtml/InitEpoz: IE 5.0 isn't
+       wysiwyg-able and therefore needs to fall back to a textarea. Thanks
+       to Marc Zacher!
+
+     - updated epoz_lang_pt-br. Thanks to Luiz Fernando Pasqual S. Souza!
+
+     - updated epoz_lang_zh-cn. Thanks to panjunyong!
+
+     - updated epoz_lang_no.js.dtml. Thanks to Einar Jensen!
+
+
+ 0.8.0
+
+     - added support for uTidylib (http://utidylib.sourceforge.net/);
+       Thanks to Shane Hathaway from Zope Corporation for his
+       patches!!! Please note: there are still some problems with UTF8;
+       maybe someone can provide a patch?
+
+     - rearranged the Javascript so that it's not necessary to
+       "auto"-switch to source mode when saving. Thanks
+       again to Shane Hathaway from Zope Corporation for his patches!!!
+
+     - added pageurl-parameter to Epoz; pageurl defines the base
+       url of the edited page. The pageurl is forwarded to Epoz(Post)Tidy,
+       so you can rewrite urls according to the given base url.
+       **PLEASE NOTE:** You must add an additional parameter
+       if you use EpozPostTidy-Hooks in your applications.
+
+     - added support for adding anchors; works very nice with Mozilla, IE
+       doesn't show the css-styles. IE is crap anyway...
+       Thanks to Christian Theune from Gocept for his patches!!!
+
+     - added global support (EpozGetRelativeUrl) for calculating relative urls
+       from absolute urls; Thanks to Gilles Lenfant for this feature! Please
+       see README.txt for how to enable this feature.
+
+     - added simple example for EpozPostTidy-Hook to README.txt.
+
+     - added danish-translation; thanks to Nikolay Kim!!!
+
+     - fixed bug: IE couldn't handle anchors; added base-tag to
+       epoz_blank_iframe.html. Thanks to Stefanie Panke pointing
+       me to this problem.
+
+     - changed default height of the edit form in Plone to be a more
+       sensible 450px (limi).
+
+     - removed annoying pop-up saying "Your browser does not support
+       XML-RPC" from the JS. If it doesn't, we degrade anyway - no reason
+       to insult the user. ;) (limi)
+
+     - fixed epoz_toolbox to use 'sanctioned' calls for meta_types. Thanks
+       to Marc Lindahl for patch!!!
+
+     - wysiwyg_support was causing a wierd error when used
+       inside CMFBoard sometimes (Attribute Error: meta_type). Traced it to
+       test of text_format. test() evaluates both true and false branches.
+       Restructured it to fix the problem.  Thanks to Marc Lindahl for patch!!!
+
+     - fixed tabindex for Plone (limi)
+
+     - added class="visualFontSizeCorrection" to body-tag of
+       epoz_blank_iframe.html; mostly needed for displaying correct font-sizes
+       for the wysiywg-area in Plone 2.0. Please note: To use this with
+       older Plones, add visualFontSizeCorrection { font-size: 75%; }
+       to your ploneCustom.css (limi)
+
+     - synced default wysiwyg_support with Plone 2.0.
+
