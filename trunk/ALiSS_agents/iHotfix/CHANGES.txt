@@ -1,0 +1,14 @@
+0.6.1 (2005/10/21)
+
+  - Drop the mxDateTime patch.
+
+
+0.6.0 (2005/06/07)
+
+  Update to itools 0.9.0
+
+
+0.5.2 (2005/03/13)
+
+  Bugs fixed
+  - Get it working with Plone again.
