@@ -17,6 +17,10 @@
  margin: 0 0;
 }
 
+.documentActions {
+ position: static;
+}
+
 .eea-accordion #definitions-area {
  float: none;
  clear: none;
@@ -49,7 +53,7 @@ input.gsc-search-button {
  width: 41px;
  border: medium none !important;
  cursor: pointer;
- background: transparent url(/search_btn.png) no-repeat !important;
+ background: transparent url(/etds/search_btn.png) no-repeat !important;
  margin-right: 10px;
 }
 
@@ -60,9 +64,9 @@ input.gsc-search-button {
 
 #term_name,
 input.gsc-input {
- background: transparent url(/search_bg_white.png) no-repeat scroll 50% 50%;
+ background: transparent url(/etds/search_bg_white.png) no-repeat scroll 50% 50%;
  padding: 9px 0 9px 30px;
- width: 366px;
+ width: 400px;
  border: none;
 }
 
