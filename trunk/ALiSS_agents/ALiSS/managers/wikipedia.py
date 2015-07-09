@@ -204,7 +204,7 @@ class WikipediaImages:
                                     (host, utUrlEncode(self.titles), number))
             s = f.read()
         except:
-            pass
+            return []
 
         parser = mediawiki_parser(self.logos)
         images_info = parser.parseHeader(s)
