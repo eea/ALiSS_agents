@@ -30,7 +30,7 @@ from Products.ZCTextIndex.Lexicon import StopWordRemover
 from Products.ALiSS.constants import *
 import Products.ALiSS.aliss
 import Products.ALiSS.aliss_stopwords
-
+import patch_socket
 
 def initialize(context):
     """ initialize the ALiSS component """
