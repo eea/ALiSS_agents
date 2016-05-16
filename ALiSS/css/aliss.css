@@ -207,7 +207,8 @@ ul.subalphabet_list li {
 }
 
 /* Disable built in search forms */
-.gsc-control form.gsc-search-box {
+.gsc-control form.gsc-search-box,
+.gsc-search-box {
  display : none;
 }
 
@@ -344,6 +345,10 @@ ul.subalphabet_list li {
 #definitions-area {
  background-color: #F3F3F3;
  float:left;
+}
+/* remove float from accordion area */
+#definitions-area.pane {
+    float: none;
 }
 
 #google-custom-search-area {
