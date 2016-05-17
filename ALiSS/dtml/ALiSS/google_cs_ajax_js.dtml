@@ -1,4 +1,4 @@
-<script type="text/javascript">
+<script>
 if (window.google) {
     google.load("search", "1", {style: google.loader.themes.BUBBLEGUM});
     function onLoad() {
@@ -13,7 +13,13 @@ if (window.google) {
         var drawOptions = new google.search.DrawOptions();
 
         // Draw the search results in the results div
-        customSearchControl.draw('google-custom-search-area', drawOptions);
+        if (document.getElementById('google-custom-search-area')) {
+            customSearchControl.draw('google-custom-search-area', drawOptions);
+        }
+        else {
+            customSearchControl.draw('search-results-area', drawOptions);
+        }
+       
 
         customSearchControl.execute("<dtml-var term_name missing=''>");
     }
@@ -21,4 +27,3 @@ if (window.google) {
     google.setOnLoadCallback(onLoad);
 }
 </script>
-
